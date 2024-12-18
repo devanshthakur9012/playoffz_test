@@ -24,21 +24,21 @@ $orgComm = 0;
                                 <p class="mb-0 small">Event Location :
                                     {{ $ticketData[0]->event->address.', '.$ticketData[0]->event->city_name  }}</p>
                                 @if(Session::has('eventTicketBook'))
-                                <p class="mb-0 small">Seat Number :
-                                    @php
-                                       $counter=0;
-                                       $ticketCode =  Session::get('eventTicketBook');
-                                       foreach ($ticketCode['seatSlot'] as $key) {
-                                        $key = json_decode($key);
-                                        if( $counter == count( $ticketCode['seatSlot'] ) - 1){
-                                            echo $key[0].$key[1];
-                                        }else{
-                                            echo $key[0].$key[1].", ";
+                                    <p class="mb-0 small">Seat Number :
+                                        @php
+                                        $counter=0;
+                                        $ticketCode =  Session::get('eventTicketBook');
+                                        foreach ($ticketCode['seatSlot'] as $key) {
+                                            $key = json_decode($key);
+                                            if( $counter == count( $ticketCode['seatSlot'] ) - 1){
+                                                echo $key[0].$key[1];
+                                            }else{
+                                                echo $key[0].$key[1].", ";
+                                            }
+                                            $counter++;
                                         }
-                                        $counter++;
-                                       }
-                                    @endphp
-                                </p>
+                                        @endphp
+                                    </p>
                                 @endif
                             @else
                                 <h3 class="mb-2">{{ $ticketData->event->name }}</h3>

@@ -1,6 +1,13 @@
 @extends('frontend.master', ['activePage' => 'home'])
 @section('title', __('Home'))
 @section('content')
+<style>
+    .btn-white{
+        background-color: #fff;
+        border-radius: 4px;
+        color: #000;
+    }
+</style>
 {{-- <div class="pt-3 pb-3 shadow-sm home-slider">
     <div class="osahan-slider">
       
@@ -23,12 +30,15 @@
                                 <h5 class="card-title mb-2"><u>{{$tour['event_title']}}</u></h5>
                                 <small>{{$tour['event_sdate']}}</small>
                                 <p class="card-text mb-0">
-                                    <small class="text-dark" title="{{$tour['event_place_name']}}"><i class="fas fa-map-marker-alt pr-2"></i>
-                                    {{ strlen($tour['event_place_name']) > 50 ? substr($tour['event_place_name'], 0, 50) . '...' : $tour['event_place_name'] }}
+                                    <small class="text-dark" title="{{$tour['event_place_address']}}"><i class="fas fa-map-marker-alt pr-2"></i>
+                                    {{ strlen($tour['event_place_address']) > 50 ? substr($tour['event_place_address'], 0, 50) . '...' : $tour['event_place_address'] }}
                                     </small>
                                 </p>
-                                <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1">Book Now</a>
-
+                                <div class="mt-2 d-flex justify-content-between align-items-center">
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1">Book Now</a>
+                                    
+                                    <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                </div>
                                 {{-- <p class="my-1 text-light"><small> {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}</small></p>
     
                                 <div class="mt-2 d-flex justify-content-between align-items-center">

@@ -73,10 +73,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/event-city',[BookController::class,'eventCity']);
 
 
-  
-
-
-    Route::get('/user-login',[AuthController::class,'userLogin']);
+    Route::get('/user-login',[AuthController::class,'userLogin'])->name('userLogin');
     Route::post('/user-login',[AuthController::class,'checkUserLogin']);
 
     Route::get('/organizer-login',[AuthController::class,'organizerLogin']);
@@ -88,6 +85,9 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::post('/user-register',[AuthController::class,'postUserRegister']);
 
     Route::post('verify-details',[AuthController::class,'verifyUserData'])->name('verify-details');
+
+    Route::post('verify-mobile-number',[AuthController::class,'verifyMobileNumber'])->name('verify-mobile-number');
+    Route::post('verify-login-otp',[AuthController::class,'verifyLoginOTP'])->name('verify-login-otp');
     Route::post('verify-otp',[AuthController::class,'verifyOTP'])->name('verify-otp');
 
     Route::get('/logout-user', [AuthController::class, 'logoutUser']);
@@ -137,9 +137,13 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::post('/get-ticket-counts',[BookController::class,'getTicketCounts']);
     Route::post('/save-ticket-bookings',[BookController::class,'saveTicketBookings']);
     
-    Route::get('/confirm-ticket-book',[BookController::class,'confirmTicketBook']);
-    
-    
+    // TICKET BOOKING
+    Route::post('/purchase-tournament',[BookController::class,'purchaseTournament'])->name('purchase-tournament');
+    Route::get('/confirm-ticket-book',[BookController::class,'confirmTicketBook'])->name('confirm-ticket-book');
+    Route::post('/store-payment-detail',[BookController::class,'storePaymentDetails'])->name('store-payment-detail');
+    Route::get('/ticket-information/{id}',[BookController::class,'ticketInformationData'])->name('ticket-information');
+
+
     Route::get('/get-promo-discount',[BookController::class,'getPromoDiscount']);
     Route::post('/calculate-book-amount',[BookController::class,'calculateBookAmount']);
     Route::get('/booked-ticket-details',[BookController::class,'bookedTicketDetails']);
@@ -151,16 +155,11 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/book-ticket-slot',[BookController::class,'bookTicketSlots']);
     Route::post('/book-ticket-slot',[BookController::class,'postbookTicketSlots']);
 
-
     Route::get('/organizer-code-scan/{userId}',[QRController::class,'organizerCodeScan']);
     Route::post('/get-events-by-category',[QRController::class,'getEventsByCategory']);
     Route::post('/store-orn-code-scan-sel',[QRController::class,'storeOrnCodeScanSel']);
     Route::get('/qr-event-details',[QRController::class,'qrEventDetails']);
     Route::get('/book-qr-event-ticket',[QRController::class,'bookQrEventTicket']);
-
-    
-
-
     
     // Route::get('/privacy-policy',[QRController::class,'PrivacyPolicy']);
 

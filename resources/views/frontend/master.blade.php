@@ -10,10 +10,11 @@
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <link rel="manifest" href="{{ asset('/organizer_manifest.json') }}">
     {{-- env('BACKEND_BASE_URL')}}/{{$cat['cover_img'] --}}
-    <link href="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['favicon'] : "https://app.playoffz.in/images/website/1733339125.png" }}"
-        rel="icon" type="image/png">
+    {{-- <link href="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['favicon'] : "https://app.playoffz.in/images/favicon.png" }}" rel="icon" type="image/png"> --}}
+    <link href="https://app.playoffz.in/images/favicon.png" rel="icon" type="image/png"> 
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>{{ $favicon['app_name'] }} | @yield('title')</title>
+    @yield('og_data')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="color-scheme" content="light only">
     <input type="hidden" name="base_url" id="base_url" value="{{ url('/') }}">
@@ -22,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('f-vendor/slick/slick.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('f-vendor/slick/slick-theme.min.css') }}" />
     <link href="{{ asset('f-css/main.css') }}" rel="stylesheet">
+    
     @stack('styles')        
     
     <style>
@@ -37,10 +39,10 @@
     </style>
     <style>
         .menu_item{
-            background: #fff;
             border-radius: 20px;
             padding: 5px 10px;
-            color: #070b28;
+            color: #ffffff;
+            line-height: 20px;
         }
     </style>
 </head>
@@ -106,32 +108,34 @@
                         </li> --}}
                         <li class="nav-item no-arrow mx-1">
                             <a class="nav-link" href="{{ url('my-cart') }}">
-                                <i class="fas fa-cart-plus pr-1"></i>
+                                <i class="fas fa-heart pr-1"></i>
                                 @php
                                     $cartTotal = 0;
                                     if (Session::has('CART_DATA_BMJ')) {
                                         $cartTotal = count(json_decode(Session::get('CART_DATA_BMJ'), true));
                                     }
                                 @endphp
-                                <span class="badge badge-danger badge-counter">{{ $cartTotal }}</span>
+                                {{-- <span class="badge badge-danger badge-counter">{{ $cartTotal }}</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-2 loginbtn "><img height="30px" src="{{asset('/images/create2.png')}}" alt="" class="create-btn"></a>
                         </li>
-                        @if (Auth::guard('appuser')->check() == true || Auth::check() == true)
-                            {{-- @if (Auth::check() == true) --}}
-                               
-                            {{-- @endif --}}
+                        @if (Common::isUserLogin())
                             <li class="nav-item dropdown no-arrow ">
-                                @if (Auth::guard('appuser')->check())
+                                @if (Common::isUserLogin())
+                                    @php $userData = Common::fetchUserDetails(); @endphp
                                     <a class="nav-link dropdown-toggle pr-0" href="#" id="userDropdown"
                                         role="button" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
                                         <span
-                                            class="mr-2 d-none d-lg-inline text-white ">{{ Auth::guard('appuser')->user()->name }}</span>
-                                        <img class="img-profile rounded-circle"
-                                            src="{{ asset('images/upload/' . Auth::guard('appuser')->user()->image) }}">
+                                            class="mr-2 d-none d-lg-inline text-white ">{{ $userData['name'] }}</span>
+                                            @if (isset($user['pro_pic']) && $user['pro_pic'] != null)
+                                                <img class="img-profile rounded-circle"
+                                                    src="{{ asset('images/upload/' . $userData['pro_pic']) }}">
+                                            @else
+                                                <i class="fas fa-user-circle fa-lg"></i>
+                                            @endif
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right shadow-sm animated--grow-in"
                                         aria-labelledby="userDropdown">
@@ -140,16 +144,24 @@
                                             Profile
                                         </a>
                                         <a class="dropdown-item" href="{{ url('user/my-tickets') }}">
-                                            <i class="fas fa-list-alt fa-sm fa-fw mr-2 text-gray-600"></i>
-                                            My Tickets
+                                            <i class="fas fa-ticket-alt fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            My Booking
                                         </a>
                                         <a class="dropdown-item" href="{{ url('my-orders') }}">
-                                            <i class="fas fa-list-alt fa-sm fa-fw mr-2 text-gray-600"></i>
-                                            My Orders
+                                            <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            Wallet
                                         </a>
                                         <a class="dropdown-item" href="{{ url('user/account-settings') }}">
-                                            <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-600"></i>
-                                            Account Settings
+                                            <i class="fas fa-question fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            Help Center
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('user/account-settings') }}">
+                                            <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            Invite Friends
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('user/account-settings') }}">
+                                            <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            Delete Account
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="{{ url('logout-user') }}">
@@ -158,13 +170,13 @@
                                         </a>
                                     </div>
                                 @else
-                                    <a class="nav-link dropdown-toggle pr-0" href="#" id="userDropdown"
+                                    {{-- <a class="nav-link dropdown-toggle pr-0" href="#" id="userDropdown"
                                         role="button" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
                                         <span
-                                            class="mr-2 d-none d-lg-inline text-white ">{{ Auth::user()->name }}</span>
+                                            class="mr-2 d-none d-lg-inline text-white ">{{ $user['name'] }}</span>
                                         <img class="img-profile rounded-circle"
-                                            src="{{ asset('images/upload/' . Auth::user()->image) }}">
+                                            src="{{ asset('images/upload/' . $user['pro_pic']) }}">
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right shadow-sm animated--grow-in"
                                         aria-labelledby="userDropdown">
@@ -176,7 +188,7 @@
                                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
                                             Logout
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 @endif
                             </li>
                         @else

@@ -1,6 +1,28 @@
 @extends('frontend.master', ['activePage' => 'home'])
+@section('og_data')
+<head>
+    <meta property="og:title" content="{{ $tournament_detail['event_title'] }}" />
+    <meta property="og:description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta property="og:image" content="{{ env('BACKEND_BASE_URL') }}/{{$tournament_detail['event_cover_img'][0]}}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Your Site Name" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:updated_time" content="{{ now()->toAtomString() }}" />
 
-@section('title', __('Coach Book'))
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $tournament_detail['event_title'] }}" />
+    <meta name="twitter:description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta name="twitter:image" content="{{ env('BACKEND_BASE_URL') }}/{{$tournament_detail['event_cover_img'][0]}}" />
+    <meta name="twitter:url" content="{{ url()->current() }}" />
+    <meta name="twitter:site" content="@YourTwitterHandle" />
+
+    <meta name="description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta name="keywords" content="{{ implode(',', $tournament_detail['event_tags']) }}" />
+</head>
+@endsection
+
+@section('title', $tournament_detail['event_title'])
 @push('styles')
 <style>
     /* Overall Dark Theme */
@@ -154,7 +176,7 @@
 
     .available-sport-card {
         padding: 10px 15px;
-        border: 1px solid #444;
+        /* border: 1px solid #444; */
         border-radius: 8px;
         width: auto;
         text-align: center;
@@ -164,7 +186,7 @@
     }
 
     .available-sport-card span {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         
     }
 
@@ -277,9 +299,9 @@
     </style>
     <style>
         .icon_box{
-            background: #f8f9fa;
+            /* background: #f8f9fa; */
             color: #db207b;
-            padding: 30px;
+            padding: 15px;
             border-radius: 32px;
             margin-right: 20px;
             height: 30px;
@@ -288,12 +310,15 @@
             align-items: center;
             display: flex;
         }
+        .icon_box i{
+            font-size: 30px;
+        }
         .profile-img {
             width: 50px;       /* Set the width of the image (adjust as necessary) */
             height: 50px;      /* Set the height of the image (adjust as necessary) */
             border-radius: 50%; /* Makes the image circular */
             object-fit: cover;  /* Ensures the image fills the circle without distorting */
-            border: 1px solid #ddd; /* Optional: adds a border around the image */
+            border: 0px solid #ddd; /* Optional: adds a border around the image */
             margin-right: 15px;
         }
         .tags{
@@ -302,38 +327,118 @@
             border-radius: 20px;
             padding: 10px 15px;
         }
+
+        /* Container for the slider */
+        #blurImg {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Adjust height as per your requirement */
+            overflow: hidden; /* Prevent the blurred background from overflowing */
+        }
+
+        /* Pseudo-element for the blurred background */
+        #blurImg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px); /* Apply blur effect to the background */
+            z-index: 1; /* Ensure the blurred background stays behind the image */
+        }
+
+        /* Image on top of the blurred background */
+        #blurImg img {
+            position: absolute;
+            top: 50%; /* Position image at the center vertically */
+            left: 50%; /* Position image at the center horizontally */
+            transform: translate(-50%, -50%); /* Adjust to make sure it's exactly centered */
+            max-width: 100%; /* Prevent the image from stretching beyond the container */
+            max-height: 100%; /* Prevent the image from stretching beyond the container */
+            z-index: 2; /* Ensure the image is on top of the background */
+        }
+
+        .alert_info{
+            background: #FFF3D2;
+            padding: 20px;
+            text-align: left;
+            color: #000;
+            font-weight: 500;
+            display: flex;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+
+        .alert_info span{
+            color:#db207b;
+        }
+
+        .alert_info .iconBox{
+            margin-right: 13px;
+            font-size: 23px;
+            color: #db207b;
+        }
     </style>
 @endpush
 @section('content')
 <section class="section-area single-detail-area py-3">
     <div class="container">
-        <div class="pt-3 pb-3 shadow-sm home-slider">
-            <div class="osahan-slider">
-                @if (isset($tournament_detail) && count($tournament_detail['event_cover_img']))
+        @if (isset($tournament_detail) && count($tournament_detail['event_cover_img']))
+            @if (count($tournament_detail['event_cover_img']) > 1)
+                <div class="pt-3 pb-3 shadow-sm home-slider">
+                    <div class="osahan-slider">
+                        @foreach ($tournament_detail['event_cover_img'] as $item)
+                            <div class="osahan-slider-item">
+                                {{-- <a @if($item->redirect_link != null) href="{{$item->redirect_link}}" @endisset > --}}
+                                    <img src="{{env('BACKEND_BASE_URL')}}/{{$item}}" class="img-fluid rounded" alt="...">
+                                {{-- </a> --}}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <div class="pt-3 pb-3 shadow-sm home-slider" id="blurImg">
                     @foreach ($tournament_detail['event_cover_img'] as $item)
-                        <div class="osahan-slider-item">
-                            {{-- <a @if($item->redirect_link != null) href="{{$item->redirect_link}}" @endisset > --}}
-                                <img src="{{env('BACKEND_BASE_URL')}}/{{$item}}" class="img-fluid rounded" alt="...">
-                            {{-- </a> --}}
-                        </div>
+                        <img src="{{ env('BACKEND_BASE_URL') }}/{{$item}}" class="img-fluid rounded" alt="...">
                     @endforeach
-                @endif
-            </div>
-        </div>
+                </div>
+            @endif
+        @endif
 
         <div class="row mt-5">
             <div class="col-lg-8 col-md-8 col-12">
                 <h2 >{{ $tournament_detail['event_title'] }}</h2>
-                <div class=" dark-gap text-white h5" style="margin-bottom: 0;">
+                <div class="dark-gap text-white h5" style="margin-bottom: 0;">
                     <p class="dark-gap">Sport Catgeory : {{$tournament_detail['category']}}</p>
-                    {{-- Timing --}}
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="icon_box">
-                            <i class="far fa-calendar-alt"></i>
+
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{-- Timing --}}
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="icon_box">
+                                    <i class="far fa-calendar-alt"></i>
+                                </div>
+                                <div class="text_box">
+                                    <p class="mb-0">{{ $tournament_detail['event_sdate'] }}</p>
+                                    <small class="text_muted">{{ $tournament_detail['event_time_day'] }}</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text_box">
-                            <p class="mb-0">{{ $tournament_detail['event_sdate'] }}</p>
-                            <small class="text_muted">{{ $tournament_detail['event_time_day'] }}</small>
+                        <div class="col-lg-6">
+                            {{-- Tickets --}}
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon_box">
+                                    <i class="fas fa-ticket-alt"></i>
+                                </div>
+                                <div class="text_box">
+                                    <p class="mb-0">Ticket Price : {{ $tournament_detail['ticket_price'] }}</p>
+                                    <small class="text_muted">{{ $tournament_detail['total_ticket'] }} Spots Left</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {{-- Address --}}
@@ -346,16 +451,6 @@
                             <p class="text_muted"></p><a class="text-white" href="https://www.google.com/maps?q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}" target="_blank">
                                 {{ $tournament_detail['event_address'] }}
                             </a></p>
-                        </div>
-                    </div>
-                    {{-- Tickets --}}
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="icon_box">
-                            <i class="fas fa-ticket-alt"></i>
-                        </div>
-                        <div class="text_box">
-                            <p class="mb-0">Ticket Price : {{ $tournament_detail['ticket_price'] }}</p>
-                            <small class="text_muted">{{ $tournament_detail['total_ticket'] }} Spots Left</small>
                         </div>
                     </div>
                     {{-- <p class="mr-3">👨‍👩‍👧‍👦 Age group: {{ $coachData->age_group }}</p>
@@ -386,7 +481,7 @@
                     <div class="available-sports mb-3">
                         @foreach ($tournament_Facility as $sport)
                             <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="36" height="36">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="50" height="50">
                                 <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['facility_title'] }}</p>
                             </div>
                         @endforeach
@@ -398,7 +493,7 @@
                     <div class="available-sports">
                         @foreach ($tournament_Restriction as $sport)
                             <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="36" height="36">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="50" height="50">
                                 <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['restriction_title'] }}</p>
                             </div>
                         @endforeach
@@ -433,6 +528,10 @@
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="event-ticket card shadow-sm mb-3">
                     <div class="card-body">
+                        <div class="alert_info" style="background: #FFF3D2" role="alert">
+                            <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
+                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default">Learn How ></span></div>
+                        </div>
                         <div class="single-ticket">
                             @if($tournament_detail['total_ticket'] <= 0)
                                 <a href="javascript:void(0)" class="btn default-btn w-100">Sold Out</a>
@@ -443,98 +542,28 @@
                     </div>
                 </div>
         
-                {{-- <div class="card shadow-sm border-0">
+                <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <div class="products-reviews">
-                            <h3>Reviews</h3>
-                            <div class="rating">
-                                <h4 class="h3">4.5</h4>
-                                <div>
-                                    <span class="fas fa-star checked"></span>
-                                    <span class="fas fa-star checked"></span>
-                                    <span class="fas fa-star checked"></span>
-                                    <span class="fas fa-star checked"></span>
-                                    <span class="fas fa-star"></span>
-                                </div>
-                                <div>
-                                    <p class="mb-0">501 review</p>
-                                </div>
-                            </div>
-                            <div class="rating-count">
-                                <span>Total review count and overall rating based on Visitor and Tripadvisior reviews</span>
-                            </div>
-                            <div class="rating-row">
-                                <div class="side">
-                                    <div>5 <span class="fas fa-star"></span></div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-5"></div>
-                                    </div>
-                                </div>
-                                <div class="side right">
-                                    <div>02</div>
-                                </div>
-                            </div>
-                            <div class="rating-row">
-                                <div class="side">
-                                    <div>4 <span class="fas fa-star"></span></div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-4"></div>
-                                    </div>
-                                </div>
-                                <div class="side right">
-                                    <div>03</div>
-                                </div>
-                            </div>
-                            <div class="rating-row">
-                                <div class="side">
-                                    <div>3 <span class="fas fa-star"></span></div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-3"></div>
-                                    </div>
-                                </div>
-                                <div class="side right">
-                                    <div>04</div>
-                                </div>
-                            </div>
-                            <div class="rating-row">
-                                <div class="side">
-                                    <div>2 <span class="fas fa-star"></span></div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-2"></div>
-                                    </div>
-                                </div>
-                                <div class="side right">
-                                    <div>05</div>
-                                </div>
-                            </div>
-                            <div class="rating-row">
-                                <div class="side">
-                                    <div>1 <span class="fas fa-star"></span></div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-1"></div>
-                                    </div>
-                                </div>
-                                <div class="side right">
-                                    <div>00</div>
-                                </div>
+                            <h3>{{$tournament_detail['event_address_title']}}</h3>
+                            <span class="d-block" style="font-size: 12px;">{{ $tournament_detail['event_address'] }}</span>
+                            <div class="progress-section mb-0 mt-3">
+                                <iframe
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                style="border:0;" 
+                                allowfullscreen=""
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAxasPhBlBcRiOxTX8U9f7K-_0992N7Si8&q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}">
+                              </iframe>
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
 
-        <div class="progress-section mb-4 mt-4">
+        {{-- <div class="progress-section mb-4 mt-4">
             <iframe
             width="100%" 
             height="450" 
@@ -543,7 +572,7 @@
             allowfullscreen=""
             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAxasPhBlBcRiOxTX8U9f7K-_0992N7Si8&q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}">
           </iframe>
-        </div>
+        </div> --}}
 
         @if(count($tournament_detail['event_tags']))
             <h4 class="">Tags</h4>
@@ -628,7 +657,23 @@
                 </div>
             </div>
         @endif --}}
+        <br>
     </div>
 </section>
+<script>
+        window.onload = function() {
+            // Get the dynamic background image URL
+            const backgroundImage = "{{ env('BACKEND_BASE_URL') . '/' . $tournament_detail['event_cover_img'][0] }}";
+
+            // Add the background-image dynamically to the pseudo-element using JavaScript
+            const style = document.createElement('style');
+            style.innerHTML = `
+                #blurImg::before {
+                    background-image: url(${backgroundImage});
+                }
+            `;
+            document.head.appendChild(style);
+        };
+</script>
 @endsection
 @include('alert-messages')

@@ -11,11 +11,12 @@ use App\Models\Order;
 use Session;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use Common;
 
 class AuthController extends Controller
 {
     public function userLogin(){
-        if(\Auth::guard('appuser')->check()==true || \Auth::check()==true){
+        if(Common::isUserLogin()){
             return redirect('/');
         }
         return view('frontend.auth.user-login');
@@ -29,7 +30,7 @@ class AuthController extends Controller
     }
 
     public function userRegister(){
-        if(\Auth::guard('appuser')->check()==true || \Auth::check()==true){
+        if(Common::isUserLogin()){
             return redirect('/');
         }
         return view('frontend.auth.user-register');
@@ -37,17 +38,17 @@ class AuthController extends Controller
 
     public function verifyUserData(Request $request)
     {
-        try {
-            // Validate the incoming request
-            $request->validate([
-                'mobile' => 'required',
-                'email' => 'required|email',
-                'ccode' => 'required',
-                'full_name' => 'required',
-                'password' => 'required',
-                'referral_code' => 'required',
-            ]);
-    
+        // Validate the incoming request
+        $request->validate([
+            'mobile' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'ccode' => 'required|max:255',
+            'referral_code' => 'nullable|max:255',
+            'full_name' => 'required|max:255',
+            'password' => 'required|max:255',
+        ]);
+        
+        try {    
             // Get the input data
             $mobile = $request->mobile;
             $email = $request->email;
@@ -70,8 +71,6 @@ class AuthController extends Controller
             $response = $client->post("{$baseUrl}/web_api/valid_user_detail.php", [
                 'json' => $data,  // Use the 'json' option to send data as JSON in the request body
             ]);
-
-            dd($response);
     
             // Decode the JSON response from the PHP API
             $responseData = json_decode($response->getBody(), true);
@@ -80,14 +79,27 @@ class AuthController extends Controller
             if ($responseData['ResponseCode'] === '200') {
 
                 // Call sendOTP function to send OTP
-                // $is_otpSend = $this->sendOTP($mobile);
-                // if ($is_otpSend) {
-                //     // Success - New Number, OTP sent
-                //     return response()->json([
-                //         'status' => 'success',
-                //         'message' => $responseData['ResponseMsg']
-                //     ]);
-                // }
+                $is_otpSend = $this->sendOTP($mobile);
+                if ($is_otpSend) {
+
+                    $userData = [
+                        'mobile' => $request->mobile,
+                        'email' => $request->email,
+                        'ccode' => $request->ccode,
+                        'referral_code' => $request->referral_code ?? null,
+                        'name' => $request->full_name,
+                        'password' => $request->password, // Hash the password for security
+                    ];
+                
+                    // Save the data in session
+                    session(['user_data' => $userData]);
+
+                    // Success - New Number, OTP sent
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => $responseData['ResponseMsg']
+                    ]);
+                }
                 
                 // If OTP is not sent successfully, return error message
                 return response()->json([
@@ -110,15 +122,87 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Something went wrong! Please try again later. '.$th->getMessage(),
-            ], 500);
+            ]);
         }
+    }
+
+    public function verifyMobileNumber(Request $request)
+    {
+        // try {
+            $request->validate([
+                'mobile' => 'required|max:255',
+                'ccode' => 'required|max:255',
+            ]);
+
+            // Get the input data
+            $mobile = $request->mobile;
+            $ccode = $request->ccode;
+
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            $data = [
+                'number' => $mobile,
+                'ccode' => $ccode,
+            ];
+
+            // Send POST request to the PHP admin panel API
+            $baseUrl = env('BACKEND_BASE_URL'); // Ensure this is set in your .env file
+            $response = $client->post("{$baseUrl}/web_api/verify-mobile.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+
+            // Decode the JSON response from the PHP API
+            $responseData = json_decode($response->getBody(), true);
+
+            // Check the response and handle accordingly
+            if ($responseData['ResponseCode'] === '200') {
+                // Call sendOTP function to send OTP
+                $isOtpSent = $this->sendOTP($mobile);
+                if ($isOtpSent) {
+                    \Session::put("user_temp_session",$responseData['user_info']);
+                    // Store mobile number and country code in session
+                    session(['user_mobile' => [
+                        'mobile' => $request->mobile,
+                        'ccode' => $request->ccode,
+                    ]]);
+
+                    // Success - New Number, OTP sent
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => "OTP Sent Successfully!"
+                    ]);
+                }
+
+                // If OTP is not sent successfully, return error message
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to send OTP. Please try again later.'
+                ], 500);
+
+            } else {
+                // Error - Mobile or Email already used
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $responseData['ResponseMsg'], // Error message from the PHP API
+                ]);
+            }
+        // } catch (\Throwable $th) {
+            // Log the error for debugging purposes
+            Log::error('Error verifying user data: ' . $th->getMessage());
+
+            // Return a generic error message
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong! Please try again later. '.$th->getMessage(),
+            ]);
+        // }
     }
 
     public function sendOTP($mobile)
     {
         try {
-            // Start the session to store OTP
-            session_start();
     
             // Instantiate the Guzzle client
             $client = new Client();
@@ -160,7 +244,7 @@ class AuthController extends Controller
         }
     }
 
-    public function verifyOTP(Request $request)
+    public function verifyLoginOTP(Request $request)
     {
         try {
             // Validate the incoming request to make sure OTP is provided
@@ -176,12 +260,32 @@ class AuthController extends Controller
 
             // Check if the OTP is valid and matches
             if ($enteredOtp == $storedOtp) {
-                // OTP is valid
-                // You can add additional logic here (e.g., mark the user as verified or proceed with registration)
+                // Retrieve the temporary user session data
+                $userData = Session::get('user_temp_session');
+                // Check if user data exists in the session
+                if (!$userData) {
+                    // If no temporary session data exists, return an error
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Session time out. Please try again.',
+                    ], 400);
+                }else{
+                    // Now, store the user login session if needed (e.g., for session persistence)
+                    session(['user_login_session' => $userData]); // This can be adjusted based on your needs
+                    Session::forget('user_temp_session');
+                    Session::forget('user_mobile');
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Logged in successfully!',
+                    ]);
+                }
+
+                // Handle failed registration or login
                 return response()->json([
-                    'status' => 'success',
-                    'message' => 'OTP verified successfully.',
-                ]);
+                    'status' => 'error',
+                    'message' => 'Failed to log in user. Please try again later.',
+                ], 500);
             } else {
                 // OTP is incorrect
                 return response()->json([
@@ -200,6 +304,153 @@ class AuthController extends Controller
             ], 500);  // 500 is for server errors
         }
     }
+
+    public function makeUserLogin($mobile,$ccode){
+        try {
+    
+            // Instantiate the Guzzle client
+            $client = new Client();
+        
+            // Prepare the data to send in the request body
+            $data = [
+                'number' => $mobile,
+                'ccode'=> $ccode
+            ];
+    
+            // Send POST request to the PHP admin panel API
+            $baseUrl = env('BACKEND_BASE_URL'); // Make sure this is set in your .env file
+            $response = $client->post("{$baseUrl}/web_api/user_data.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+        
+            // Decode the JSON response from the PHP API
+            $responseData = json_decode($response->getBody(), true);
+        
+            // Check if OTP was sent successfully
+            if (isset($responseData['ResponseCode']) && $responseData['ResponseCode'] === '200') {
+                // OTP was sent successfully, get the OTP from the response
+                $user_info = $responseData['user_info'];
+                // Store the OTP in the session
+                Session::put('user_info', $user_info);
+                
+                // Return true if OTP sent successfully
+                return true;
+            } else {
+                // Return false if OTP wasn't sent
+                return false;
+            }
+        } catch (\Throwable $th) {
+            // Log the error for debugging purposes
+            Log::error('Error sending OTP: ' . $th->getMessage());
+        
+            // Return false if an error occurs while sending OTP
+            return false;
+        }
+    }
+
+    public function verifyOTP(Request $request)
+    {
+        try {
+            // Validate the incoming request to make sure OTP is provided
+            $request->validate([
+                'otp' => 'required|numeric|digits:4',  // Ensure the OTP is a 4-digit number
+            ]);
+            
+            // Get the OTP entered by the user
+            $enteredOtp = $request->input('otp');
+
+            // Retrieve the OTP stored in the session
+            $storedOtp = Session::get('otp');
+
+            // Check if the OTP is valid and matches
+            if ($enteredOtp == $storedOtp) {
+                // HIT THE REGISTER USE API TO STORE DATA IN DB
+                $isUserRegistered = $this->storeRegisterUserDetails();
+                if ($isUserRegistered) {
+                    Session::forget('user_data');
+                    Session::forget('otp');
+                    
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Sign Up Done Successfully!',
+                    ]);
+                }
+                // Handle failed registration
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to register user. Please try again later.',
+                ], 500);
+            } else {
+                // OTP is incorrect
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid OTP. Please try again.',
+                ], 400);  // 400 is for client errors
+            }
+        } catch (\Throwable $th) {
+            // Log the error for debugging purposes
+            Log::error('Error verifying OTP: ' . $th->getMessage());
+
+            // Return a generic error message
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong. Please try again later.',
+            ], 500);  // 500 is for server errors
+        }
+    }
+
+    private function storeRegisterUserDetails()
+    {
+        // Retrieve stored user data from the session
+        $storedOtp = \Session::get('user_data');
+    
+        if (!$storedOtp) {
+            throw new \Exception("No user data found in session.");
+        }
+    
+        // Instantiate the Guzzle client
+        $client = new Client();
+    
+        // Prepare the data to send in the request body
+        $data = [
+            'mobile' => $storedOtp['mobile'],
+            'ccode' => $storedOtp['ccode'],
+            'email' => $storedOtp['email'],
+            'referral_code' => $storedOtp['referral_code'],
+            'name' => $storedOtp['name'],
+            'password' => $storedOtp['password'],
+        ];
+    
+        // Set the base URL from the environment variable
+        $baseUrl = env('BACKEND_BASE_URL'); // Ensure this is set in your .env file
+    
+        try {
+            // Send POST request to the PHP admin panel API
+            $response = $client->post("{$baseUrl}/web_api/user_register.php", [
+                'json' => $data,  // Send the data as JSON
+            ]);
+    
+            // Decode the JSON response from the PHP API
+            $responseData = json_decode($response->getBody(), true);
+    
+            // Check if the response indicates success
+            if (isset($responseData['ResponseCode']) && $responseData['ResponseCode'] == "200") {
+                // $userData = Session::put();
+                session(['user_login_session' => $responseData['UserLogin']]);
+                return true;
+            }
+    
+            // If the API indicates an error, return false
+            return false;
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error("Error registering user: " . $e->getMessage());
+            // Rethrow the exception or handle it as needed
+            return false;
+        }
+    }
+
 
     public function postUserRegister(Request $request){
         $request->validate([
@@ -282,30 +533,59 @@ class AuthController extends Controller
         ]);
     }
 
-
-    public function checkOrganizerLogin(Request $request){
+    public function checkOrganizerLogin(Request $request)
+    {
         $request->validate([
             'email' => 'bail|required|email',
             'password' => 'bail|required',
         ]);
-
-        $userdata = array(
-            'email' => $request->email,
-            'password' => $request->password,
-            'status'=>1
-        );
-        $remember = $request->get('remember_me');
-        if (\Auth::attempt($userdata, $remember)) {
-            return redirect('/dashboard');
-        } else {
-            return \Redirect::back()->with('warning', 'Invalid Username or Password.');
+    
+        $email = $request->email;
+        $password = $request->password;
+    
+        $makeOrganiserLogin = $this->makeOrganizerLogin($email, $password);
+    
+        if ($makeOrganiserLogin['Result'] == 'true') {    
+            return redirect()->to('https://app.playoffz.in/'); 
+        }
+    
+        return redirect()->back()->with('warning', $makeOrganiserLogin['ResponseMsg']);
+    }
+    
+    private function makeOrganizerLogin($email, $password)
+    {
+        try {
+            $client = new \GuzzleHttp\Client();
+            $baseUrl = env('BACKEND_BASE_URL'); // Example: https://api.your-backend.com
+    
+            // Make a POST request to the backend API
+            $response = $client->post("{$baseUrl}/web_api/organiser-login.php", [
+                'json' => [
+                    'email' => $email,
+                    'password' => $password,
+                    'type' => 'Orgnizer' // Add 'type' if required by your backend
+                ]
+            ]);
+    
+            $data = json_decode($response->getBody(), true);
+    
+            return $data; // Pass the entire response back
+        } catch (\Throwable $th) {
+            // Log the error for debugging
+            \Log::error("Organizer Login Error: " . $th->getMessage());
+    
+            return [
+                "ResponseCode" => "500",
+                "Result" => "false",
+                "ResponseMsg" => "Unable to connect to the backend server."
+            ];
         }
     }
 
-
     public function logoutUser(){
-        \Auth::guard('appuser')->logout();
-        \Auth::logout();
+        Session::forget('user_login_session');
+        // \Auth::guard('appuser')->logout();
+        // \Auth::logout();
         return redirect('/');
     }
 

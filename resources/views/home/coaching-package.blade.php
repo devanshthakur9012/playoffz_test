@@ -215,18 +215,8 @@
                             <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
                                 <div class="subscription-card-header" style="background-color: #007bff;">
                                     <h4 class="mb-0"><i class="fas fa-gem" style="font-size: 1rem;"></i> {{ $package['ticket_type'] }}</h4>
-                                    {{-- @if($showDiscount)
-                                        <span class="discount-badge">{{ $package->discount_percent }}% Off</span>
-                                    @endif --}}
                                 </div>
                                 <div class="subscription-card-body">
-                                    {{-- @if($showDiscount)
-                                        <h3 class="subscription-card-title">₹{{ $afterDiscountPrice }} <small class="price-text-muted">/ {{$type}}</small></h3>
-                                        <p><small class="price-text-muted">Normally ₹{{ $realPrice + 0 }} / {{$type}}</small></p>
-                                    @else
-                                        <h3 class="subscription-card-title">₹{{$realPrice + 0}} <small class="price-text-muted">/ {{$type}}</small></h3>
-                                    @endif --}}
-
                                     <h3 class="subscription-card-title">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Spot</small></h3>
                                     <div class="price-list">
                                         <p><span class="badge badge-danger p-2">{{$package['TotalTicket']}} Spot Left</span></p>
@@ -236,20 +226,20 @@
                                     <h5 class="mt-3 mb-0">Quantity</h5>
                                     <div class="d-flex align-items-center justify-content-center mt-3">
                                         <div class="quantity-block home_page_sidebar" data-package-id="{{ $package['typeid'] }}">
-                                            <button class="quantity-arrow-minus2 shop_single_page_sidebar">-</button>
+                                            <button type="button" class="quantity-arrow-minus2 shop_single_page_sidebar">-</button>
                                             <input class="quantity-num2 shop_single_page_sidebar2" id="quantity_{{ $package['typeid'] }}" data-min="0" data-max="{{$package['TotalTicket']}}" type="number" value="0" readonly="">
-                                            <button class="quantity-arrow-plus2 shop_single_page_sidebar">+</button>
+                                            <button type="button" class="quantity-arrow-plus2 shop_single_page_sidebar">+</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="subscription-card-footer">
-                                    @php
+                                    {{-- @php
                                         $inputObj = new stdClass();
-                                        $inputObj->params = 'id='.$package['typeid'];
-                                        $inputObj->url = url('book-coaching-package');
+                                        $inputObj->params = 'id='.$package['typeid'].'&tour_id='.$coaching_id;
+                                        $inputObj->url = route('confirm-ticket-book');
                                         $encLink = Common::encryptLink($inputObj);
-                                    @endphp
-                                    <a href="{{$encLink}}" class="button-primary">Book Now</a>
+                                    @endphp --}}
+                                    <button type="button" data-tour="{{$coaching_id}}" data-ticket="{{$package['typeid']}}" class="button-primary">Book Now</button>
                                 </div>
                             </div>
                         </div>
@@ -262,10 +252,11 @@
 @endsection
 @include('alert-messages')
 @push('scripts')
+<script src="{{ url('frontend/js/jquery.validate.min.js') }}"></script>
 <script>
-   $(document).ready(function() {
+$(document).ready(function () {
     // Handle click on the minus button
-    $('.quantity-arrow-minus2').click(function() {
+    $('.quantity-arrow-minus2').click(function () {
         var quantityInput = $(this).siblings('.quantity-num2');
         var currentVal = parseInt(quantityInput.val());
 
@@ -276,7 +267,7 @@
     });
 
     // Handle click on the plus button
-    $('.quantity-arrow-plus2').click(function() {
+    $('.quantity-arrow-plus2').click(function () {
         var quantityInput = $(this).siblings('.quantity-num2');
         var currentVal = parseInt(quantityInput.val());
         var maxVal = parseInt(quantityInput.attr('data-max'));
@@ -289,9 +280,9 @@
 
     // Function to reset other quantities to zero
     function resetOtherQuantities(changedInput) {
-        $('.quantity-num2').each(function() {
+        $('.quantity-num2').each(function () {
             var currentInput = $(this);
-            
+
             // If this input is not the one being modified, set it to 0
             if (currentInput[0] !== changedInput[0] && parseInt(currentInput.val()) > 0) {
                 currentInput.val(0);
@@ -300,10 +291,69 @@
     }
 
     // Ensure only one quantity input is non-zero at a time (optional)
-    $('.quantity-num2').on('change', function() {
+    $('.quantity-num2').on('change', function () {
         resetOtherQuantities($(this));
     });
-});
 
+    // Add click event listener for "Book Now" button
+    $('.button-primary').click(function (e) {
+        e.preventDefault();
+
+        var button = $(this);
+        var packageCard = button.closest('.subscription-card'); // Get the closest subscription card
+        var quantityInput = packageCard.find('.quantity-num2'); // Find the quantity input within the card
+        var quantityVal = parseInt(quantityInput.val());
+
+        // Extract tour_id and ticket_id from button's data attributes
+        var tourId = button.data('tour');
+        var ticketId = button.data('ticket');
+
+        // Check if quantity is at least 1
+        if (quantityVal < 1) {
+            iziToast.error({
+                title: 'Error',
+                position: 'topRight',
+                message: "Please select a quantity of at least 1 to proceed with booking.",
+            });
+            return false;
+        }
+
+        // Perform AJAX request to process booking
+        $.ajax({
+            url: "{{ route('purchase-tournament') }}", // Laravel route for handling the purchase
+            type: 'POST',
+            data: {
+                tour_id: tourId,
+                ticket_id: ticketId,
+                quantity: quantityVal,
+                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for security
+            },
+            success: function (response) {
+                if (response.status === 'success') {
+                    iziToast.success({
+                        title: 'Success',
+                        position: 'topRight',
+                        message: response.message,
+                    });
+                    // Redirect to the returned URL
+                    window.location.href = response.redirect_url;
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: response.message,
+                    });
+                }
+            },
+            error: function () {
+                iziToast.error({
+                    title: 'Error',
+                    position: 'topRight',
+                    message: 'An error occurred. Please try again later.',
+                });
+            }
+        });
+    });
+});
 </script>
 @endpush

@@ -5,6 +5,10 @@ use App\Models\Category;
 use App\Models\CourtSlot;
 use Auth;
 use GuzzleHttp\Client;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Common
 {
@@ -37,6 +41,17 @@ class Common
     }
     return $reqArr;
   }
+
+  public static function isUserLogin()
+  {
+      // Check if the session contains 'user_id'
+      if (Session::has('user_login_session') && Session::get('user_login_session')['id']) {
+          return true;  // The user is logged in
+      } else {
+          return false;  // The user is not logged in
+      }
+  }
+
 
 //   public static function razorpayCredential(){
 //     return [
@@ -99,6 +114,24 @@ class Common
     });
     return $catData;
   }
+  
+  public static function paymentGatewayList(){
+    $payData = \Cache::rememberForever('payment-gateway',function(){
+    
+    // Instantiate the Guzzle client
+    $client = new Client();
+
+    // Send GET request to the PHP admin panel API
+    $baseUrl = env('BACKEND_BASE_URL');
+    $response = $client->get("{$baseUrl}/web_api/u_paymentgateway.php");
+
+    // Decode the JSON response
+    $data = json_decode($response->getBody(), true);
+    return $payData = $data['paymentdata'];
+
+    });
+    return $payData;
+  }
 
   public static function allEventCategoriesByApi(){
     $catData = \Cache::rememberForever('tournament-categories',function(){
@@ -120,6 +153,83 @@ class Common
 
     });
     return $catData;
+  }
+
+  public static function fetchUserDetails()
+  {
+      // Retrieve the session data
+      $userSession = Session::get('user_login_session');
+
+      // Blank data structure for fallback
+      $blankData = [
+          'name' => "",
+          'email' => "",
+          'ccode' => "",
+          'mobile' => "",
+          'refercode' => "",
+          'parentcode' => "",
+          'reg_date' => "",
+          'status' => "",
+          'pro_pic' => "",
+          'wallet' => "",
+      ];
+
+      // Check if the session exists
+      if (!$userSession) {
+          Session::forget('user_login_session');
+          return $blankData;
+      }
+
+      // Use the user ID from the session
+      $userId = $userSession['id'];
+
+      // Cache key for the user profile
+      $cacheKey = "user_profile_{$userId}";
+
+      // Fetch or cache the user profile data
+      $userProfile = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($userId, $blankData) {
+          try {
+              // Instantiate the Guzzle client
+              $client = new Client();
+
+              // Backend API base URL
+              $baseUrl = env('BACKEND_BASE_URL');
+
+              // Data to send in the API request
+              $data = [
+                  'uid' => $userId,
+              ];
+
+              // Send POST request to the PHP admin panel API
+              $response = $client->post("{$baseUrl}/web_api/user_profile.php", [
+                  'json' => $data, // Send data as JSON in the request body
+              ]);
+
+              // Decode the JSON response
+              $responseData = json_decode($response->getBody(), true);
+
+              // Check if the response is successful
+              if (isset($responseData['Result']) && $responseData['ResponseCode'] === "200") {
+                  return $responseData['user_info']; // Cache the user info
+              } else {
+                  // If API returns an error, clear the session
+                  Session::forget('user_login_session');
+                  return $blankData;
+              }
+          } catch (\Exception $e) {
+              // Log the exception for debugging
+              Log::error('Error fetching user profile', [
+                  'userId' => $userId,
+                  'message' => $e->getMessage(),
+              ]);
+
+              // Clear the session and return blank data
+              Session::forget('user_login_session');
+              return $blankData;
+          }
+      });
+
+      return $userProfile; // Return cached or fetched profile data
   }
   
   public static function abhisheka(){
@@ -183,6 +293,7 @@ class Common
   public static function randomMerchantId($userId){
     return substr(str_shuffle($userId.'ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1,3).time().rand(111,999);
   }
+
 
   public static function encryptId($string){
     $privateKey 	= 'NXYvSqE96kxiF5rJPn'; // user define key

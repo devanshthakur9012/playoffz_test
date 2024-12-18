@@ -153,6 +153,7 @@ class HomeController extends Controller
         }
         
         $data['tour_plans'] = $this->coachingPrice($coachingId);
+        $data['coaching_id'] = $coachingId;
         return view('home.coaching-package', $data);
     }
 

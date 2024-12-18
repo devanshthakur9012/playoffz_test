@@ -17,6 +17,8 @@ use App\Models\WhatsappSubscriber;
 use Illuminate\Support\Facades\Mail;
 use App\Models\SpiritualVolunteers;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class BookController extends Controller
 {
@@ -209,90 +211,269 @@ class BookController extends Controller
         return redirect($ticketCheckLink);
     }
 
-    public function confirmTicketBook(){
-        // $ticketId = $this->memberObj['id'];
-        // if(!\Session::has('eventTicketBook')){
-        //     return redirect('/');
-        // }
-        // $data = \Session::get('eventTicketBook');
-        // $totalPersons = count($data['full_name']);
-        // if(!$data){
-        //     return redirect('/');
-        // }
-        // $taxData = Tax::select('name','price','amount_type')->where('status',1)->get();
-        // $ticketData = Ticket::select('id','name','price','event_id','quantity','ticket_sold','discount_amount','discount_type','price','convenience_amount','convenience_type','pay_now','pay_place')->withSum('total_orders','quantity')->with('event')->where('id',$ticketId)->first();
-        // // dd($ticketId);
-        // $inputObj = new \stdClass();
-        // $inputObj->params = 'id='.$ticketId;
-        // $inputObj->url = url('calculate-book-amount');
-        // $ticketCheckLink = Common::encryptLink($inputObj);
-
-        // $inputObjB = new \stdClass();
-        // $inputObjB->url = url('store-book-ticket-razor');
-        // $inputObjB->params = 'id='.$ticketId;
-        // $subLink = Common::encryptLink($inputObjB);
-
-        // return view('frontend.book-event.confirm-ticket-book',compact('ticketData','totalPersons','taxData','ticketCheckLink','subLink','data'));
-        // $type = $this->memberObj['type'];
-
-     
-       
-        $ticketId = $this->memberObj['id'];
-        if(!\Session::has('eventTicketBook')){
-            return redirect('/');
-        }
-        $data = \Session::get('eventTicketBook');
-        $totalPersons = $data['totalSeats'];
-        if(!$data){
-            return redirect('/');
-        }
-        $taxData = Tax::select('name','price','amount_type')->where('status',1)->get();
-        $arrCnt = [];
-        if(is_array(json_decode($ticketId))){
-            $ticketArr = json_decode($ticketId,true);
-            $arrCnt = array_count_values($ticketArr);
-            $ticketData = Ticket::select('id','name','price','event_id','quantity','ticket_sold','discount_amount','discount_type','price','pay_now','pay_place','superShow_fee_amount','superShow_fee_type','superShow_fee','gateway_fee_amount','gateway_fee_type','gateway_fee','platform_fee_amount','platform_fee_type','platform_fee')->withSum('total_orders','quantity')->with('event')->WhereIn('id',json_decode($ticketId))->get();
+    // public function confirmTicketBook(){
+    //     $ticketId = $this->memberObj['id'];
+    //     if(!\Session::has('eventTicketBook')){
+    //         return redirect('/');
+    //     }
+    //     $data = \Session::get('eventTicketBook');
+    //     $totalPersons = $data['totalSeats'];
+    //     if(!$data){
+    //         return redirect('/');
+    //     }
+    //     $taxData = Tax::select('name','price','amount_type')->where('status',1)->get();
+    //     $arrCnt = [];
+    //     if(is_array(json_decode($ticketId))){
+    //         $ticketArr = json_decode($ticketId,true);
+    //         $arrCnt = array_count_values($ticketArr);
+    //         $ticketData = Ticket::select('id','name','price','event_id','quantity','ticket_sold','discount_amount','discount_type','price','pay_now','pay_place','superShow_fee_amount','superShow_fee_type','superShow_fee','gateway_fee_amount','gateway_fee_type','gateway_fee','platform_fee_amount','platform_fee_type','platform_fee')->withSum('total_orders','quantity')->with('event')->WhereIn('id',json_decode($ticketId))->get();
             
-            $inputObjB = new \stdClass();
-            $inputObjB->url = url('store-book-seat-ticket-razor');
-            $inputObjB->params = 'id='.$ticketId;
-            $subLink = Common::encryptLink($inputObjB);
-        }else{
-            $ticketData = Ticket::select('id','name','price','event_id','quantity','ticket_sold','discount_amount','discount_type','price','pay_now','pay_place','superShow_fee_amount','superShow_fee_type','superShow_fee','gateway_fee_amount','gateway_fee_type','gateway_fee','platform_fee_amount','platform_fee_type','platform_fee')->withSum('total_orders','quantity')->with('event')->where('id',$ticketId)->first();
+    //         $inputObjB = new \stdClass();
+    //         $inputObjB->url = url('store-book-seat-ticket-razor');
+    //         $inputObjB->params = 'id='.$ticketId;
+    //         $subLink = Common::encryptLink($inputObjB);
+    //     }else{
+    //         $ticketData = Ticket::select('id','name','price','event_id','quantity','ticket_sold','discount_amount','discount_type','price','pay_now','pay_place','superShow_fee_amount','superShow_fee_type','superShow_fee','gateway_fee_amount','gateway_fee_type','gateway_fee','platform_fee_amount','platform_fee_type','platform_fee')->withSum('total_orders','quantity')->with('event')->where('id',$ticketId)->first();
             
-            $inputObjB = new \stdClass();
-            $inputObjB->url = url('store-book-ticket-razor');
-            $inputObjB->params = 'id='.$ticketId;
-            $subLink = Common::encryptLink($inputObjB);
-        }
+    //         $inputObjB = new \stdClass();
+    //         $inputObjB->url = url('store-book-ticket-razor');
+    //         $inputObjB->params = 'id='.$ticketId;
+    //         $subLink = Common::encryptLink($inputObjB);
+    //     }
 
-        // dd($ticketData);
+    //     // dd($ticketData);
 
-        $inputObj = new \stdClass();
-        $inputObj->params = 'id='.$ticketId;
-        $inputObj->url = url('calculate-book-amount');
-        $ticketCheckLink = Common::encryptLink($inputObj);
+    //     $inputObj = new \stdClass();
+    //     $inputObj->params = 'id='.$ticketId;
+    //     $inputObj->url = url('calculate-book-amount');
+    //     $ticketCheckLink = Common::encryptLink($inputObj);
 
         
 
-        return view('frontend.book-event.confirm-ticket-book',compact('ticketData','totalPersons','taxData','ticketCheckLink','subLink','data','arrCnt'));
+    //     return view('frontend.book-event.confirm-ticket-book',compact('ticketData','totalPersons','taxData','ticketCheckLink','subLink','data','arrCnt'));
+    // }
+
+    private function ticketInformation($eventId,$ticket_id){
+        // Instantiate the Guzzle client
+        $client = new \GuzzleHttp\Client();
+        $baseUrl = env('BACKEND_BASE_URL');
+
+        $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+
+        // Make a POST request to the backend API
+        $response = $client->post("{$baseUrl}/web_api/order_detail.php", [
+            'json' => [
+                'uid' => $uid,
+                'event_id' => $eventId,
+                'ticket_id' =>$ticket_id
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+        return $data['EventData'];
     }
+
+    public function confirmTicketBook()
+    {
+        // Check if the booking data is stored in the session
+        $bookingData = session('booking_data');
+        if (!$bookingData) {
+            // Redirect back if no booking data is found
+            return redirect()->route('home')->with('error', 'No booking data found. Please select a package to proceed.');
+        }
+
+       $packageDetails = $this->ticketInformation($bookingData['tour_id'],$bookingData['ticket_id']);
+       $settingDetails = \Common::siteGeneralSettingsApi();
+       $payData = \Common::paymentGatewayList();
+
+        session(['book_event_data'=>$packageDetails]);
+        // Pass booking data to the view
+        return view('frontend.book-event.confirm-booking', compact('packageDetails','settingDetails','bookingData','payData'));
+    }
+
+    public function storePaymentDetails(Request $request){
+
+        try {
+            $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+            $eventDetails = session('book_event_data');
+            $bookingData = session('booking_data');
+            $settingDetails = \Common::siteGeneralSettingsApi();
+
+            $totalAmount =  $request->total_amount_pay;
+            $couponAmount = $request->coupon_amt;
+            $paymentId = $request->payment_id;
+            $transaction_id = $request->merchant_trans_id;
+            $cacheKey = "user_profile_{$uid}";
+            if (Cache::has($cacheKey)) {
+                Cache::forget($cacheKey);
+            }
+
+            $userDetails = Common::fetchUserDetails();
+
+            $data = [
+                "uid"=>$uid,
+                "eid"=>$eventDetails['event_id'], 
+                "typeid"=>$eventDetails['ticket_id'], 
+                "type"=>$eventDetails['type'], 
+                "price"=>$eventDetails['ticket'], 
+                "total_ticket"=>$bookingData['quantity'],
+                "subtotal"=>$bookingData['quantity']*$eventDetails['ticket'],
+                "tax"=>$settingDetails['tax'],
+                "cou_amt"=>$couponAmount, 
+                "total_amt"=>$totalAmount,
+                "wall_amt"=>$userDetails['wallet'], 
+                "p_method_id"=>$paymentId ?? 1, 
+                "plimit"=>$eventDetails['tlimit'],
+                'transaction_id'=>$transaction_id,
+                "sponsore_id"=>$eventDetails['sponser_id'], 
+            ];
+
+            $storePaymentDetails = $this->savebookingDetails($data);
+            if($storePaymentDetails['status']){
+                if (session()->has('book_event_data')) {
+                    session()->forget('book_event_data');
+                }
+                if(session()->has('booking_data')){
+                    session()->forget('booking_data');
+                }
+                return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Ticket Confirmed');
+            }
+            return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+        }
+    }
+
+    public function ticketInformationData($tid){
+        $ticketData = $this->fetchTicketInfo($tid);
+        // dd($ticketData);
+        return view('frontend.book-event.ticket-data',compact('ticketData'));
+    }
+
+    private function fetchTicketInfo($tid){
+        try {
+            // Instantiate the Guzzle client
+            $client = new \GuzzleHttp\Client();
+            $baseUrl = env('BACKEND_BASE_URL');
+
+            $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+
+            // Make a POST request to the backend API
+            $response = $client->post("{$baseUrl}/web_api/ticket_information.php", [
+                'json' => [
+                    'uid'=>$uid,
+                    'ticket_id'=>$tid,
+                ]
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+            return $responseData['TicketData'];
+        } catch (\Throwable $th) {
+            return [];
+        }
+    }
+
+
+    private function savebookingDetails($data){
+        try {
+            // Instantiate the Guzzle client
+            $client = new \GuzzleHttp\Client();
+            $baseUrl = env('BACKEND_BASE_URL');
+
+            // Make a POST request to the backend API
+            $response = $client->post("{$baseUrl}/web_api/book_ticket.php", [
+                'json' => $data
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+            // dd($responseData);
+            if ($responseData['Result'] === true || $responseData['Result'] === "true"){
+                return [
+                    'status'=>true,
+                    'ticket_id'=>$responseData['order_id']
+                ];
+            }
+            return [
+                'status'=>false,
+                'ticket_id'=>0
+            ];
+        } catch (\Throwable $th) {
+            return [
+                'status'=>false,
+                'ticket_id'=>0
+            ];
+        }
+    }
+
+
+    public function purchaseTournament(Request $request)
+    {
+        $tourId = $request->input('tour_id');
+        $ticketId = $request->input('ticket_id');
+        $quantity = $request->input('quantity');
+    
+        // Validate request data
+        if (!$tourId || !$ticketId || $quantity < 1) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid request data.',
+            ]);
+        }
+    
+        // Store tourId, ticketId, and quantity in session
+        session([
+            'booking_data' => [
+                'tour_id' => $tourId,
+                'ticket_id' => $ticketId,
+                'quantity' => $quantity,
+            ],
+        ]);
+    
+        // Redirect the user to the confirm-ticket-book route
+        $redirectUrl = route('confirm-ticket-book');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Booking successful! Redirecting...',
+            'redirect_url' => $redirectUrl,
+        ]);
+    }
+
 
     public function getPromoDiscount(Request $request){
         $code = $request->code;
-        $date = date("Y-m-d");
+        $sponserId = $request->id;
         $ticketAmount = (float)$request->amount;
-        $couponData = Coupon::select('discount_type','discount','id')->where('coupon_code',$code)->where('start_date','<=',$date)->where('end_date','>=',$date)->first();
-        if(!$couponData){
-            return response()->json(['s'=>2]);
-        }
+        $couponData = $this->checkCouponCode($code,$sponserId);
         $amount = $couponData->discount;
         $famount = $ticketAmount - $amount;
-        if($couponData->discount_type==0){
-            $amount = ($ticketAmount * $couponData->discount)/100;
-            $famount = $ticketAmount - $amount;
-        }
         return response()->json(['s'=>1,'amount'=>round($amount,2),'famount'=>round($famount,2),'id'=>$couponData->id]);
+    }
+
+    private function checkCouponCode($sponserId,$copuonCode){
+        try {
+            // Instantiate the Guzzle client
+            $client = new \GuzzleHttp\Client();
+            $baseUrl = env('BACKEND_BASE_URL');
+
+            $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+            // Make a POST request to the backend API
+            $response = $client->post("{$baseUrl}/web_api/u_check_coupon.php", [
+                'json' => [
+                    'uid' => $uid,
+                    'coupon_code' => $copuonCode,
+                    'sid' =>$sponserId
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+            if($data['Result'] == "true"){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function calculateBookAmount(Request $request){
