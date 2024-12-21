@@ -560,7 +560,7 @@
                         <h5 class="mb-1">Share : </h5>
                         <div class="social-share-buttons">
                             <!-- Facebook Share Button -->
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="social-button facebook">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={!! urlencode(url()->current()) !!}" target="_blank" class="social-button facebook">
                                 <i class="fab fa-facebook-f text-white"></i>
                             </a>
                             
@@ -571,12 +571,12 @@
                             </a>
                             
                             <!-- LinkedIn Share Button -->
-                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_about']) }}" target="_blank" class="social-button linkedin">
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={!! urlencode($tournament_detail['event_about']) !!}" target="_blank" class="social-button linkedin">
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
 
                             <!-- WhatsApp Share Button -->
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_about']) }}%0A{{ urlencode(url()->current()) }}" target="_blank" class="social-button whatsapp">
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A{!! urlencode($tournament_detail['event_about']) !!}%0A{{ urlencode(url()->current()) }}" target="_blank" class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
                             </a>
                         </div>
