@@ -604,11 +604,9 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request){
         $request->validate([
-            'name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required',
-            'phone'=>'required',
-            'address'=>'required',
+            'image'=>'required',
+            'username'=>'required',
+            'password'=>'required',
         ]);
         $userId = \Auth::guard('appuser')->user()->id;
         AppUser::where('id',$userId)->update(

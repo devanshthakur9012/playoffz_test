@@ -42,10 +42,10 @@
                                             <label class="form-label">Password <span class="text-danger">*</span></label>
                                             <input type="password" class="form-control form-control-user" id="password" autocomplete="new-password" name="password" placeholder="Password">
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label class="form-label">Referral Code (Optional)</label>
                                             <input type="text" class="form-control form-control-user" value="{{old('referral_code')}}" name="referral_code" id="referral_code" placeholder="Enter Referral Code">
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
                                             <div id="recaptcha-container" class="mb-3"></div>
                                         </div>

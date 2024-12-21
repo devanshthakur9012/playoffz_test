@@ -3,7 +3,13 @@
 @push('styles')
     <style>
         label{
-            color: #000;
+            color: #ffffff;
+        }
+        .cardBorder{
+            border: 1px solid #fff;
+        }
+        .form-control:disabled, .form-control[readonly]{
+            color: #5e5e5e !important;
         }
     </style>
 @endpush
@@ -13,65 +19,65 @@
             <div class="row justify-content-center">
                 <div class="col-xl-9 col-lg-8">
                     @include('messages')
-                    <div class="bg-white p-3 widget shadow-sm rounded mb-4">
+                    <div class="cardBorder p-3 widget shadow-sm rounded mb-4">
                         <div>
                             <div class="mb-3 overflow-hidden">
-                                <h1 class="h4 mb-0 float-left text-dark">My Profile </h1>
+                                <h1 class="h4 mb-0 float-left ">My Profile </h1>
                             </div>
                             <hr>
                             @php
-                                $userData = Auth::guard('appuser')->user();
+                                $userData = Common::fetchUserDetails();
                             @endphp
-                            <form name="register_frm" id="register_frm" action="{{url("user/update-profile")}}" method="post">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="exampleInput1">First Name <span class="text-danger">*</span></label>
-                                            <input id="exampleInput1" type="text" class="form-control"
-                                                placeholder="First name" name="name" value="{{$userData->name}}">
-                                        </div>
+                           <form name="register_frm" id="register_frm" action="{{ url('user/update-profile') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                @isset($userData['pro_pic'])
+                                    <div class="col-lg-12 col-md-12 col-12 mb-3">
+                                        <img src="https://app.playoffz.in/images/profile/{{$userData['pro_pic']}}" alt="Profile Picture" style="max-width: 100px; max-height: 100px;">
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="exampleInput2">Last Name <span class="text-danger">*</span></label>
-                                            <input id="exampleInput2" type="text" class="form-control"
-                                                placeholder="Last name" name="last_name" value="{{$userData->last_name}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="exampleInput3">Contact No. <span class="text-danger">*</span></label>
-                                            <input id="exampleInput3" type="text" class="form-control"
-                                                placeholder="Enter Mobile Number" name="phone" value="{{$userData->phone}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="emailid">Email Address <span class="text-danger">*</span></label>
-                                            <input id="email" type="text" class="form-control" placeholder="Enter Email" name="email" value="{{$userData->email}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Address 1 <span class="text-danger">*</span></label>
-                                            <textarea class="form-control" placeholder="Enter Address here" style="height:100px;" name="address">{{$userData->address}}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Address 2</label>
-                                            <textarea class="form-control" placeholder="Enter Address here" style="height:100px;" name="address_two">{{$userData->address_two}}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="text-right">
-                                            <button type="submit" id="continue_btn" class="btn btn-primary">Update
-                                                Details</button>
-                                        </div>
+                                @endisset
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="image">Image</label>
+                                        <input id="image" type="file" class="form-control" name="image">
                                     </div>
                                 </div>
-                            </form>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="username">Username <span class="text-danger">*</span></label>
+                                        <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ $userData['name'] }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="password">Password <span class="text-danger">*</span></label>
+                                        <input id="password" type="password" class="form-control" placeholder="Password" name="password">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="confirm_password">Confirm Password <span class="text-danger">*</span></label>
+                                        <input id="confirm_password" type="password" class="form-control" placeholder="Confirm Password" name="confirm_password">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="email">Email Address <span class="text-danger">*</span></label>
+                                        <input id="email" type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ $userData['email'] }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="phone">Contact No. <span class="text-danger">*</span></label>
+                                        <input id="phone" type="text" class="form-control" placeholder="Enter Mobile Number" name="phone" value="{{ $userData['mobile'] }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 text-right">
+                                    <button type="submit" id="continue_btn" class="btn btn-primary">Update Details</button>
+                                </div>
+                            </div>
+                        </form>
+                        
                         </div>
                     </div>
                 </div>

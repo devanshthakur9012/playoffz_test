@@ -187,7 +187,6 @@
 
     .available-sport-card span {
         font-size: 1.8rem;
-        
     }
 
     /* Buttons */
@@ -281,6 +280,28 @@
     .amenity_round img{
         margin-top: 5px;
     }
+/* 
+    #shareButton {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #shareButton:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    } */
 </style>
     
         
@@ -381,6 +402,71 @@
             font-size: 23px;
             color: #db207b;
         }
+
+        .social-share-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-button img {
+            transition: transform 0.3s ease;
+        }
+        .social-button img:hover {
+            transform: scale(1.1);
+        }
+        .facebook {
+            background-color: #3b5998;
+            padding: 10px;
+            border-radius: 50%;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .instagram {
+            background-color: #E4405F;
+            padding: 10px;
+            border-radius: 50%;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .linkedin {
+            background-color: #0077b5;
+            padding: 10px;
+            color: #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .whatsapp{
+            background-color: #25D366;
+            padding: 10px;
+            color: #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .instagram i:hover{
+            color: #fff;
+        }
+        .linkedin i:hover{
+            color: #fff;
+        }
+        .facebook i:hover{
+            color: #fff;
+        }
     </style>
 @endpush
 @section('content')
@@ -410,7 +496,10 @@
 
         <div class="row mt-5">
             <div class="col-lg-8 col-md-8 col-12">
-                <h2 >{{ $tournament_detail['event_title'] }}</h2>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>{{ $tournament_detail['event_title'] }}</h2>
+                    {{-- <button id="shareButton" class="btn-sm btn-primary btn">Share</button> --}}
+                </div>
                 <div class="dark-gap text-white h5" style="margin-bottom: 0;">
                     <p class="dark-gap">Sport Catgeory : {{$tournament_detail['category']}}</p>
 
@@ -448,7 +537,7 @@
                         </div>
                         <div class="text_box">
                             <!-- Using the provided latitude and longitude to open Google Maps -->
-                            <p class="text_muted"></p><a class="text-white" href="https://www.google.com/maps?q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}" target="_blank">
+                            <p class="text_muted"></p><a class="text-white" href="{{ $tournament_detail['map_url'] }}" target="_blank">
                                 {{ $tournament_detail['event_address'] }}
                             </a></p>
                         </div>
@@ -457,12 +546,40 @@
                     <p class="mr-3">🏸 BYOE: {{ $coachData->bring_own_equipment }}</p>
                     <p>🎟️ Free Demo session: {{ $coachData->free_demo_session }}</p> --}}
                 </div>
-        
-                <div class="my-5 text-white h5">
-                    <h4 class="mr-4 mb-3">Organized By</h4>
-                    <div class="d-flex align-items-center">
-                        <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
-                        <p class="mb-0 fs-2">{{ $tournament_detail['sponsore_name'] }}</p>
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="my-5 text-white h5">
+                            <h4 class="mr-4 mb-3">Organized By</h4>
+                            <div class="d-flex align-items-center">
+                                <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
+                                <p class="mb-0 fs-2">{{ $tournament_detail['sponsore_name'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h5 class="mb-1">Share : </h5>
+                        <div class="social-share-buttons">
+                            <!-- Facebook Share Button -->
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="social-button facebook">
+                                <i class="fab fa-facebook-f text-white"></i>
+                            </a>
+                            
+                            <!-- Instagram Share Button -->
+                            <!-- Instagram doesn't have a direct sharing link, so we use the profile link or a general Instagram share link -->
+                            <a href="https://www.instagram.com" target="_blank" class="social-button instagram">
+                                <i class="fab fa-instagram text-white"></i>
+                            </a>
+                            
+                            <!-- LinkedIn Share Button -->
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_about']) }}" target="_blank" class="social-button linkedin">
+                                <i class="fab fa-linkedin-in text-white"></i>
+                            </a>
+
+                            <!-- WhatsApp Share Button -->
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_about']) }}%0A{{ urlencode(url()->current()) }}" target="_blank" class="social-button whatsapp">
+                                <i class="fab fa-whatsapp text-white"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -476,12 +593,36 @@
                     <p class="fs-3">{!! $tournament_detail['event_disclaimer'] !!}</p>
                 </div>
 
+                @if(count($tournament_Artist))
+                <h4 class=" mb-4">Tournament Referee</h4>
+                <div class="row">
+                    @foreach ($tournament_Artist as $sport)
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="card text-center shadow-sm" style="background: transparent">
+                                <div class="card-body">
+                                    <!-- Artist Image -->
+                                    <img class="rounded-circle p-1 border" 
+                                         src="{{ env('BACKEND_BASE_URL').'/'.$sport['artist_img'] }}" 
+                                         alt="{{ $sport['artist_title'] }}" 
+                                         width="100px" height="100px">
+                                    <!-- Artist Title -->
+                                    <p class="mt-2 mb-0" style="font-size: 16px; font-weight: 600;">{{ $sport['artist_title'] }}</p>
+                                    <!-- Artist Role -->
+                                    <span class="badge badge-primary mt-2">{{ $sport['artist_role'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+            
+
                 @if(count($tournament_Facility))
                     <h4 class="">Tournament Facility</h4>
                     <div class="available-sports mb-3">
                         @foreach ($tournament_Facility as $sport)
                             <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="50" height="50">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="75" height="75">
                                 <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['facility_title'] }}</p>
                             </div>
                         @endforeach
@@ -493,7 +634,7 @@
                     <div class="available-sports">
                         @foreach ($tournament_Restriction as $sport)
                             <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="50" height="50">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="75" height="75">
                                 <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['restriction_title'] }}</p>
                             </div>
                         @endforeach
@@ -547,7 +688,7 @@
                         <div class="products-reviews">
                             <h3>{{$tournament_detail['event_address_title']}}</h3>
                             <span class="d-block" style="font-size: 12px;">{{ $tournament_detail['event_address'] }}</span>
-                            <div class="progress-section mb-0 mt-3">
+                            {{-- <div class="progress-section mb-0 mt-3">
                                 <iframe
                                 width="100%" 
                                 height="100%" 
@@ -556,7 +697,24 @@
                                 allowfullscreen=""
                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAxasPhBlBcRiOxTX8U9f7K-_0992N7Si8&q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}">
                               </iframe>
-                            </div>
+                            </div> --}}
+                            <div class="progress-section mb-0 mt-3" style="position: relative;">
+                                <!-- Embed Google Map -->
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30766738.48171446!2d60.96917638629971!3d19.72516357822192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sus!4v1734715250824!5m2!1sen!2sus" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            
+                                <!-- Overlay that redirects on click -->
+                                <a href="{{ $tournament_detail['map_url'] }}" target="_blank" 
+                                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 10;">
+                                </a>
+                            </div>                           
                         </div>
                     </div>
                 </div>
@@ -574,8 +732,24 @@
           </iframe>
         </div> --}}
 
+        
+                
+        @if(count($tournament_gallery))
+            <h4 class="mt-3">Tournament Gallery</h4>
+            <div class="tournament-gallery">
+                <div class="row gap-3">
+                    @foreach ($tournament_gallery as $sport)
+                        <div class="gallery-item col-lg-3">
+                            <img class="gallery-image p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport }}" alt="Tournament Gallery Image" width="100%">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    
+        
         @if(count($tournament_detail['event_tags']))
-            <h4 class="">Tags</h4>
+            <h4 class="mt-3">Tags</h4>
             <div class="available-sports mb-4 gap-2">
                 @foreach ($tournament_detail['event_tags'] as $tags)
                     <span class="tags">{{ $tags }}</span>
@@ -675,5 +849,34 @@
             document.head.appendChild(style);
         };
 </script>
+{{-- <script>
+    document.getElementById("shareButton").addEventListener("click", async () => {
+        const shareData = {
+            title: "{{ $tournament_detail['event_title'] }}",
+            text: "{{ $tournament_detail['event_about'] }}",
+            url: "{{ url()->current() }}",
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+                // alert("Thanks for sharing!");
+            } catch (err) {
+                console.error("Sharing failed", err);
+            }
+        } else {
+            // Fallback for browsers without Web Share API
+            const encodedURL = encodeURIComponent(shareData.url);
+            const shareOptions = `
+                <div>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedURL}" target="_blank">Share on Facebook</a><br>
+                    <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodedURL}" target="_blank">Share on Twitter</a><br>
+                    <a href="https://www.linkedin.com/shareArticle?url=${encodedURL}&title=${encodeURIComponent(shareData.title)}" target="_blank">Share on LinkedIn</a>
+                </div>
+            `;
+            document.body.insertAdjacentHTML("beforeend", shareOptions);
+        }
+    });
+</script> --}}
 @endsection
 @include('alert-messages')

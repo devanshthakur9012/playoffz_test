@@ -44,26 +44,66 @@ class HomeController extends Controller
             $categoriesIds = array_column($categories, 'id');
         }
         $data['coachingsData'] = HomeService::getCoachingDataByCityWithCategory($categoriesIds, $selectedCity);
-
+        if (!\Session::has('CURR_CITY')) {
+            \Session::put('CURR_CITY', 'Hyderabad');
+        }
         $data['tournament'] = $this->homeDataApi();
-        // dd($data['tournament']);
+        // dd($data);
 
         return view('home.index', $data);
     }
 
+    public function tournamentType($type){
+        $data['category'] = $type;
+        $data['category_tournament'] = $this->getTournamentByType($type);
+        return view('home.coachings', $data);
+    }
+
+    public function getTournamentByType($type){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            $city = \Session::get('CURR_CITY', 'Hyderabad');
+
+            // Prepare the data to send in the request body
+            $data = [
+                "city"=>$city,
+                "type"=>$type
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/event_type_data.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['Events'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+    
  
     public function homeDataApi($uid=0,$lats =0,$longs =0)
     {
         // Caching the response for 10 minutes
-        $homeData = \Cache::remember('home-data', 10, function() use($uid,$lats,$longs){
+        // $homeData = \Cache::remember('home-data', 10, function() use($uid,$lats,$longs){
             // Instantiate the Guzzle client
             $client = new Client();
 
+            $city = \Session::get('CURR_CITY', 'Hyderabad');
             // Prepare the data to send in the request body
             $data = [
                 'uid' => $uid,
                 'lats' => $lats,
                 'longs' => $longs,
+                'city'=> $city,
             ];
 
             // Send POST request to the PHP admin panel API with the data in the body
@@ -74,12 +114,16 @@ class HomeController extends Controller
             // Decode the JSON response
             $responseData = json_decode($response->getBody(), true);
 
+            if($responseData['ResponseCode'] == 200){
+                // Return the HomeData from the response
+                return $responseData['HomeData'];
+            }
             // Return the HomeData from the response
-            return $responseData['HomeData'];
-        });
+            return [];
+        // });
 
         // Return the cached or fetched home data
-        return $homeData;
+        // return $homeData;
     }
 
     public function coachingBook(int $id, string $title)
@@ -105,6 +149,7 @@ class HomeController extends Controller
         $data['tournament_Facility'] = $details['Event_Facility'];
         $data['tournament_Restriction'] = $details['Event_Restriction'];
         $data['tournament_reviewdata'] = $details['reviewdata'];
+        // dd($data);
         // dd($data['tournament_detail'],$details);
         return view('home.coaching-book', $data);
     }
@@ -199,9 +244,12 @@ class HomeController extends Controller
             // Instantiate the Guzzle client
             $client = new Client();
 
+            $city = \Session::get('CURR_CITY', 'Hyderabad');
+
             // Prepare the data to send in the request body
             $data = [
-                'cat_id' => $catId
+                'cat_id' => $catId,
+                'city'=>$city
             ];
 
             // Send POST request to the PHP admin panel API with the data in the body

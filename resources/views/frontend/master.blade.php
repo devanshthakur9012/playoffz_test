@@ -10,8 +10,8 @@
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <link rel="manifest" href="{{ asset('/organizer_manifest.json') }}">
     {{-- env('BACKEND_BASE_URL')}}/{{$cat['cover_img'] --}}
-    {{-- <link href="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['favicon'] : "https://app.playoffz.in/images/favicon.png" }}" rel="icon" type="image/png"> --}}
-    <link href="https://app.playoffz.in/images/favicon.png" rel="icon" type="image/png"> 
+    <link href="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['favicon'] : "https://app.playoffz.in/images/favicon.png" }}" rel="icon" type="image/png">
+    {{-- <link href="https://app.playoffz.in/images/favicon.png" rel="icon" type="image/png">  --}}
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>{{ $favicon['app_name'] }} | @yield('title')</title>
     @yield('og_data')
@@ -50,14 +50,19 @@
 <body>
     {{-- <div class="sharethis-sticky-share-buttons"></div> --}}
     <div class="sigma_preloader">
-        <img src="{{asset('images/FitSportsy_logo_No_BG.png') }}" alt="preloader">
+        @if (isset($favicon['loader']))
+            @php $url = env('BACKEND_BASE_URL')."/".$favicon['loader'];  @endphp
+        @else
+            @php $url = asset('images/FitSportsy_logo_No_BG.png');  @endphp
+        @endif
+        <img src="{{$url}}" alt="preloader">
     </div>
     <header class="site-header sticky-top">
         <nav class="navbar navbar-expand navbar-dark topbar static-top shadow-sm bg-dark osahan-nav-top">
             <div class="container">
                 <div class="d-flex justify-content-between w-100 align-items-center">
                     <a class="navbar-brand" href="/"><img
-                            src="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['favicon'] : "https://app.playoffz.in/images/website/1733339125.png" }}"
+                            src="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL')."/".$favicon['logo'] : "https://app.playoffz.in/images/website/1733339125.png" }}"
                             class="img-fluid" alt></a>
                     <div class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 ml-3 navbar-search">
                         <div class="input-group searchinput">
@@ -100,13 +105,13 @@
                                 </div>
                             </div>
                         </li>
-                        {{-- <li class="nav-item no-arrow mx-1 desk-seva-ticket">
+                        <li class="nav-item no-arrow mx-1 desk-seva-ticket">
                             <a class="nav-link" href="javascript:void(0);"  data-toggle="modal" data-target="#locationModal">
                                <i class="fas fa-map-marker-alt"></i>
                                <span class="pl-2">{{Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'Popular Locations'}}</span>
                             </a>
-                        </li> --}}
-                        <li class="nav-item no-arrow mx-1">
+                        </li>
+                        {{-- <li class="nav-item no-arrow mx-1">
                             <a class="nav-link" href="{{ url('my-cart') }}">
                                 <i class="fas fa-heart pr-1"></i>
                                 @php
@@ -115,9 +120,9 @@
                                         $cartTotal = count(json_decode(Session::get('CART_DATA_BMJ'), true));
                                     }
                                 @endphp
-                                {{-- <span class="badge badge-danger badge-counter">{{ $cartTotal }}</span> --}}
+                                <span class="badge badge-danger badge-counter">{{ $cartTotal }}</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-2 loginbtn "><img height="30px" src="{{asset('/images/create2.png')}}" alt="" class="create-btn"></a>
                         </li>
@@ -147,18 +152,18 @@
                                             <i class="fas fa-ticket-alt fa-sm fa-fw mr-2 text-gray-600"></i>
                                             My Booking
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('my-orders') }}">
+                                        {{-- <a class="dropdown-item" href="{{ url('my-orders') }}">
                                             <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Wallet
-                                        </a>
+                                        </a> --}}
                                         <a class="dropdown-item" href="{{ url('user/account-settings') }}">
                                             <i class="fas fa-question fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Help Center
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('user/account-settings') }}">
+                                        {{-- <a class="dropdown-item" href="{{ url('user/account-settings') }}">
                                             <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Invite Friends
-                                        </a>
+                                        </a> --}}
                                         <a class="dropdown-item" href="{{ url('user/account-settings') }}">
                                             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Delete Account
@@ -390,7 +395,7 @@
         </div>
     </footer>
 
-    {{-- <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel"
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -403,8 +408,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="popular-location">
-                            <h6 class="text-center">Popular Cites</h6>
-                            @php
+                            <h6 class="text-center mb-3">Popular Cites</h6>
+                            {{-- @php
                                 $citiesAll = Common::allEventCities();
                                 $citiesImages = [];
                                 $citiesWimg = [];
@@ -415,15 +420,20 @@
                                         $citiesWimg[] = $vl;
                                     }
                                 }
-                            @endphp
+                            @endphp --}}
                             <div class="d-flex flex-wrap justify-content-center" style="gap: 10px;">
-                                @foreach ($citiesImages as $city)
+                                {{-- @foreach ($citiesImages as $city)
                                 <div class="w-auto">
                                     <a href="{{ url('event-city?city=' . $city->city_name . '&redirect=' .request()->fullUrl()) }}" class="btn text-center btn-outline-light btn-sm "><img src="{{asset('images/city-icons/'.$city->city_name.'.png')}}" alt="" class="img-fluid d-block m-auto" style="width: 50px; height: 50px;object-fit: contain;">{{ $city->city_name }}</a>
                                 </div>
+                                @endforeach --}}
+                                @foreach (Common::fetchLocation() as $item)
+                                    <div class="w-auto">
+                                        <a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' .request()->fullUrl()) }}" class="btn text-center btn-outline-light btn-sm">{{$item['city']}}</a>
+                                    </div>                                  
                                 @endforeach
                             </div>
-                            <h6 class="mt-3 text-center">Other Cites</h6>
+                            {{-- <h6 class="mt-3 text-center">Other Cites</h6>
                             <div class="d-flex flex-wrap justify-content-center" style="gap: 10px;">
                                 <a href="{{ url('event-city?city=All' . '&redirect=' .request()->fullUrl()) }}"
                                     class="btn btn-outline-light btn-sm w-auto ">All Cities</a>
@@ -432,12 +442,12 @@
                                     <a href="{{ url('event-city?city=' . $city->city_name . '&redirect=' .request()->fullUrl()) }}" class="btn btn-outline-light btn-sm w-100 m">{{ $city->city_name }}</a>
                                 </div>
                                 @endforeach
-                            </div>
+                            </div> --}}
                     </div>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
  <!-- Start Go Top Area -->
  {{-- <div class="go-top">

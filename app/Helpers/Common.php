@@ -114,20 +114,44 @@ class Common
     });
     return $catData;
   }
+
+  public static function fetchLocation(){
+      try {
+          $payData = \Cache::rememberForever('location', function() {
+              // Instantiate the Guzzle client
+              $client = new Client();
+    
+              // Send GET request to the PHP admin panel API
+              $baseUrl = env('BACKEND_BASE_URL');
+              $response = $client->get("{$baseUrl}/web_api/location.php");
+    
+              // Decode the JSON response
+              $data = json_decode($response->getBody(), true);
+    
+              // Ensure that 'Location' is set and return it
+              return isset($data['Location']) ? $data['Location'] : [];
+          });
+    
+          return $payData;
+      } catch (\Throwable $th) {
+          // If an error occurs, return an empty array
+          return [];
+      }
+  }
   
   public static function paymentGatewayList(){
     $payData = \Cache::rememberForever('payment-gateway',function(){
     
-    // Instantiate the Guzzle client
-    $client = new Client();
+      // Instantiate the Guzzle client
+      $client = new Client();
 
-    // Send GET request to the PHP admin panel API
-    $baseUrl = env('BACKEND_BASE_URL');
-    $response = $client->get("{$baseUrl}/web_api/u_paymentgateway.php");
+      // Send GET request to the PHP admin panel API
+      $baseUrl = env('BACKEND_BASE_URL');
+      $response = $client->get("{$baseUrl}/web_api/u_paymentgateway.php");
 
-    // Decode the JSON response
-    $data = json_decode($response->getBody(), true);
-    return $payData = $data['paymentdata'];
+      // Decode the JSON response
+      $data = json_decode($response->getBody(), true);
+      return $payData = $data['paymentdata'];
 
     });
     return $payData;

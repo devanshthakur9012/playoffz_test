@@ -30,6 +30,7 @@ Route::get("/stancer-payment-success",[SocialLoginController::class,'paymentSucc
 
 Route::group(['middleware' => ['mode', 'XSS']], function () {
 
+    // Route::get()
     
     Route::get('/spiritual-volunteers',[BookController::class,'spritualVolunteer']);
     Route::get('/spiritual-volunteers-details/{id}',[BookController::class,'volunteersDetails']);
@@ -40,6 +41,9 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    Route::get('tournament-type/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
+
     Route::get('coaching-packages', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
     Route::get('coachings/{category}/{id}', [HomeController::class, 'coachings'])->name('tournament');
     Route::get('city-coachings/{cityName}', [HomeController::class, 'cityCoachings']);
@@ -163,13 +167,15 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     
     // Route::get('/privacy-policy',[QRController::class,'PrivacyPolicy']);
 
+    // USER ACCOUNT
+    Route::get('user/my-profile',[AuthController::class,'myProfile']);
+    Route::post('user/update-profile',[AuthController::class,'updateProfile']);
 
 
     Route::group(['middleware'=>'appuser'],function(){
         Route::get('/my-orders', [ProductsController::class, 'myOrders']);
         Route::get('user/my-tickets',[AuthController::class,'myTickets']);
-        Route::get('user/my-profile',[AuthController::class,'myProfile']);
-        Route::post('user/update-profile',[AuthController::class,'updateProfile']);
+        // Route::get('user/my-profile',[AuthController::class,'myProfile']);
         Route::get('user/account-settings',[AuthController::class,'accountSettings']);
         Route::post('user/update-user-password',[AuthController::class,'updateUserPassword']);
     });
