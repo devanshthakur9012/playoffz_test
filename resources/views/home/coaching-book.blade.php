@@ -559,8 +559,12 @@
                     <div class="col-lg-6">
                         <h5 class="mb-1">Share : </h5>
                         <div class="social-share-buttons">
+
+                            @php
+                                $url = env('BACKEND_BASE_URL').'/'.urlencode($tournament_detail['event_cover_img'][0]);
+                            @endphp
                             <!-- Facebook Share Button -->
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}&picture={{ urlencode($tournament_detail['event_cover_img'][0]) }}" target="_blank" class="social-button facebook">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}&picture={{ $url }}" target="_blank" class="social-button facebook">
                                 <i class="fab fa-facebook-f text-white"></i>
                             </a>
                         
@@ -573,9 +577,8 @@
                             <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{ urlencode($tournament_detail['event_cover_img'][0]) }}" target="_blank" class="social-button linkedin">
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
-                        
                             <!-- WhatsApp Share Button -->
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_cover_img'][0]) }}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
+                            <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
                                 target="_blank" class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
                             </a>
