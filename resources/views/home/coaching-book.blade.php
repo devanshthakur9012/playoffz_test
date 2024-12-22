@@ -12,12 +12,12 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $tournament_detail['event_title'] }}" />
-    <meta name="twitter:description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta name="twitter:description" content="Organizer : {{ $tournament_detail['sponsore_name'] }}" />
     <meta name="twitter:image" content="{{ env('BACKEND_BASE_URL') }}/{{$tournament_detail['event_cover_img'][0]}}" />
     <meta name="twitter:url" content="{{ url()->current() }}" />
     <meta name="twitter:site" content="@YourTwitterHandle" />
 
-    <meta name="description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta name="description" content="Organizer : {{ $tournament_detail['sponsore_name'] }}" />
     <meta name="keywords" content="{{ implode(',', $tournament_detail['event_tags']) }}" />
 </head>
 @endsection
