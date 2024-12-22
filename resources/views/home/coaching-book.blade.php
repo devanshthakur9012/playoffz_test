@@ -574,9 +574,14 @@
                             </a>
                         
                             <!-- LinkedIn Share Button -->
-                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{$url}}" target="_blank" class="social-button linkedin">
+                            {{-- <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{$url}}" target="_blank" class="social-button linkedin">
+                                <i class="fab fa-linkedin-in text-white"></i>
+                            </a> --}}
+                            
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}" target="_blank" class="social-button linkedin">
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
+
                             <!-- WhatsApp Share Button -->
                             <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
                                 target="_blank" class="social-button whatsapp">
