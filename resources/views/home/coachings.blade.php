@@ -7,9 +7,11 @@
         border-radius: 4px;
         color: #000;
     }
-    
+   
     .type_cat{
         padding: 9px !important;   
+        background: #ffd700;
+        color: #000;
     }
         
     .location{

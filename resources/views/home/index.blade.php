@@ -9,6 +9,8 @@
     }
 .type_cat{
     padding: 9px !important;   
+    background: #ffd700;
+    color: #000;
 }
 .location{
     background: #db207b;

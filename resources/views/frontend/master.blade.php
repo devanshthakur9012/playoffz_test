@@ -124,7 +124,7 @@
                             </a>
                         </li> --}}
                         <li>
-                            <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-2 loginbtn "><img height="30px" src="{{asset('/images/create2.png')}}" alt="" class="create-btn"></a>
+                            <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img height="30px" src="{{asset('/images/org_btn.png')}}" alt="" class="create-btn"></a>
                         </li>
                         @if (Common::isUserLogin())
                             <li class="nav-item dropdown no-arrow ">
@@ -429,8 +429,13 @@
                                 @endforeach --}}
                                 @foreach (Common::fetchLocation() as $item)
                                     <div class="w-auto">
-                                        <a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' .request()->fullUrl()) }}" class="btn text-center btn-outline-light btn-sm">{{$item['city']}}</a>
-                                    </div>                                  
+                                        <a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' . request()->fullUrl()) }}" class="btn text-center btn-outline-light btn-sm">
+                                            @if(isset($item['image']) && $item['image'] != null)
+                                                <img class="img-fluid d-block m-auto" style="width: 50px; height: 50px; object-fit: contain;" src="{{ env('BACKEND_BASE_URL') }}/{{$item['image']}}" alt="{{$item['city']}}">
+                                            @endif
+                                            {{$item['city']}}
+                                        </a>
+                                    </div>
                                 @endforeach
                             </div>
                             {{-- <h6 class="mt-3 text-center">Other Cites</h6>

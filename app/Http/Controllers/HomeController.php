@@ -49,7 +49,7 @@ class HomeController extends Controller
         }
         $data['tournament'] = $this->homeDataApi();
         // dd($data);
-
+        // dd(Common::fetchLocation());
         return view('home.index', $data);
     }
 
