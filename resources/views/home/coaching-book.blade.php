@@ -575,9 +575,11 @@
                             </a>
                         
                             <!-- WhatsApp Share Button -->
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}%0A{{ urlencode($tournament_detail['event_cover_img'][0]) }}" target="_blank" class="social-button whatsapp">
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_cover_img'][0]) }}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
+                                target="_blank" class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
                             </a>
+ 
                         </div>
                     </div>
                 </div>
