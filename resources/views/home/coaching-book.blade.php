@@ -2,7 +2,7 @@
 @section('og_data')
 <head>
     <meta property="og:title" content="{{ $tournament_detail['event_title'] }}" />
-    <meta property="og:description" content="{{ $tournament_detail['event_about'] }}" />
+    <meta property="og:description" content="Organizer : {{ $tournament_detail['sponsore_name'] }}" />
     <meta property="og:image" content="{{ env('BACKEND_BASE_URL') }}/{{$tournament_detail['event_cover_img'][0]}}" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:type" content="website" />
