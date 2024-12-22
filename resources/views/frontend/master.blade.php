@@ -124,7 +124,7 @@
                             </a>
                         </li> --}}
                         <li>
-                            <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img height="30px" src="{{asset('/images/org_btn.png')}}" alt="" class="create-btn"></a>
+                            <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img src="{{asset('/images/org_btn.png')}}" alt="" style="height:55px"></a>
                         </li>
                         @if (Common::isUserLogin())
                             <li class="nav-item dropdown no-arrow ">
