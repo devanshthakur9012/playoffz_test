@@ -170,6 +170,8 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     // USER ACCOUNT
     Route::get('user/my-profile',[AuthController::class,'myProfile']);
     Route::post('user/update-profile',[AuthController::class,'updateProfile']);
+    Route::get('help-center',[HomeController::class,'helpCenter'])->name('help-center');
+    Route::get('user/my-booking/{type}',[HomeController::class,'myBooking'])->name('my-booking');
 
 
     Route::group(['middleware'=>'appuser'],function(){

@@ -33,7 +33,7 @@
                             <div class="row">
                                 @isset($userData['pro_pic'])
                                     <div class="col-lg-12 col-md-12 col-12 mb-3">
-                                        <img src="https://app.playoffz.in/images/profile/{{$userData['pro_pic']}}" alt="Profile Picture" style="max-width: 100px; max-height: 100px;">
+                                        <img src="{{env('BACKEND_BASE_URL')}}/{{$userData['pro_pic']}}" alt="Profile Picture" style="max-width: 100px; max-height: 100px;">
                                     </div>
                                 @endisset
                                 <div class="col-lg-6 col-md-6 col-12">

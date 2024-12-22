@@ -287,8 +287,42 @@ class BookController extends Controller
        $payData = \Common::paymentGatewayList();
 
         session(['book_event_data'=>$packageDetails]);
+        $couponList = [];
+
+        if(isset($packageDetails['sponser_id'])){
+            $sponserId = $packageDetails['sponser_id'];
+            $couponList = $this->getCopunByApi($sponserId);
+        }
+
         // Pass booking data to the view
-        return view('frontend.book-event.confirm-booking', compact('packageDetails','settingDetails','bookingData','payData'));
+        return view('frontend.book-event.confirm-booking', compact('packageDetails','settingDetails','bookingData','payData','couponList'));
+    }
+
+    private function getCopunByApi($sponserId){
+        try {
+            // Instantiate the Guzzle client
+            $client = new \GuzzleHttp\Client();
+
+            $user = Common::userId();
+            // Prepare the data to send in the request body
+            $data = [
+                'uid' => $user,
+                'sponsore_id'=>$sponserId
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/u_couponlist.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+
+            // Return the HomeData from the response
+            return $responseData['couponlist'];
+        } catch (\Throwable $th) {
+           return [];
+        }
     }
 
     public function storePaymentDetails(Request $request){
@@ -441,38 +475,56 @@ class BookController extends Controller
 
     public function getPromoDiscount(Request $request){
         $code = $request->code;
-        $sponserId = $request->id;
+        $sponserId = $request->sid;
         $ticketAmount = (float)$request->amount;
         $couponData = $this->checkCouponCode($code,$sponserId);
-        $amount = $couponData->discount;
-        $famount = $ticketAmount - $amount;
-        return response()->json(['s'=>1,'amount'=>round($amount,2),'famount'=>round($famount,2),'id'=>$couponData->id]);
+        dd($couponData);
+        if($couponData['status'] == true){
+            if($ticketAmount >= $couponData['Data']['min_amt']){
+                $couponVal = $couponData['Data']['coupon_val'];
+                $famount = $ticketAmount - $couponVal;
+                return response()->json(['s'=>1,'amount'=>round($amount,2),'famount'=>round($famount,2),'id'=>$couponData['id']]);
+            }
+            return response()->json(['s'=>1,'amount'=>round($ticketAmount,2),'famount'=>round($ticketAmount,2),'id'=>$couponData['id']]);
+        }else{
+            return response()->json(['s'=>0]);
+        }
     }
 
-    private function checkCouponCode($sponserId,$copuonCode){
+    private function checkCouponCode($code,$sponserId){
         try {
             // Instantiate the Guzzle client
             $client = new \GuzzleHttp\Client();
             $baseUrl = env('BACKEND_BASE_URL');
 
-            $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+            $user = Common::userId();
             // Make a POST request to the backend API
             $response = $client->post("{$baseUrl}/web_api/u_check_coupon.php", [
                 'json' => [
-                    'uid' => $uid,
-                    'coupon_code' => $copuonCode,
+                    'uid' => $user,
+                    'coupon_code' => $code,
                     'sid' =>$sponserId
                 ]
             ]);
 
             $data = json_decode($response->getBody(), true);
             if($data['Result'] == "true"){
-                return true;
+                return [
+                    'status'=>true,
+                    'data'=>$data['Coupon_Data'],
+                ];
             }else{
-                return false;
+                return [
+                    'status'=>false,
+                    'data'=>[],
+                ];
             }
         } catch (\Throwable $th) {
-            return false;
+            dd($th->getMessage());
+            return [
+                'status'=>false,
+                'data'=>[],
+            ];
         }
     }
 

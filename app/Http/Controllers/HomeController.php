@@ -45,10 +45,9 @@ class HomeController extends Controller
         }
         $data['coachingsData'] = HomeService::getCoachingDataByCityWithCategory($categoriesIds, $selectedCity);
         if (!\Session::has('CURR_CITY')) {
-            \Session::put('CURR_CITY', 'Hyderabad');
+            \Session::put('CURR_CITY', 'Bengaluru');
         }
         $data['tournament'] = $this->homeDataApi();
-        // dd($data);
         // dd(Common::fetchLocation());
         return view('home.index', $data);
     }
@@ -59,12 +58,80 @@ class HomeController extends Controller
         return view('home.coachings', $data);
     }
 
+    public function helpCenter(){
+        $faq = $this->fetchHelpCenterApi();
+        return view('frontend.faq',compact('faq'));
+    }
+
+    
+    private function fetchHelpCenterApi(){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            $data = [
+                "uid"=>0,
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/faq.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['FaqData'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
+    public function myBooking($status){
+        $myBooing = $this->fetchMyBookingApi($status);
+        // dd($myBooing);
+        return view('frontend.my-booking',compact('myBooing','status'));
+    }
+
+    private function fetchMyBookingApi($status){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            $user = Common::userId();
+            // Prepare the data to send in the request body
+            $data = [
+                "uid"=>$user,
+                "status"=>$status
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/ticket_status.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['order_data'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
     public function getTournamentByType($type){
         try {
             // Instantiate the Guzzle client
             $client = new Client();
 
-            $city = \Session::get('CURR_CITY', 'Hyderabad');
+            $city = \Session::get('CURR_CITY', 'Bengaluru');
 
             // Prepare the data to send in the request body
             $data = [
@@ -97,7 +164,7 @@ class HomeController extends Controller
             // Instantiate the Guzzle client
             $client = new Client();
 
-            $city = \Session::get('CURR_CITY', 'Hyderabad');
+            $city = \Session::get('CURR_CITY', 'Bengaluru');
             // Prepare the data to send in the request body
             $data = [
                 'uid' => $uid,
@@ -244,7 +311,7 @@ class HomeController extends Controller
             // Instantiate the Guzzle client
             $client = new Client();
 
-            $city = \Session::get('CURR_CITY', 'Hyderabad');
+            $city = \Session::get('CURR_CITY', 'Bengaluru');
 
             // Prepare the data to send in the request body
             $data = [

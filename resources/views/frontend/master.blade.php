@@ -67,7 +67,7 @@
                     <div class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 ml-3 navbar-search">
                         <div class="input-group searchinput">
                             <input type="text" class="form-control border-0 small head-search-box"
-                                placeholder="Search for Events, Shows, Plays and Activities..."
+                                placeholder="Search for tournaments..."
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="list-group list-group-flush searchlist scrollbar search-result">
 
@@ -148,7 +148,7 @@
                                             <i class="fas fa-user-circle fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Profile
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('user/my-tickets') }}">
+                                        <a class="dropdown-item" href="{{ route('my-booking',['type'=>'Active']) }}">
                                             <i class="fas fa-ticket-alt fa-sm fa-fw mr-2 text-gray-600"></i>
                                             My Booking
                                         </a>
@@ -156,7 +156,7 @@
                                             <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Wallet
                                         </a> --}}
-                                        <a class="dropdown-item" href="{{ url('user/account-settings') }}">
+                                        <a class="dropdown-item" href="{{route('help-center')}}">
                                             <i class="fas fa-question fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Help Center
                                         </a>
@@ -164,10 +164,10 @@
                                             <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Invite Friends
                                         </a> --}}
-                                        <a class="dropdown-item" href="{{ url('user/account-settings') }}">
+                                        {{-- <a class="dropdown-item" href="{{ url('user/account-settings') }}">
                                             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-600"></i>
                                             Delete Account
-                                        </a>
+                                        </a> --}}
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="{{ url('logout-user') }}">
                                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
@@ -345,6 +345,8 @@
                         <ul class="list-unstyled footer-link mt-4">
                             {{-- <li class="mb-1"><a href="all-events" class="text-white text-decoration-none ">All
                                     Events</a></li> --}}
+                            <li class=""><a href="{{route('help-center')}}"
+                                class="text-white text-decoration-none ">Help Center</a></li>
                             <li class="mb-1"><a href="contact" class="text-white text-decoration-none ">Contact
                                     Us</a></li>
                             <li class="mb-1"><a href="{{url('terms-and-conditions')}}"

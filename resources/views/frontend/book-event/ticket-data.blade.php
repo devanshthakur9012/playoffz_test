@@ -1,70 +1,259 @@
 @extends('frontend.master', ['activePage' => 'ticket'])
 @section('title', __('Ticket Details'))
-@section('content')
+<style>
+    .card {
+        background-color: #ffffff !important;
+        color: #000;
+        padding: 0px !important;
+    }
 
+    /* Styling for the ticket page */
+    .ticket-area {
+        font-family: Arial, sans-serif;
+        margin: 20px auto;
+    }
+    
+    .ticket-area .card {
+        border: none;
+        box-shadow: none;
+    }
+
+    .ticket-area .card-body {
+        padding: 15px;
+    }
+
+    .ticket-area .text-center h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .ticket-area .text-center p {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .ticket-area table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .ticket-area table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    /* Print specific styles to match screen */
+    @media print {
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .ticket-area {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ticket-area .card {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            box-shadow: none !important;
+            border: none;
+        }
+
+        .card-body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .ticket-area .text-center h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .ticket-area .text-center p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .ticket-area table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ticket-area table th, .ticket-area table td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .ticket-area .row {
+            margin-bottom: 20px;
+        }
+
+        .ticket-area .col-md-4 {
+            display: block; /* Ensure QR code image is displayed during printing */
+        }
+
+        /* Hide interactive or unnecessary elements for print */
+        .btn {
+            display: none; /* Hide the print button */
+        }
+
+        /* Adjust font sizes for print clarity */
+        .ticket-area table td {
+            font-size: 14px;
+        }
+
+        .ticket-area table th {
+            font-size: 14px;
+        }
+        .col-md-9 {
+            -ms-flex: 0 0 75%;
+            flex: 0 0 75%;
+            max-width: 75%;
+        }
+        .col-md-3 {
+            -ms-flex: 0 0 25%;
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        .ticket-area table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .badge-success {
+            color: #fff !important;
+            background-color: #28a745 !important;
+            border: none !important;
+        }
+        .print_box{
+            display: none;
+        }
+        .bottom-location{
+            display: none !important;
+        }
+        footer{
+            display: none !important;
+        }
+    }
+</style>
+
+@section('content')
 <section class="ticket-area section-area">
     <div class="container">
         <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    <h2 class="text-default">{{ $ticketData['ticket_title'] }}</h2>
-                    <p class="text-muted"><strong>Event Time:</strong> {{ $ticketData['start_time'] }}</p>
-                </div>
-                <div class="row">
-                    <!-- Event Details -->
-                    <div class="col-md-6">
-                        <h4>Event Details</h4>
-                        <p><strong>Location:</strong> {{ $ticketData['event_address_title'] }}</p>
-                        <p><strong>Address:</strong> {{ $ticketData['event_address'] }}</p>
-                        <p><strong>Latitude:</strong> {{ $ticketData['event_latitude'] }}</p>
-                        <p><strong>Longitude:</strong> {{ $ticketData['event_longtitude'] }}</p>
-                        <p><strong>Sponsor:</strong> {{ $ticketData['sponsore_title'] }}</p>
-                        <img src="https://app.playoffz.in/{{$ticketData['sponsore_img']}}" alt="Sponsor Logo" class="img-fluid mb-3" style="max-width: 150px;">
+            <div class="card-body p-0">
+                <img src="{{asset('/images/ticket_bg.png')}}" class="img-fluid" alt="">
+                <div class="pt-2 px-4">
+                    <div class="text-center mb-4">
+                        <h2 class="text-dark">{{ $ticketData['ticket_title'] }}</h2>
+                        <p class="text-muted"><strong>Event Time:</strong> {{ $ticketData['start_time'] }}</p>
                     </div>
+                    <div class="row p-2 align-items-center">
+                        <!-- Event Details -->
+                        <div class="col-md-9">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Title</th>
+                                        <td>{{ $ticketData['ticket_title'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Location</th>
+                                        <td>{{ $ticketData['event_address'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Sponsor</th>
+                                        <td>{{ $ticketData['sponsore_title'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Code</th>
+                                        <td>{{ $ticketData['unique_code'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Type</th>
+                                        <td>{{ $ticketData['ticket_type'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Status</th>
+                                        <td>
+                                            <span class="badge {{ $ticketData['ticket_status'] === 'Paid' ? 'badge-success' : 'badge-danger' }}">
+                                                {{ ucfirst($ticketData['ticket_status']) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>                        
 
-                    <!-- Ticket and QR Details -->
-                    <div class="col-md-6 text-center">
-                        <h4>Your Ticket</h4>
-                        <img src="{{ $ticketData['qrcode'] }}" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px; border: 1px solid #ddd; padding: 10px;">
-                        <p><strong>Unique Code:</strong> {{ $ticketData['unique_code'] }}</p>
-                        <p><strong>Ticket Type:</strong> {{ $ticketData['ticket_type'] }}</p>
-                        <p>
-                            <strong>Status:</strong> 
-                            <span class="badge {{ $ticketData['ticket_status'] === 'Paid' ? 'badge-success' : 'badge-danger' }}">
-                                {{ ucfirst($ticketData['ticket_status']) }}
-                            </span>
-                        </p>
+                        <!-- Ticket and QR Details -->
+                        <div class="col-md-3 text-center">
+                            <img src="{{ $ticketData['qrcode'] }}" alt="QR Code" class="w-100 img-fluid mb-3" style="max-width: 100%; border: 1px solid #ddd; padding: 10px;">                           
+                        </div>
                     </div>
-                </div>
-
-                <hr>
-
-                <!-- User Details -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>User Details</h4>
-                        <p><strong>Name:</strong> {{ $ticketData['ticket_username'] }}</p>
-                        <p><strong>Mobile:</strong> {{ $ticketData['ticket_mobile'] }}</p>
-                        <p><strong>Email:</strong> {{ $ticketData['ticket_email'] }}</p>
+                    <hr>
+                    <!-- User Details -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4 class="text-dark">User Details</h4>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Name</th>
+                                        <td>{{ $ticketData['ticket_username'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Mobile</th>
+                                        <td>{{ $ticketData['ticket_mobile'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Email</th>
+                                        <td>{{ $ticketData['ticket_email'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>   
+                        </div>
+                        <div class="col-lg-6">
+                            <h4 class="text-dark">Transaction Details</h4>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Transaction ID</th>
+                                        <td>{{ $ticketData['ticket_transaction_id'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Payment Method</th>
+                                        <td>{{ $ticketData['ticket_p_method'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Subtotal</th>
+                                        <td>₹{{ $ticketData['ticket_subtotal'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Tax</th>
+                                        <td>₹{{ $ticketData['ticket_tax'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Paid</th>
+                                        <td>₹{{ $ticketData['ticket_total_amt'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>                    
                     </div>
-
-                    <!-- Payment Details -->
-                    <div class="col-md-6">
-                        <h4>Payment Details</h4>
-                        <p><strong>Transaction ID:</strong> {{ $ticketData['ticket_transaction_id'] }}</p>
-                        <p><strong>Payment Method:</strong> {{ $ticketData['ticket_p_method'] }}</p>
-                        <p><strong>Subtotal:</strong> ₹{{ $ticketData['ticket_subtotal'] }}</p>
-                        <p><strong>Tax:</strong> ₹{{ $ticketData['ticket_tax'] }}</p>
-                        <p><strong>Total Paid:</strong> ₹{{ $ticketData['ticket_total_amt'] }}</p>
+                    <hr>
+                    <div class="text-center mt-3 mb-3 print_box">
+                        <button id="print_ticket" class="btn btn-primary">
+                            <i class="fas fa-print"></i> Print Ticket
+                        </button>
                     </div>
-                </div>
-
-                <hr>
-
-                <div class="text-center mt-3">
-                    <button id="print_ticket" class="btn btn-primary">
-                        <i class="fas fa-print"></i> Print Ticket
-                    </button>
                 </div>
             </div>
         </div>

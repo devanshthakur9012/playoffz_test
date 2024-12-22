@@ -11,6 +11,7 @@ use App\Models\Order;
 use Session;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Common;
 
 class AuthController extends Controller
@@ -602,24 +603,71 @@ class AuthController extends Controller
         return view("frontend.auth.my-profile");
     }
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
+        // Validate the incoming request data
         $request->validate([
-            'image'=>'required',
-            'username'=>'required',
-            'password'=>'required',
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp', // Make the image optional
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:6', // Make the password nullable
+            'confirm_password' => 'nullable|same:password', // Confirm password only if provided
         ]);
-        $userId = \Auth::guard('appuser')->user()->id;
-        AppUser::where('id',$userId)->update(
-            [
-                'name'=>$request->name,
-                'last_name'=>$request->last_name,
-                'email'=>$request->email,
-                'address'=>$request->address,
-                'address_two'=>$request->address_two,
-                'phone'=>$request->phone,
-            ]
-        );
-        return redirect()->back()->with('success','Profile details updated successfully!!');
+
+        $user = Common::userId();
+        
+        // Prepare data for the API
+        $data = [
+            'name' => $request->username,
+            'uid' => $user,
+            'img' => $request->hasFile('image') ? base64_encode(file_get_contents($request->file('image')->path())) : null,
+        ];
+
+        // Include the password in the payload only if it is provided
+        if (!empty($request->password)) {
+            $data['password'] = $request->password;
+        }
+
+        // Call the API and update the profile
+        $isUpdated = $this->updateProfileApi($data);
+
+        // Redirect based on the API response
+        if ($isUpdated) {
+            $cacheKey = "user_profile_{$user}";
+            if (Cache::has($cacheKey)) {
+                Cache::forget($cacheKey);
+            }
+            return redirect()->back()->with('success', 'Profile updated successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+    }
+
+    private function updateProfileApi(array $data)
+    {
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Get the base URL from the environment file
+            $baseUrl = env('BACKEND_BASE_URL');
+
+            // Send a POST request to the API endpoint
+            $response = $client->post("{$baseUrl}/web_api/update_profile.php", [
+                'json' => $data, // Send data as JSON
+            ]);
+
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+
+            // Check the result in the response
+            if (!empty($responseData['Result']) && ($responseData['Result'] === true || $responseData['Result'] === "true")) {
+                return true;
+            }
+
+            return false;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function accountSettings(){

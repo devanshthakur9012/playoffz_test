@@ -63,12 +63,20 @@ $paymentId = "";
                                 <span class="text-white">Order Summary</span>
                             </h4>
                             <p class="text-danger m-0" id="coupon_err"></p>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" id="promo_text" placeholder="Coupon code">
-                                <div class="input-group-append">
-                                    <button type="button" id="apply_btn" class="btn btn-dark">Apply</button>
+                            @if (isset($couponList) && count($couponList) > 0)
+                                <div class="input-group mb-3">
+                                    {{-- <input type="text" class="form-control" id="promo_text" placeholder="Coupon code"> --}}
+                                    <select name="promo_text" class="form-control" id="promo_text">
+                                        <option value="">Select Coupon Code</option>
+                                        @foreach ($couponList as $item)
+                                            <option value="{{$item['coupon_code']}}">{{$item['coupon_code']}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="button" id="apply_btn" class="btn btn-dark">Apply</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <ul class="list-group mb-3">
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
@@ -228,7 +236,7 @@ $paymentId = "";
         var txt = $("#promo_text").val();
         if (txt != '') {
             $("#apply_btn").text('Processing...').attr('disabled', 'disabled');
-            $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount={{$ticketAmount+$charges}}', function(
+            $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount={{$ticketAmount+$charges}}' + '&sid={{$packageDetails['sponser_id']}}', function(
                 data) {
                 if (data.s == 1) {
                     $("#coupon_err").text("");

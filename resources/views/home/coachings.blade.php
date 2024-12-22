@@ -24,6 +24,17 @@
         top: -12px;
         right: 10px;
     }
+    
+    .category{
+        background: #ffd700;
+        color: #000000;
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 11px !important;
+        position: absolute;
+        top: 10px;
+        left: 7px;
+    }
 </style>
 {{-- <div class="pt-3 pb-3 shadow-sm home-slider">
     <div class="osahan-slider">
@@ -40,8 +51,11 @@
                 <div class="col-xl-4 col-md-4 col-sm-6 mb-3">
                     <div class="card m-card shadow-sm border-0 listcard">
                         <div>
-                            <div class="m-card-cover">
+                            <div class="m-card-cover  position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
+                                @isset($tour['cid'])
+                                    <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                @endisset
                             </div>
                             <div class="card-body position-relative">
                                 <h5 class="card-title mb-2"><u>{{$tour['event_title']}}</u></h5>
@@ -53,8 +67,8 @@
                                     </small>
                                 </p>
                                 @isset($tour['ticket_types'])
-                                    @foreach ($tour['ticket_types'] as $item)
-                                        <span class="badge badge-primary m-1 type_cat">{{ $item }}</span>
+                                    @foreach ($tour['ticket_types'] as $key => $item)
+                                        <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
                                 <div class="mt-2 d-flex justify-content-between align-items-center">
@@ -78,7 +92,12 @@
             @endforeach
         </div>
     </div>
-    
 </div>
-
+@push('scripts')
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+@endpush
 @endsection

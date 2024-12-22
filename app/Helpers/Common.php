@@ -69,7 +69,7 @@ class Common
   }
 
   public static function userId(){
-    return 0;
+   return Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
   }
 
   public static function siteGeneralSettingsApi(){
@@ -77,8 +77,8 @@ class Common
     //   return \App\Models\Setting::select('app_name','email','logo','favicon','footer_copyright','currency','currency_sybmol','timezone','Facebook','Twitter','Instagram')->find(1);
     // });
     // return $settingData;
-
-    $siteData = \Cache::rememberForever('site-general-settings-apis',function(){
+    
+    $siteData = \Cache::remember('site-general-settings-apis', 10, function(){
      
       // Instantiate the Guzzle client
      $client = new Client();
@@ -117,7 +117,8 @@ class Common
 
   public static function fetchLocation(){
       try {
-          $payData = \Cache::rememberForever('location', function() {
+        
+          $payData = \Cache::remember('location', 10, function() {
               // Instantiate the Guzzle client
               $client = new Client();
     
@@ -140,7 +141,8 @@ class Common
   }
   
   public static function paymentGatewayList(){
-    $payData = \Cache::rememberForever('payment-gateway',function(){
+   
+    $payData =  \Cache::remember('payment-gateway', 10, function(){
     
       // Instantiate the Guzzle client
       $client = new Client();
@@ -158,7 +160,8 @@ class Common
   }
 
   public static function allEventCategoriesByApi(){
-    $catData = \Cache::rememberForever('tournament-categories',function(){
+    
+    $catData = \Cache::remember('tournament-categories', 10, function(){
      
        // Instantiate the Guzzle client
       $client = new Client();
