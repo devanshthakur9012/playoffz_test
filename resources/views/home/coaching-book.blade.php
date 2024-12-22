@@ -574,7 +574,7 @@
                             </a>
                         
                             <!-- LinkedIn Share Button -->
-                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{ urlencode($tournament_detail['event_cover_img'][0]) }}" target="_blank" class="social-button linkedin">
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{$url}}" target="_blank" class="social-button linkedin">
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
                             <!-- WhatsApp Share Button -->
