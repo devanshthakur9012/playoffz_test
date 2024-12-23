@@ -114,14 +114,14 @@ label {
 
 .btn-primary {
     color: #fff;
-    background-color: #db207b;
-    border-color: #db207b;
+    background-color: #004aad;
+    border-color: #004aad;
 }
 
 .btn-outline-primary {
-    color: #db207b;
+    color: #004aad;
     background-color: #fff;
-    border-color: #db207b;
+    border-color: #004aad;
 }
 
 
@@ -255,10 +255,10 @@ label {
 
     color: #ffffff;
     padding: 10px 20px;
-    border: 2px solid #db207b;
+    border: 2px solid #004aad;
     border-radius: 5px;
     display: inline-block;
-    background-color: #db207b;
+    background-color: #004aad;
     position: relative;
     overflow: hidden;
     z-index: 9;
@@ -269,8 +269,8 @@ label {
 }
 
 .default-btn:hover {
-    border-color: #db207b;
-    color: #db207b;
+    border-color: #004aad;
+    color: #004aad;
 }
 
 .default-btn:after {
@@ -279,7 +279,7 @@ label {
     left: 0;
     right: 0;
     margin: 0 auto;
-    color: #db207b;
+    color: #004aad;
     visibility: hidden;
 
     opacity: 0;
@@ -303,12 +303,12 @@ label {
 }
 
 .default-btn.btn-transperent {
-    color: #db207b;
+    color: #004aad;
     background-color: transparent;
 }
 
 .default-btn.btn-transperent:after {
-    background-color: #db207b;
+    background-color: #004aad;
 }
 
 .container {
@@ -823,7 +823,7 @@ header .navbar .navbar-brand img {
 
     .navbar-dark .navbar-toggler {
         padding: 10px 0px;
-        background: #db207b;
+        background: #004aad;
         font-size: 14px;
         border: none;
         width: 100%;
@@ -930,7 +930,7 @@ header .navbar .navbar-brand img {
 
 
 .osahan-nav-mid {
-    background: #db207b !important;
+    background: #004aad !important;
     padding: 0;
     font-weight: 400;
 }
@@ -1325,7 +1325,7 @@ form.user .btn-user {
 }
 
 .footer {
-    background-color: #db207b;
+    background-color: #004aad;
 }
 
 .footer h6 {
@@ -1552,7 +1552,7 @@ form.user .btn-user {
     position: relative;
     overflow: hidden;
     font-size: 14px;
-    color: #db207b;
+    color: #004aad;
     margin-bottom: 0.375em;
 
 
@@ -1564,13 +1564,13 @@ form.user .btn-user {
 }
 
 .radio-pannel .radio-label input:checked+span {
-    background-color: #db207b;
+    background-color: #004aad;
     color: #fff;
 }
 
 .radio-pannel .radio-label input:checked+span:before {
     box-shadow: inset 0 0 0 3px #ffffff;
-    background: #db207b;
+    background: #004aad;
 }
 
 .radio-pannel .radio-label span {
@@ -1579,7 +1579,7 @@ form.user .btn-user {
     padding: 6px 15px 6px 10px;
     border-radius: 5px;
     transition: 0.25s ease;
-    border: 1px solid #db207b;
+    border: 1px solid #004aad;
 }
 
 .radio-pannel .radio-label span:hover {
@@ -1598,7 +1598,7 @@ form.user .btn-user {
     margin-right: 0.375em;
     margin-top: -2px;
     transition: 0.25s ease;
-    box-shadow: inset 0 0 0 0.125em #db207b;
+    box-shadow: inset 0 0 0 0.125em #004aad;
 }
 
 
@@ -1885,7 +1885,7 @@ Cart Area CSS
 }
 
 .cart-table table tbody tr td.product-name a:hover {
-    color: #db207b;
+    color: #004aad;
 }
 
 .cart-table table tbody tr td.product-price .unit-amount {
@@ -1979,7 +1979,7 @@ Cart Area CSS
 }
 
 .cart-totals ul li:last-child span {
-    color: #db207b;
+    color: #004aad;
     font-weight: 500;
     font-size: 18px;
 }
@@ -2075,7 +2075,7 @@ Cart Area CSS
 
 
 .blog-card:hover .blog-content h3 a {
-    color: #db207b;
+    color: #004aad;
 }
 
 .blog-card .blog-btn {
@@ -2138,14 +2138,14 @@ Cart Area CSS
     left: 0;
     width: 15px;
     height: 2.5px;
-    background: #db207b;
+    background: #004aad;
     -webkit-transition: all ease 0.5s;
     transition: all ease 0.5s;
     border-radius: 50px;
 }
 
 .blog-details-desc .article-content .entry-list li a {
-    color: #db207b;
+    color: #004aad;
     font-weight: 500;
 }
 
@@ -2184,7 +2184,7 @@ Cart Area CSS
 
 /*=========== all location ==============*/
 .bottom-location {
-    background-color: #db207b;
+    background-color: #004aad;
     padding: 30px 0px 0px 0px;
     margin-bottom: 0px;
 }
@@ -2311,7 +2311,7 @@ Products Details Area CSS
 
 .products-details-desc .price {
     margin-bottom: 15px;
-    color: #db207b;
+    color: #004aad;
     font-size: 30px;
     font-weight: 600;
 
@@ -2449,7 +2449,7 @@ Products Details Area CSS
     .osahan-nav-mid .navbar-nav::-webkit-scrollbar-track {
 
         border-radius: 50px;
-        background-color: #db207b;
+        background-color: #004aad;
     }
 
     .osahan-nav-mid .navbar-nav::-webkit-scrollbar {

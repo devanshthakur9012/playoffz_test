@@ -37,7 +37,7 @@ a {
 
 a:hover {
   
-    color: #db207b;
+    color: #004aad;
 }
 
 p {
@@ -46,16 +46,16 @@ p {
 
 .btn-danger {
     color: #fff;
-    background-color: #db207b;
-    border-color: #db207b
+    background-color: #004aad;
+    border-color: #004aad
 }
 
 .badge-danger {
-    background-color: #db207b !important
+    background-color: #004aad !important
 }
 
 .text-danger {
-    color: #db207b !important
+    color: #004aad !important
 }
 
 .form-control {
@@ -72,7 +72,7 @@ p {
 .form-control:focus {
     color: #fff;
     background-color: #1a1b2e;
-    border-color: #db207b;
+    border-color: #004aad;
     outline: 0;
     box-shadow: none;
 }
@@ -167,14 +167,14 @@ label {
 }
 .btn-primary {
     color: #fff;
-    background-color: #db207b;
-    border-color: #db207b;
+    background-color: #004aad;
+    border-color: #004aad;
 }
 
 .btn-outline-primary {
-    color: #db207b;
+    color: #004aad;
     background-color: #1a1b2e;
-    border-color: #db207b;
+    border-color: #004aad;
 }
 
 
@@ -318,10 +318,10 @@ label {
 
     color: #ffffff;
     padding: 10px 20px;
-    border: 2px solid #db207b;
+    border: 2px solid #004aad;
     border-radius: 5px;
     display: inline-block;
-    background-color: #db207b;
+    background-color: #004aad;
     position: relative;
     overflow: hidden;
     z-index: 9;
@@ -332,8 +332,8 @@ label {
 }
 
 .default-btn:hover {
-    border-color: #db207b;
-    color: #db207b;
+    border-color: #004aad;
+    color: #004aad;
 }
 
 .default-btn:after {
@@ -342,7 +342,7 @@ label {
     left: 0;
     right: 0;
     margin: 0 auto;
-    color: #db207b;
+    color: #004aad;
     visibility: hidden;
 
     opacity: 0;
@@ -366,12 +366,12 @@ label {
 }
 
 .default-btn.btn-transperent {
-    color: #db207b;
+    color: #004aad;
     background-color: transparent;
 }
 
 .default-btn.btn-transperent:after {
-    background-color: #db207b;
+    background-color: #004aad;
 }
 
 .container {
@@ -462,8 +462,8 @@ header .navbar .navbar-brand img {
 }
 
 .bg-gradient-danger {
-    background-color: #db207b;
-    background-image: linear-gradient(180deg, #db207b 10%, #be2617 100%);
+    background-color: #004aad;
+    background-image: linear-gradient(180deg, #004aad 10%, #be2617 100%);
     background-size: cover
 }
 
@@ -606,11 +606,11 @@ header .navbar .navbar-brand img {
 
 .m-card{
   
-    background-color: #1a1b2e;
+    background-color: #2e335a45;
   
     border-radius: 10px;
     
-    border: 1px solid #616269 !important;
+    /* border: 1px solid #616269 !important; */
 }
 
 /* .m-card .card-body {
@@ -909,7 +909,7 @@ header .navbar .navbar-brand img {
 
     .navbar-dark .navbar-toggler {
         padding: 10px 0px;
-        background: #db207b;
+        background: #004aad;
         font-size: 14px;
         border: none;
         width: 100%;
@@ -1014,11 +1014,35 @@ header .navbar .navbar-brand img {
     display: none
 }
 
+.btn-outline-white{
+    margin: 0px 0px 6px !important;
+    background: #070b28;
+    color: #fff;
+}
+
+.tooltip-inner {
+    background-color: white !important;
+    color: black !important; /* Optional: Change text color for readability */
+    border: 1px solid #ddd; /* Optional: Add a border */
+}
+
+.tooltip-arrow::before {
+    background-color: white !important;
+    border: 1px solid #ddd; /* Optional: Add a border */
+}
+
+
+.btn-outline-white:hover{
+    color: #fff;
+    margin-bottom: 3px;
+}
 
 .osahan-nav-mid {
-    background: #db207b !important;
+    background: #004aad !important;
     padding: 0;
     font-weight: 400;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
 
 .osahan-nav-mid a.nav-link {
@@ -1418,10 +1442,10 @@ form.user .btn-user {
 }
 
 .footer {
-    background-color: #db207b;
+    background-color: #004aad;
 }
 .footer .bg-dark{
-    background-color: #1a1b2e !important;
+    background-color: #070b28 !important;
 }
 
 
@@ -1650,7 +1674,7 @@ form.user .btn-user {
     position: relative;
     overflow: hidden;
     font-size: 14px;
-    color: #db207b;
+    color: #004aad;
     margin-bottom: 0.375em;
 
 
@@ -1662,13 +1686,13 @@ form.user .btn-user {
 }
 
 .radio-pannel .radio-label input:checked+span {
-    background-color: #db207b;
+    background-color: #004aad;
     color: #fff;
 }
 
 .radio-pannel .radio-label input:checked+span:before {
     box-shadow: inset 0 0 0 3px #ffffff;
-    background: #db207b;
+    background: #004aad;
 }
 
 .radio-pannel .radio-label span {
@@ -1677,7 +1701,7 @@ form.user .btn-user {
     padding: 6px 15px 6px 10px;
     border-radius: 5px;
     transition: 0.25s ease;
-    border: 1px solid #db207b;
+    border: 1px solid #004aad;
 }
 
 .radio-pannel .radio-label span:hover {
@@ -1696,7 +1720,7 @@ form.user .btn-user {
     margin-right: 0.375em;
     margin-top: -2px;
     transition: 0.25s ease;
-    box-shadow: inset 0 0 0 0.125em #db207b;
+    box-shadow: inset 0 0 0 0.125em #004aad;
 }
 
 
@@ -1994,7 +2018,7 @@ Cart Area CSS
 }
 
 .cart-table table tbody tr td.product-name a:hover {
-    color: #db207b;
+    color: #004aad;
 }
 
 .cart-table table tbody tr td.product-price .unit-amount {
@@ -2088,7 +2112,7 @@ Cart Area CSS
 }
 
 .cart-totals ul li:last-child span {
-    color: #db207b;
+    color: #004aad;
     font-weight: 500;
     font-size: 18px;
 }
@@ -2107,11 +2131,11 @@ Cart Area CSS
     object-fit: cover;
 }
 
-.event-block-slider .slick-current.slick-active {
+/* .event-block-slider .slick-current.slick-active {
     transform: scale(1.08);
     transition: .6s ease-in-out;
     border-radius: 5px;
-}
+} */
 
 .event-block-slider .slick-next:before,
 .event-block-slider .slick-prev:before {
@@ -2187,7 +2211,7 @@ Cart Area CSS
 
 
 .blog-card:hover .blog-content h3 a {
-    color: #db207b;
+    color: #004aad;
 }
 
 .blog-card .blog-btn {
@@ -2250,14 +2274,14 @@ Cart Area CSS
     left: 0;
     width: 15px;
     height: 2.5px;
-    background: #db207b;
+    background: #004aad;
     -webkit-transition: all ease 0.5s;
     transition: all ease 0.5s;
     border-radius: 50px;
 }
 
 .blog-details-desc .article-content .entry-list li a {
-    color: #db207b;
+    color: #004aad;
     font-weight: 500;
 }
 
@@ -2296,7 +2320,7 @@ Cart Area CSS
 
 /*=========== all location ==============*/
 .bottom-location {
-    background-color: #db207b;
+    background-color: #004aad;
     padding: 30px 0px 0px 0px;
     margin-bottom: 0px;
 }
@@ -2357,17 +2381,17 @@ Cart Area CSS
 
 .all-category .category-card {
     background-color: #1a1b2e;
-    width: 130px;
+    width: 150px;
     border-radius: 5px;
-    border: 1px solid #616269;
+    border: 1px solid #ffffff;
     text-align: center;
     overflow: hidden;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
 }
 
 .all-category .category-card img {
-    width: 130px;
-    height: 130px;
+    width: 150px;
+    height: 150px;
 }
 
 .cat-content {
@@ -2432,7 +2456,7 @@ Products Details Area CSS
 
 .products-details-desc .price {
     margin-bottom: 15px;
-    color: #db207b;
+    color: #004aad;
     font-size: 30px;
     font-weight: 600;
 
@@ -2570,7 +2594,7 @@ Products Details Area CSS
     .osahan-nav-mid .navbar-nav::-webkit-scrollbar-track {
 
         border-radius: 50px;
-        background-color: #db207b;
+        background-color: #004aad;
     }
 
     .osahan-nav-mid .navbar-nav::-webkit-scrollbar {
@@ -2781,13 +2805,18 @@ margin-bottom: 0px;
 }
 
 .btn-success{
-    background-color: #db207b !important;
-    border-color: #db207b !important;
+    background-color: #004aad !important;
+    border-color: #004aad !important;
+    padding: 7px 10px;
+}
+
+.card-title u{
+    text-decoration: none;
 }
 
 .btn-success:hover{
-    background-color: #c70060 !important;
-    border-color: #c70060 !important;
+    background-color: #03387e !important;
+    border-color: #03387e !important;
 }
 /* ====== seat layout ===== */
 #seatModal .seat-pannel img{
@@ -2830,7 +2859,7 @@ margin-bottom: 0px;
    text-align: center;
    font-weight: 600;
    text-transform: uppercase;
-   color: #DB207B;
+   color: #004aad;
 }
 .seatlayout_area .seatrow.first_row{
   background-color: #ffffff14;
@@ -2893,7 +2922,7 @@ margin-bottom: 0px;
 
 .list-title {
     font-size: 2.5rem;
-    color: #db207b;
+    color: #004aad;
     font-weight: bold;
 }
 
@@ -3108,7 +3137,7 @@ margin-bottom: 0px;
 .event-service .service-title {
     font-size: 1.5rem;
     font-weight: 500;
-    color: #db207b;
+    color: #004aad;
     margin-bottom: 15px;
 }
 
@@ -3193,7 +3222,7 @@ margin-bottom: 0px;
 
 .info-title {
     font-size: 1.2rem;
-    color: #db207b;
+    color: #004aad;
     font-weight: 500;
 }
 
@@ -3255,7 +3284,7 @@ margin-bottom: 0px;
 
 .faq .btn-link:hover {
     text-decoration: none;
-    color: #db207b;
+    color: #004aad;
 }
 
 .faq-body {
@@ -3370,7 +3399,7 @@ margin-bottom: 0px;
 }
 
 .popular {
-  background-color: #db207b;
+  background-color: #004aad;
   color: #ffffff;
 }
 
@@ -3382,7 +3411,7 @@ margin-bottom: 0px;
 
 .popular .pricing-btn {
   background-color: #ffffff;
-  color: #db207b;
+  color: #004aad;
 }
 
 .popular .pricing-btn:hover {
@@ -3464,7 +3493,7 @@ margin-bottom: 0px;
 
 .resource-title {
     font-size: 1.6rem;
-    color: #db207b;
+    color: #004aad;
     font-weight: 600;
     margin-bottom: 10px;
     transition: color 0.3s ease;
@@ -3556,7 +3585,7 @@ margin-bottom: 0px;
     text-align: center;
     display: flex;
     font-size: 2rem;
-    color: #db207b;
+    color: #004aad;
     transition: background-color 0.3s ease;
     justify-content: center;
     align-items: center;

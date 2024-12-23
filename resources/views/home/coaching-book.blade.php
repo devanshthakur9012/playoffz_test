@@ -321,7 +321,7 @@
     <style>
         .icon_box{
             /* background: #f8f9fa; */
-            color: #db207b;
+            color: #004aad;
             padding: 15px;
             border-radius: 32px;
             margin-right: 20px;
@@ -343,7 +343,7 @@
             margin-right: 15px;
         }
         .tags{
-            background:#db207b;
+            background:#004aad;
             color: #fff;
             border-radius: 20px;
             padding: 10px 15px;
@@ -394,13 +394,13 @@
         }
 
         .alert_info span{
-            color:#db207b;
+            color:#004aad;
         }
 
         .alert_info .iconBox{
             margin-right: 13px;
             font-size: 23px;
-            color: #db207b;
+            color: #004aad;
         }
 
         .social-share-buttons {

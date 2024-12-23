@@ -68,11 +68,11 @@
     }
 
     .button-primary {
-        background: linear-gradient(90deg, #db207b, #e74c3c);
+        background: linear-gradient(90deg, #004aad, #e74c3c);
     }
 
     .button-primary:hover {
-        background: linear-gradient(90deg, #e74c3c, #db207b);
+        background: linear-gradient(90deg, #e74c3c, #004aad);
         transform: translateY(-2px);
         color: #fff;
     }

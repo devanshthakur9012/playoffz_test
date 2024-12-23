@@ -8,12 +8,14 @@
         color: #000;
     }
 .type_cat{
-    padding: 9px !important;   
+    padding: 4px 10px !important;
     background: #ffd700;
     color: #000;
+    font-size: 14px !important;
+    font-weight: 500;
 }
 .location{
-    background: #db207b;
+    background: #004aad;
     color: #fff;
     border-radius: 20px;
     padding: 4px 10px;
@@ -26,8 +28,8 @@
     background: #ffd700;
     color: #000000;
     border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 11px !important;
+    padding: 4px 10px !important;
+    font-size: 14px !important;
     position: absolute;
     top: 10px;
     left: 7px;
@@ -80,10 +82,10 @@
                                             {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}    
                                         </small></p>
 
-                                        <div class="mt-2 d-flex justify-content-between align-items-center">
+                                        <div class="mt-2">
                                         {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
                                         
-                                            <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
+                                            <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                         </div>
                                     @endif
                                 
@@ -127,10 +129,9 @@
                                         <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
-                                <div class="mt-2 d-flex justify-content-between align-items-center">
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1">Book Now</a>
-
-                                    <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                <div class="mt-2">
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                 </div>
                                 @php
                                     // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
@@ -140,9 +141,9 @@
                                         {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}    
                                     </small></p>
 
-                                    <div class="mt-2 d-flex justify-content-between align-items-center">
+                                    <div class="mt-2">
                                     {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
-                                        <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</>
+                                        <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</>
                                     </div>
                                 @endif --}}
                             
@@ -184,9 +185,9 @@
                                         <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
-                                <div class="mt-2 d-flex justify-content-between align-items-center"> 
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
-                                    <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                <div class="mt-2"> 
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -227,9 +228,9 @@
                                         <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
-                                <div class="mt-2 d-flex justify-content-between align-items-center"> 
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
-                                    <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                <div class="mt-2"> 
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -269,9 +270,9 @@
                                         <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
-                                <div class="mt-2 d-flex justify-content-between align-items-center"> 
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
-                                    <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                <div class="mt-2"> 
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -290,9 +291,9 @@
         <div class="category-card">
             <a href="{{ route('tournament', [Str::slug($cat['title']), $cat['id']]) }}">
                 <img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cover_img']}}" class="category-img" alt="...">
-                <div class="cat-content">
+                {{-- <div class="cat-content">
                     <p class="cat-title text-truncate">{{$cat['title']}}</p>
-                </div>
+                </div> --}}
             </a>
         </div>
         @endforeach

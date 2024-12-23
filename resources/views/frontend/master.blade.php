@@ -27,7 +27,7 @@
     @stack('styles')        
     
     <style>
-        .btn-success, .default-btn {  
+        /* .btn-success, .default-btn {  
             animation: glowing 800ms infinite;
         }
 
@@ -35,7 +35,7 @@
         0% {  box-shadow: 0 0 3px #fff; }
         50% {  box-shadow: 0 0 8px #fff; }
         100% {  box-shadow: 0 0 3px #fff; }
-        }
+        } */
     </style>
     <style>
         .menu_item{

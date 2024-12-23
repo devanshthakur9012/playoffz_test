@@ -7,15 +7,15 @@
         border-radius: 4px;
         color: #000;
     }
-   
     .type_cat{
-        padding: 9px !important;   
+        padding: 4px 10px !important;
         background: #ffd700;
         color: #000;
+        font-size: 14px !important;
+        font-weight: 500;
     }
-        
     .location{
-        background: #db207b;
+        background: #004aad;
         color: #fff;
         border-radius: 20px;
         padding: 4px 10px;
@@ -24,13 +24,12 @@
         top: -12px;
         right: 10px;
     }
-    
     .category{
         background: #ffd700;
         color: #000000;
         border-radius: 20px;
-        padding: 4px 10px;
-        font-size: 11px !important;
+        padding: 4px 10px !important;
+        font-size: 14px !important;
         position: absolute;
         top: 10px;
         left: 7px;
@@ -71,10 +70,14 @@
                                         <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                     @endforeach
                                 @endisset
-                                <div class="mt-2 d-flex justify-content-between align-items-center">
+                                {{-- <div class="mt-2 d-flex justify-content-between align-items-center">
                                     <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1">Book Now</a>
                                     
                                     <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
+                                </div> --}}
+                                <div class="mt-2">
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                 </div>
                                 {{-- <p class="my-1 text-light"><small> {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}</small></p>
     
