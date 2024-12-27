@@ -624,15 +624,22 @@
                     <h4 class="mb-1">Rules & Regulations</h4>
                     <div class="fs-3 grayText">{!! $tournament_detail['event_disclaimer'] !!}</div>
                 </div>
-                @if(isset($tournament_detail['prize_reward']) && $tournament_detail['prize_reward'] != null)
-                    <div class="mb-3 text-white"> 
+                @if(!empty($tournament_detail['prize_reward']))
+                    <div class="mb-3 text-white">
                         <h4 class="mb-1">Prizes & Rewards</h4>
-                        @php $collection = json_decode($tournament_detail['prize_reward'], true);  @endphp
-                        @foreach ($collection as $item)
-                            <div class="fs-3 grayText">🏆 {!! $item !!}</div>
-                        @endforeach
-                    </div>                    
+                        @php 
+                            $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
+                        @endphp
+                        @if(is_array($collection) && count($collection) > 0)
+                            @foreach ($collection as $item)
+                                <div class="fs-3 grayText">🏆 {!! $item !!}</div>
+                            @endforeach
+                        @else
+                            <div class="fs-3 grayText">No prizes available.</div>
+                        @endif
+                    </div>
                 @endif
+
                 @if(count($tournament_Artist))
                 <div class="text-white mb-3"> 
                     <h4 >Tournament Referee</h4>
