@@ -626,16 +626,14 @@
                 </div>
                 @if(!empty($tournament_detail['prize_reward']))
                     <div class="mb-3 text-white">
-                        <h4 class="mb-1">Prizes & Rewards</h4>
                         @php 
                             $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
                         @endphp
                         @if(is_array($collection) && count($collection) > 0)
+                            <h4 class="mb-1">Prizes & Rewards</h4>
                             @foreach ($collection as $item)
                                 <div class="fs-3 grayText">🏆 {!! $item !!}</div>
                             @endforeach
-                        @else
-                            <div class="fs-3 grayText">No prizes available.</div>
                         @endif
                     </div>
                 @endif
