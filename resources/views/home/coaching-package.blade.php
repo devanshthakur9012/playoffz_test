@@ -7,7 +7,7 @@
     .subscription-section {
         background: #070b28;
         color: #ffffff;
-        padding: 60px 0;
+        padding: 40px 0;
     }
 
     .subscription-card {
@@ -19,8 +19,9 @@
         border-radius: 10px;
         /* padding: 25px; */
         transition: transform 0.2s, background 0.3s;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* box-shadow: 0 4px 10px rgb(255 255 255 / 20%); */
         /* margin-bottom: 20px; */
+        overflow: hidden;
     }
 
     .subscription-card:hover {
@@ -38,6 +39,8 @@
 
     .subscription-card-body {
         padding: 25px 20px 20px;
+        background: #2e335a45 !important;
+        position: relative;
     }
 
     .subscription-card-title {
@@ -45,7 +48,7 @@
         margin: 10px 0;
         text-align: left;
         margin-top:0px;
-        margin-bottom:2px;
+        margin-bottom:0px;
     }
 
     .price-text-muted {
@@ -65,17 +68,28 @@
         border-radius: 0px;
         transition: background 0.3s, transform 0.2s;
         /* margin-top: 20px; */
+        border: none !important;
     }
 
     .button-primary {
-        background: linear-gradient(90deg, #004aad, #e74c3c);
+        /* background: linear-gradient(90deg, #004aad, #e74c3c); */
+        background: #004aad;
     }
 
-    .button-primary:hover {
+    .bg-girl{
+        background: #e74c3c !important;
+    }
+
+    .bg-boy{
+        background: #004aad !important;
+    }
+
+
+    /* .button-primary:hover {
         background: linear-gradient(90deg, #e74c3c, #004aad);
         transform: translateY(-2px);
         color: #fff;
-    }
+    } */
 
     .button-success {
         background: linear-gradient(90deg, #28a745, #34d058);
@@ -113,7 +127,7 @@
     .price-list {
         list-style: none;
         padding: 0;
-        margin: 20px 0 0;
+        margin: 10px 0 0;
     }
 
     .price-list li {
@@ -153,6 +167,14 @@
         text-align: center;
         background: #1a1b2e;
     }
+
+    .slotBadge{
+        position: absolute;
+        top: -13px;
+        right: 8px;
+        background: #ffe14f !important;
+        color: #000000 !important;
+    }
 </style>
 @endpush
 @section('content')
@@ -162,7 +184,7 @@
             <div class="container">
                 <h1 class="text-center">Tickets Details</h1>
                 {{-- <h2>{{$coachData->coaching_title.' ('. $coachData->category->category_name .')'}} Packages</h2> --}}
-                <h5 class="my-3 text-center">WHAT TICKETS WOULD YOU LIKE??</h5>
+                <h5 class="mt-0 mb-3 text-center" style="font-weight: 300;">WHAT TICKETS WOULD YOU LIKE??</h5>
                 <div class="row mt-4">
                     {{-- @foreach ($packageData as $package)
                         @php
@@ -213,17 +235,16 @@
                     @foreach ($tour_plans as $package)
                         <div class="col-md-4 d-flex mb-4">
                             <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
-                                <div class="subscription-card-header" style="background-color: #007bff;">
-                                    <h4 class="mb-0"><i class="fas fa-gem" style="font-size: 1rem;"></i> {{ $package['ticket_type'] }}</h4>
+                                <div class="subscription-card-header" style="background-color: #004aad;" data-ticket-type="{{ $package['ticket_type'] }}">
+                                    <h4 class="mb-0 text-center"><i class="fas fa-gem" style="font-size: 1rem;"></i> {{ $package['ticket_type'] }}</h4>
                                 </div>
                                 <div class="subscription-card-body">
-                                    <h3 class="subscription-card-title">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Spot</small></h3>
+                                    <h3 class="subscription-card-title text-center">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Slot</small></h3>
                                     <div class="price-list">
-                                        <p><span class="badge badge-danger p-2">{{$package['TotalTicket']}} Spot Left</span></p>
+                                        <p><span class="badge badge-danger p-2 mb-0 slotBadge">{{$package['TotalTicket']}} Slot Left</span></p>
                                         <div>{!! $package['description'] !!}</div>
                                     </div>
-
-                                    <h5 class="mt-3 mb-0">Quantity</h5>
+                                    <h6 class="mt-3 mb-0">Quantity</h6>
                                     <div class="d-flex align-items-center justify-content-center mt-3">
                                         <div class="quantity-block home_page_sidebar" data-package-id="{{ $package['typeid'] }}">
                                             <button type="button" class="quantity-arrow-minus2 shop_single_page_sidebar">-</button>
@@ -233,13 +254,7 @@
                                     </div>
                                 </div>
                                 <div class="subscription-card-footer">
-                                    {{-- @php
-                                        $inputObj = new stdClass();
-                                        $inputObj->params = 'id='.$package['typeid'].'&tour_id='.$coaching_id;
-                                        $inputObj->url = route('confirm-ticket-book');
-                                        $encLink = Common::encryptLink($inputObj);
-                                    @endphp --}}
-                                    <button type="button" data-tour="{{$coaching_id}}" data-ticket="{{$package['typeid']}}" class="button-primary">Book Now</button>
+                                    <button type="button" data-tour="{{$coaching_id}}" data-ticket="{{$package['typeid']}}" class="button-primary btn-buy ">Book Now</button>
                                 </div>
                             </div>
                         </div>
@@ -356,4 +371,16 @@ $(document).ready(function () {
     });
 });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const ticketTitle = document.querySelector('.subscription-card-header');
+      const ticketBody = document.querySelector('.subscription-card-body');
+      const btnBuy = document.querySelector('.btn-buy');
+      const textContent = ticketTitle.textContent.toLowerCase();
+      if (textContent.includes("girl") || textContent.includes("women")) {
+        ticketTitle.style.backgroundColor = "#db207b";
+        btnBuy.style.backgroundColor = "#db207b";
+      }
+    });
+  </script>
 @endpush

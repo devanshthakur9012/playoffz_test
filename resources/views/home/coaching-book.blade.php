@@ -151,14 +151,14 @@
     }
 
     .single-detail-area p {
-        font-size: 1rem;
+        font-size: 16px;
         line-height: 1.6;
         color: #ffffff;
     }
 
     @media (min-width: 768px) {
         .single-detail-area p {
-            font-size: 1.125rem;
+            font-size:  16px;
         }
 
         .dark-gap {
@@ -306,7 +306,7 @@
     
         
     
-    <style>
+    {{-- <style>
         .btn-success, .default-btn {  
             animation: glowing 800ms infinite;
         }
@@ -317,29 +317,30 @@
         100% {  box-shadow: 0 0 3px #fff; }
         }
 
-    </style>
+    </style> --}}
     <style>
         .icon_box{
             /* background: #f8f9fa; */
-            color: #004aad;
-            padding: 15px;
+            color: #ffffff;
+            padding: 23px;
             border-radius: 32px;
-            margin-right: 20px;
+            margin-right: 15px;
             height: 30px;
             width: 30px;
             justify-content: center;
             align-items: center;
             display: flex;
+            border: 1px solid #ffffff;
         }
         .icon_box i{
-            font-size: 30px;
+            font-size: 20px;
         }
         .profile-img {
-            width: 50px;       /* Set the width of the image (adjust as necessary) */
-            height: 50px;      /* Set the height of the image (adjust as necessary) */
+            width: 40px;       /* Set the width of the image (adjust as necessary) */
+            height: 40px;      /* Set the height of the image (adjust as necessary) */
             border-radius: 50%; /* Makes the image circular */
             object-fit: cover;  /* Ensures the image fills the circle without distorting */
-            border: 0px solid #ddd; /* Optional: adds a border around the image */
+            border:none !important; /* Optional: adds a border around the image */
             margin-right: 15px;
         }
         .tags{
@@ -383,10 +384,10 @@
         }
 
         .alert_info{
-            background: #FFF3D2;
+            background: #070b28 !important;
             padding: 20px;
             text-align: left;
-            color: #000;
+            color: #ffffff;
             font-weight: 500;
             display: flex;
             border-radius: 3px;
@@ -400,13 +401,13 @@
         .alert_info .iconBox{
             margin-right: 13px;
             font-size: 23px;
-            color: #004aad;
+            color: #ffffff;
         }
 
         .social-share-buttons {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            /* margin-top: 20px; */
         }
         .social-button img {
             transition: transform 0.3s ease;
@@ -419,44 +420,44 @@
             padding: 10px;
             border-radius: 50%;
             color: #fff;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             text-align: center;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 17px;
+            line-height: 18px;
         }
         .instagram {
             background-color: #E4405F;
             padding: 10px;
             border-radius: 50%;
             color: #fff;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             text-align: center;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 17px;
+            line-height: 18px;
         }
         .linkedin {
             background-color: #0077b5;
             padding: 10px;
             color: #fff;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             text-align: center;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 17px;
+            line-height: 18px;
         }
         .whatsapp{
             background-color: #25D366;
             padding: 10px;
             color: #fff;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             text-align: center;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 17px;
+            line-height: 18px;
         }
         .instagram i:hover{
             color: #fff;
@@ -466,6 +467,35 @@
         }
         .facebook i:hover{
             color: #fff;
+        }
+
+        h4 {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 20px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .grayText p{
+            font-size: 16px !important;
+            font-weight: 400;
+            color: #a7a7a7 !important;
+            margin:0px;
+        }
+
+        .type_cat{
+            padding: 4px 8px !important;
+            background: #004aad;
+            color: #ffffff;
+            font-size: 12px !important;
+            font-weight: 400;
+        }
+
+        .refree{
+            background: #2e335a45;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px dashed;
         }
     </style>
 @endpush
@@ -497,17 +527,14 @@
         <div class="row mt-5">
             <div class="col-lg-8 col-md-8 col-12">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>{{ $tournament_detail['event_title'] }}</h2>
-                    {{-- <button id="shareButton" class="btn-sm btn-primary btn">Share</button> --}}
+                    <h4>{{ $tournament_detail['event_title'] }}</h4>
                 </div>
-                <div class="dark-gap text-white h5" style="margin-bottom: 0;">
+                <div class="dark-gap text-white" style="margin-bottom: 0;">
                     <p class="dark-gap">Sport Catgeory : {{$tournament_detail['category']}}</p>
-
-                    
                     <div class="row">
                         <div class="col-lg-6">
                             {{-- Timing --}}
-                            <div class="d-flex align-items-center mb-3">
+                            <div class="d-flex align-items-center">
                                 <div class="icon_box">
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
@@ -546,10 +573,10 @@
                     <p class="mr-3">🏸 BYOE: {{ $coachData->bring_own_equipment }}</p>
                     <p>🎟️ Free Demo session: {{ $coachData->free_demo_session }}</p> --}}
                 </div>
-                <div class="row align-items-center">
+                <div class="row align-items-center mb-4">
                     <div class="col-lg-6">
-                        <div class="my-5 text-white h5">
-                            <h4 class="mr-4 mb-3">Organized By</h4>
+                        <div class="text-white">
+                            <h4 class="mb-3">Organized By</h4>
                             <div class="d-flex align-items-center">
                                 <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
                                 <p class="mb-0 fs-2">{{ $tournament_detail['sponsore_name'] }}</p>
@@ -557,9 +584,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h5 class="mb-1">Share : </h5>
+                        <h4 class="mb-3">Share : </h4>
                         <div class="social-share-buttons">
-
                             @php
                                 $url = env('BACKEND_BASE_URL').'/'.urlencode($tournament_detail['event_cover_img'][0]);
                             @endphp
@@ -567,113 +593,79 @@
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}&picture={{ $url }}" target="_blank" class="social-button facebook">
                                 <i class="fab fa-facebook-f text-white"></i>
                             </a>
-                        
                             <!-- Instagram Share Button (Manual Image Upload Required) -->
                             <a href="https://www.instagram.com/" target="_blank" class="social-button instagram" title="Share on Instagram">
                                 <i class="fab fa-instagram text-white"></i>
                             </a>
-                        
-                            <!-- LinkedIn Share Button -->
-                            {{-- <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}&source={{$url}}" target="_blank" class="social-button linkedin">
-                                <i class="fab fa-linkedin-in text-white"></i>
-                            </a> --}}
-                            
                             <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}" target="_blank" class="social-button linkedin">
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
-
                             <!-- WhatsApp Share Button -->
                             <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
                                 target="_blank" class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
                             </a>
- 
                         </div>
                     </div>
                 </div>
-
-                <div class="mb-3 text-white h5"> 
+                <div class="text-white mb-3"> 
                     <h4 class="mb-1">About Tournament</h4>
-                    <p class="fs-3">{!! $tournament_detail['event_about'] !!}</p>
+                    <div class="fs-3 grayText">{!! $tournament_detail['event_about'] !!}</div>
                 </div>
-
-                <div class="mb-3 text-white h5"> 
+                <div class="mb-3 text-white"> 
                     <h4 class="mb-1">Rules & Regulations</h4>
-                    <p class="fs-3">{!! $tournament_detail['event_disclaimer'] !!}</p>
+                    <div class="fs-3 grayText">{!! $tournament_detail['event_disclaimer'] !!}</div>
                 </div>
-
                 @if(count($tournament_Artist))
-                <h4 class=" mb-4">Tournament Referee</h4>
-                <div class="row">
-                    @foreach ($tournament_Artist as $sport)
-                        <div class="col-md-3 col-sm-6 mb-3">
-                            <div class="card text-center shadow-sm" style="background: transparent">
-                                <div class="card-body">
-                                    <!-- Artist Image -->
-                                    <img class="rounded-circle p-1 border" 
-                                         src="{{ env('BACKEND_BASE_URL').'/'.$sport['artist_img'] }}" 
-                                         alt="{{ $sport['artist_title'] }}" 
-                                         width="100px" height="100px">
-                                    <!-- Artist Title -->
-                                    <p class="mt-2 mb-0" style="font-size: 16px; font-weight: 600;">{{ $sport['artist_title'] }}</p>
-                                    <!-- Artist Role -->
-                                    <span class="badge badge-primary mt-2">{{ $sport['artist_role'] }}</span>
+                <div class="text-white mb-3"> 
+                    <h4 >Tournament Referee</h4>
+                    <div class="row">
+                        @foreach ($tournament_Artist as $sport)
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <div class="mt-2 text-center refree">
+                                    <div class="">
+                                        <!-- Artist Image -->
+                                        <img class="rounded-circle p-1 border" 
+                                            src="{{ env('BACKEND_BASE_URL').'/'.$sport['artist_img'] }}" 
+                                            alt="{{ $sport['artist_title'] }}" 
+                                            width="90px" height="90px">
+                                        <!-- Artist Title -->
+                                        <p class="mt-2 mb-0">{{ $sport['artist_title'] }}</p>
+                                        <!-- Artist Role -->
+                                        <span class="badge badge-primary m-1 type_cat">{{ $sport['artist_role'] }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-            
-
-                @if(count($tournament_Facility))
-                    <h4 class="">Tournament Facility</h4>
-                    <div class="available-sports mb-3">
-                        @foreach ($tournament_Facility as $sport)
-                            <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="75" height="75">
-                                <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['facility_title'] }}</p>
                             </div>
                         @endforeach
                     </div>
+                </div>
                 @endif
-                
+                @if(count($tournament_Facility))
+                <div class="text-white mb-3"> 
+                    <h4 class="">Tournament Facility</h4>
+                    <div class="available-sports">
+                        @foreach ($tournament_Facility as $sport)
+                            <div class="available-sport-card">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="70" height="70">
+                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
                 @if(count($tournament_Restriction))
+                <div class="text-white mb-3"> 
                     <h4 class="">Tournament Prohibited</h4>
                     <div class="available-sports">
                         @foreach ($tournament_Restriction as $sport)
                             <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="75" height="75">
-                                <p class="mb-0 mt-1" style="font-size:14px; ">{{ $sport['restriction_title'] }}</p>
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="70" height="70">
+                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
                             </div>
                         @endforeach
                     </div>
+                </div>
                 @endif
-                
-                <!-- Intensity and Calories Section -->
-                {{-- <div class="mt-4 mb-3">
-                    <h5>{{ $coachData->category->category_name }}</h5>
-                    <div class="d-flex flex-row align-items-start w-100">
-                        <div class="mr-4">
-                            <span class="text-muted">CALORIES</span>
-                            <div style="min-width: 115px;">
-                                <span>🔥</span>
-                                <span class="ml-2 font-weight-bold">{{ $sessionDurationData['calories'] }}</span>
-                            </div>
-                        </div>
-                        <div class="w-100">
-                            <span class="text-muted">INTENSITY: {{$sessionDurationData['intensity']}}</span>
-                            <div class="dark-intensity-bar mt-2">
-                                <div class="dark-bar-section rounded-left" style="background:{!! Common::intensityColors($sessionDurationData['intensity']) !!};"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-        
-                {{-- <div class="mb-3">
-                    <h5 class="">Benefits</h5>
-                    <p class="text-muted">{{ implode("| ",$sessionDurationData['benefits']) }}</p>
-                </div> --}}
             </div>
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="event-ticket card shadow-sm mb-3">
@@ -692,21 +684,11 @@
                     </div>
                 </div>
         
-                <div class="card shadow-sm border-0">
+                <div class="text-left event-ticket card shadow-sm mb-3">
                     <div class="card-body">
                         <div class="products-reviews">
-                            <h3>{{$tournament_detail['event_address_title']}}</h3>
+                            <h4>{{$tournament_detail['event_address_title']}}</h4>
                             <span class="d-block" style="font-size: 12px;">{{ $tournament_detail['event_address'] }}</span>
-                            {{-- <div class="progress-section mb-0 mt-3">
-                                <iframe
-                                width="100%" 
-                                height="100%" 
-                                frameborder="0" 
-                                style="border:0;" 
-                                allowfullscreen=""
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAxasPhBlBcRiOxTX8U9f7K-_0992N7Si8&q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}">
-                              </iframe>
-                            </div> --}}
                             <div class="progress-section mb-0 mt-3" style="position: relative;">
                                 <!-- Embed Google Map -->
                                 <iframe 
@@ -729,19 +711,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div class="progress-section mb-4 mt-4">
-            <iframe
-            width="100%" 
-            height="450" 
-            frameborder="0" 
-            style="border:0;" 
-            allowfullscreen=""
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAxasPhBlBcRiOxTX8U9f7K-_0992N7Si8&q={{ $tournament_detail['event_latitude'] }},{{ $tournament_detail['event_longtitude'] }}">
-          </iframe>
-        </div> --}}
-
-        
                 
         @if(count($tournament_gallery))
             <h4 class="mt-3">Tournament Gallery</h4>

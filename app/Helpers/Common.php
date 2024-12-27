@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class Common
 {
@@ -98,6 +99,33 @@ class Common
    });
    return $siteData;
   }
+
+     public static function pageListData()
+    {
+        $siteData = \Cache::remember('site-pages', 10, function () {
+            $client = new Client();
+            $baseUrl = env('BACKEND_BASE_URL');
+            try {
+                $response = $client->get("{$baseUrl}/web_api/page-list.php");
+                $data = json_decode($response->getBody(), true);
+                if (isset($data['pagelist']) && is_array($data['pagelist'])) {
+                    // Generate slugs within the cached data
+                    $data['pagelist'] = array_map(function ($item) {
+                        $item['slug'] = Str::slug($item['title']);
+                        return $item;
+                    }, $data['pagelist']);
+                    return $data['pagelist'];
+                } else {
+                    Log::error("Invalid page list data received from API: " . json_encode($data));
+                    return []; // Return empty array on error
+                }
+            } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+                Log::error("Error fetching page list from API: " . $e->getMessage());
+                return []; // Return empty array on error
+            }
+        });
+        return $siteData;
+    }
 
   public static function daysArr(){
     return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];

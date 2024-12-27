@@ -347,14 +347,22 @@
                                     Events</a></li> --}}
                             <li class=""><a href="{{route('help-center')}}"
                                 class="text-white text-decoration-none ">Help Center</a></li>
-                            <li class="mb-1"><a href="contact" class="text-white text-decoration-none ">Contact
+                            @php
+                                // dd(Common::pageListData());
+                            @endphp
+                            @if(Common::pageListData() && count(Common::pageListData()))
+                                @foreach (Common::pageListData() as $item)
+                                    <li class="mb-1"><a href="{{ url('/pages/' . $item['slug']) }}" class="text-white text-decoration-none">{{ $item['title'] }}</a></li>
+                                @endforeach
+                            @endif  
+                            {{-- <li class="mb-1"><a href="contact" class="text-white text-decoration-none ">Contact
                                     Us</a></li>
                             <li class="mb-1"><a href="{{url('terms-and-conditions')}}"
                                     class="text-white text-decoration-none ">Terms & Conditions </a></li>
                             <li class=""><a href="{{url('privacy-policy')}}"
                                     class="text-white text-decoration-none ">Privacy Policy</a></li>
                             <li class=""><a href="{{url('cancellation-policy')}}"
-                                class="text-white text-decoration-none ">Cancellation Policy</a></li>
+                                class="text-white text-decoration-none ">Cancellation Policy</a></li> --}}
                         </ul>
                     </div>
                 </div>
@@ -362,27 +370,34 @@
                     <div class="social">
                         <h6 class="footer-heading text-uppercase text-white fw-bold">Social Links</h6>
                         <ul class=" my-4">
-                            <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank"
-                                    class="text-white mb-2"><i class="fab fa-facebook"></i> Facebook</a></li>
+                            @isset($favicon['Facebook'])
+                                <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank"
+                                        class="text-white mb-2"><i class="fab fa-facebook"></i> Facebook</a></li>
+                            @endisset
+                            @isset($favicon['Instagram'])
                             <li class=""><a href="{{ $favicon['Instagram'] }}" target="_blank"
                                     class="text-white mb-2"><i class="fab fa-instagram"></i> Instagram</a></li>
+                            @endisset
+                            @isset($favicon['Twitter'])
                             <li class=""><a href="{{ $favicon['Twitter'] }}" target="_blank"
                                     class="text-white mb-2"><i class="fab fa-twitter"></i> Twitter</a></li>
-                            <!-- <li class=""><a href="#" class="text-white  mb-2"><i class="fab fa-whatsapp"></i> Whatsapp</a></li> -->
+                            @endisset
+                            @isset($favicon['Linkedin'])
+                            <li class=""><a href="{{ $favicon['Linkedin'] }}" target="_blank"
+                                    class="text-white mb-2"><i class="fab fa-linkedin"></i> Linkedin</a></li>
+                            @endisset
                         </ul>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-6 mt-4 col-lg-4 col-12">
                     <div class="contact">
                         <h6 class="footer-heading text-uppercase text-white fw-bold">Contact Us</h6>
-                        <a href="" class="mt-4 m-0 text-white mb-1"><i class="fas fa-map-marker-alt"></i>
-                            No.191/3, 27th Cross, Kaggadasapura Main Rd, above Lenskart Showroom, C.V. Raman Nagar,
-                            Bengaluru, Karnataka 560093</a>
-                        <a href="tel:+91-7022190602" class="text-white mb-1 text-decoration-none d-block "><i
-                                class="fas fa-phone-alt"></i> +919686314018</a>
-                        <a href="mailto:support@fitsportsy.in"
+                        <a href="" class="mt-4 text-white mb-2"><i class="fas fa-map-marker-alt"></i> {{ $favicon['address'] }}</a>
+                        <a href="tel:{{ $favicon['mobile'] }}" class="text-white mb-1 mt-1 text-decoration-none d-block "><i
+                                class="fas fa-phone-alt"></i> {{ $favicon['mobile'] }}</a>
+                        <a href="mailto:{{$favicon['email']}}"
                             class="text-white mb-1 text-decoration-none d-block "><i class="fas fa-envelope"></i>
-                            support@fitsportsy.in</a>
+                            {{ $favicon['email'] }}</a>
                     </div>
                 </div>
             </div>
@@ -390,8 +405,7 @@
      
         <div class="text-center bg-dark mt-4 p-2" style="color: #b5b5b5">
             <div class="container">
-                <p class="m-0 small text-center">Copyright 2023 © GeeksLife Technology Solutions Pvt. Ltd. All Rights Reserved.</p>
-                <p class="m-0 small text-center">The content and images used on the supershows website are copyright protected, and copyrights vest with the respective owners. The usage of the content and images on this website is intended to promote adventurous experiences, and no endorsement of any adventure provider or service shall be implied. Unauthorized use is prohibited and punishable by law.</p>
+                <p class="m-0 small text-center">{{ $favicon['footer_copyright'] }}</p>
             </div>
            
         </div>

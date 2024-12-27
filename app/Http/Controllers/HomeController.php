@@ -269,6 +269,22 @@ class HomeController extends Controller
         return view('home.coaching-package', $data);
     }
 
+    public function pagesData($slug){
+        $pages = Common::pageListData();
+        $page = null;
+        foreach ($pages as $p) {
+            if ($p['slug'] == $slug) {
+                $page = $p;
+                break;
+            }
+        }
+
+        if (!$page) {
+            abort(404); // Handle case where page is not found
+        }
+        return view('frontend.terms-and-conditions', ['page' => $page]); // Pass single page data
+    }
+
     public function coachingPrice($event_id){
         try {
             // Instantiate the Guzzle client

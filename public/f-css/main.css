@@ -1576,12 +1576,12 @@ form.user .btn-user {
 
 .about-event {
     border: none;
-    background-color: #1a1b2e;
+    background-color: #2e335a45;
     border-radius: 5px;
 }
 
 .event-ticket {
-    background-color: #1a1b2e;
+    background-color: #2e335a45;
     border: none;
     text-align: center;
 }

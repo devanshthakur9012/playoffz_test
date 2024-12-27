@@ -41,6 +41,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('pages/{title}', [HomeController::class, 'pagesData'])->name('pagesData');
 
     Route::get('tournament-type/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
 
