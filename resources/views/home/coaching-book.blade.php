@@ -627,7 +627,10 @@
                 @if(isset($tournament_detail['prize_reward']) && $tournament_detail['prize_reward'] != null)
                     <div class="mb-3 text-white"> 
                         <h4 class="mb-1">Prizes & Rewards</h4>
-                        <div class="fs-3 grayText">🏆 {!! $tournament_detail['prize_reward'] !!}</div>
+                        @php $collection = json_decode($tournament_detail['prize_reward'], true);  @endphp
+                        @foreach ($collection as $item)
+                            <div class="fs-3 grayText">🏆 {!! $item !!}</div>
+                        @endforeach
                     </div>                    
                 @endif
                 @if(count($tournament_Artist))
