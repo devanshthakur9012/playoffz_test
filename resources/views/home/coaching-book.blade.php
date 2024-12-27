@@ -479,7 +479,7 @@
         .grayText p{
             font-size: 16px !important;
             font-weight: 400;
-            color: #a7a7a7 !important;
+            color: #e7e7e7 !important;
             margin:0px;
         }
 
@@ -496,6 +496,14 @@
             padding: 12px;
             border-radius: 20px;
             border: 1px dashed;
+        }
+
+        .grayText * {
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            color: inherit !important;
+            background: inherit !important;
         }
     </style>
 @endpush
@@ -616,6 +624,12 @@
                     <h4 class="mb-1">Rules & Regulations</h4>
                     <div class="fs-3 grayText">{!! $tournament_detail['event_disclaimer'] !!}</div>
                 </div>
+                @if(isset($tournament_detail['prize_reward']) && $tournament_detail['prize_reward'] != null)
+                    <div class="mb-3 text-white"> 
+                        <h4 class="mb-1">Prizes & Rewards</h4>
+                        <div class="fs-3 grayText">🏆 {!! $tournament_detail['prize_reward'] !!}</div>
+                    </div>                    
+                @endif
                 @if(count($tournament_Artist))
                 <div class="text-white mb-3"> 
                     <h4 >Tournament Referee</h4>
@@ -689,23 +703,25 @@
                         <div class="products-reviews">
                             <h4>{{$tournament_detail['event_address_title']}}</h4>
                             <span class="d-block" style="font-size: 12px;">{{ $tournament_detail['event_address'] }}</span>
-                            <div class="progress-section mb-0 mt-3" style="position: relative;">
-                                <!-- Embed Google Map -->
-                                <iframe 
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30766738.48171446!2d60.96917638629971!3d19.72516357822192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sus!4v1734715250824!5m2!1sen!2sus" 
-                                    width="100%" 
-                                    height="100%" 
-                                    style="border:0;" 
-                                    allowfullscreen="" 
-                                    loading="lazy" 
-                                    referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
-                            
-                                <!-- Overlay that redirects on click -->
-                                <a href="{{ $tournament_detail['map_url'] }}" target="_blank" 
-                                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 10;">
-                                </a>
-                            </div>                           
+                            @isset($tournament_detail['map_url'])
+                                <div class="progress-section mb-0 mt-3" style="position: relative;">
+                                    <!-- Embed Google Map -->
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30766738.48171446!2d60.96917638629971!3d19.72516357822192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sus!4v1734715250824!5m2!1sen!2sus" 
+                                        width="100%" 
+                                        height="100%" 
+                                        style="border:0;" 
+                                        allowfullscreen="" 
+                                        loading="lazy" 
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                
+                                    <!-- Overlay that redirects on click -->
+                                    <a href="{{ $tournament_detail['map_url'] }}" target="_blank" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 10;">
+                                    </a>
+                                </div>    
+                            @endisset                       
                         </div>
                     </div>
                 </div>

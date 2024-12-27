@@ -10,6 +10,11 @@
         padding: 40px 0;
     }
 
+    
+    .subscription-section h1{
+        font-size: 30px;
+    }
+
     .subscription-card {
         display: flex;
         flex-direction: column;
@@ -58,7 +63,7 @@
 
     .button-primary, .button-success, .button-premium {
         display: inline-block;
-        padding: 15px 25px;
+        padding: 10px 25px;
         width: 100%;  /* Full width button */
         color: #ffffff;
         font-size: 1rem;
@@ -163,17 +168,28 @@
         border: none;
         padding: 8px 20px;
         border-radius: 10px;
-        width: auto;
+        width: 50%;
         text-align: center;
         background: #1a1b2e;
     }
 
     .slotBadge{
         position: absolute;
-        top: -13px;
-        right: 8px;
+        top: -10px;
+        right: 7px;
         background: #ffe14f !important;
         color: #000000 !important;
+        font-size: 11px;
+        padding: 6px !important;
+        font-weight: 500;
+    }
+    .col-md-3{
+        padding: 5px !important;
+    }
+    .quantity-block{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
     }
 </style>
 @endpush
@@ -182,9 +198,9 @@
     <div class="container">
         <section class="subscription-section">
             <div class="container">
-                <h1 class="text-center">Tickets Details</h1>
+                <h1 class="text-center">Avaliable Ticket Types</h1>
                 {{-- <h2>{{$coachData->coaching_title.' ('. $coachData->category->category_name .')'}} Packages</h2> --}}
-                <h5 class="mt-0 mb-3 text-center" style="font-weight: 300;">WHAT TICKETS WOULD YOU LIKE??</h5>
+                {{-- <h5 class="mt-0 mb-3 text-center">WHAT TICKETS WOULD YOU LIKE??</h5> --}}
                 <div class="row mt-4">
                     {{-- @foreach ($packageData as $package)
                         @php
@@ -233,18 +249,18 @@
                     @endforeach --}}
 
                     @foreach ($tour_plans as $package)
-                        <div class="col-md-4 d-flex mb-4">
+                        <div class="col-md-3 d-flex mb-4">
                             <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
                                 <div class="subscription-card-header" style="background-color: #004aad;" data-ticket-type="{{ $package['ticket_type'] }}">
-                                    <h4 class="mb-0 text-center"><i class="fas fa-gem" style="font-size: 1rem;"></i> {{ $package['ticket_type'] }}</h4>
+                                    <h4 class="mb-0 text-center" style="font-size: 18px;"><i class="fas fa-gem" style="font-size: 18px;"></i> {{ $package['ticket_type'] }}</h4>
                                 </div>
                                 <div class="subscription-card-body">
                                     <h3 class="subscription-card-title text-center">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Slot</small></h3>
                                     <div class="price-list">
                                         <p><span class="badge badge-danger p-2 mb-0 slotBadge">{{$package['TotalTicket']}} Slot Left</span></p>
-                                        <div>{!! $package['description'] !!}</div>
+                                        <p class="text-center"><i class="far fa-calendar-alt mr-2"></i>{{$package['description']}}</p>
                                     </div>
-                                    <h6 class="mt-3 mb-0">Quantity</h6>
+                                    <h6 class="mt-2 mb-0"><small>Quantity :</small></h6>
                                     <div class="d-flex align-items-center justify-content-center mt-3">
                                         <div class="quantity-block home_page_sidebar" data-package-id="{{ $package['typeid'] }}">
                                             <button type="button" class="quantity-arrow-minus2 shop_single_page_sidebar">-</button>
