@@ -193,7 +193,7 @@ class HomeController extends Controller
         // return $homeData;
     }
 
-    public function coachingBook(int $id, string $title)
+    public function coachingBook(string $title,int $id)
     {
         $selectedCity = Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'All';
         // $data['coachData'] = HomeService::coachingBookDataById($id);

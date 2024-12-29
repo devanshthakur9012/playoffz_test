@@ -10,6 +10,16 @@ $orgComm = 0;
 $rozarKey = "";
 $paymentId = "";
 @endphp
+<style>
+    @media (max-width: 576px) {
+        .mbsm{
+            margin-top: 15px;
+        }
+        .mbsm h4{
+            font-size: 18px !important;
+        }
+    }
+</style>
 <section class="section-area checkout-event-area">
     <div class="container">
         <form action="{{route('store-payment-detail')}}" id="razorpay-form" method="post">
@@ -25,8 +35,8 @@ $paymentId = "";
                                             <img src="{{env('BACKEND_BASE_URL')}}/{{$packageDetails['event_img']}}" class="card-img-top" alt="{{$packageDetails['event_title']}}">
                                         </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <h4 class="mb-3" style="font-size: 25px">{{$packageDetails['event_title']}}</h4>
+                                    <div class="col-lg-8 mbsm">
+                                        <h4 class="mb-3" style="font-size: 20px">{{$packageDetails['event_title']}}</h4>
                                         <p class="mb-0">{{$packageDetails['event_sdate']}}</p>
                                         <p class="mb-0">{{$packageDetails['event_address_title']}}</p>
                                     </div>
@@ -56,7 +66,7 @@ $paymentId = "";
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4  mb-4">
+                <div class="col-md-4 mbsm mb-4">
                     <div class="card checkout-card shadow-sm">
                         <div class="card-body">
                             <h4 class=" mb-3">
@@ -216,7 +226,8 @@ $paymentId = "";
             },
             modal: {
                 ondismiss: function() {
-                    alert('Payment canceled by the user.');
+                    // alert('Payment canceled by the user.');
+                    location.reload();
                 }
             }
         };

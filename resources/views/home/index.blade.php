@@ -103,7 +103,7 @@
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
                 <h1 class="h4 mb-0 float-left">Latest Tournament</h1>
-                <a href="{{url('tournament-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <a href="{{route('tournament-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['latest_event'] as $tour)
@@ -131,7 +131,7 @@
                                 @endisset
                                 <div class="mt-2">
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                 </div>
                                 @php
                                     // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
@@ -159,7 +159,7 @@
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
                 <h1 class="h4 mb-0 float-left">Nearby Tournament</h1>
-                <a href="{{url('tournament-type',['type'=>'nearby'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <a href="{{route('tournament-type',['type'=>'nearby'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['nearby_event'] as $tour)
@@ -187,7 +187,7 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +202,7 @@
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
                 <h1 class="h4 mb-0 float-left">Monthly Tournament</h1>
-                <a href="{{url('tournament-type',['type'=>'monthly'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <a href="{{route('tournament-type',['type'=>'monthly'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['this_month_event'] as $tour)
@@ -230,7 +230,7 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -244,7 +244,7 @@
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
                 <h1 class="h4 mb-0 float-left">Upcoming Tournament</h1>
-                <a href="{{url('tournament-type',['type'=>'upcoming'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <a href="{{route('tournament-type',['type'=>'upcoming'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['upcoming_event'] as $tour)
@@ -272,7 +272,7 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
                                 </div>
                             </div>
                         </div>
@@ -291,9 +291,9 @@
         <div class="category-card">
             <a href="{{ route('tournament', [Str::slug($cat['title']), $cat['id']]) }}">
                 <img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cover_img']}}" class="category-img" alt="...">
-                {{-- <div class="cat-content">
+                <div class="cat-content">
                     <p class="cat-title text-truncate">{{$cat['title']}}</p>
-                </div> --}}
+                </div>
             </a>
         </div>
         @endforeach

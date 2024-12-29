@@ -115,7 +115,8 @@ class AppUserController extends Controller
 
         $str = '';
         foreach($coaches as $val){
-            $str .= '<a href="'.url('coaching-book/'.$val['event_id'].'/'.\Str::slug($val['event_title'])).'" class="list-group-item">'.$val['event_title'].'<br>'.$val['event_place_name'].'</a>';
+            $url = route('tournament-detail',[\Str::slug($val['event_title']),$val['event_id']]);
+            $str .= '<a href="'.$url.'" class="list-group-item">'.$val['event_title'].'<br>'.$val['event_place_name'].'</a>';
         }
         echo $str;
     }

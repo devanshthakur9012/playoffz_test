@@ -43,17 +43,17 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('pages/{title}', [HomeController::class, 'pagesData'])->name('pagesData');
 
-    Route::get('tournament-type/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
+    Route::get('tournaments/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
 
-    Route::get('coaching-packages', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
-    Route::get('coachings/{category}/{id}', [HomeController::class, 'coachings'])->name('tournament');
+    Route::get('tournament-tickets', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
+    Route::get('tournaments/{category}/{id}', [HomeController::class, 'coachings'])->name('tournament');
     Route::get('city-coachings/{cityName}', [HomeController::class, 'cityCoachings']);
     Route::get('book-coaching-package', [HomeController::class, 'bookCoachingPackage']);
     Route::post('store-book-coaching-package', [HomeController::class, 'storeBookCoachingPackage']);
 
     Route::get('/booked-coaching-package-details',[HomeController::class,'bookedCoachingPackageDetails']);
     
-    Route::get('/coaching-book/{id}/{title}', [HomeController::class, 'coachingBook'])->name('tournament-detail');
+    Route::get('/tournament/{title}/{id}', [HomeController::class, 'coachingBook'])->name('tournament-detail');
     Route::post('/send-to-admin', [FrontendController::class, 'sentMessageToAdmin']);
     // Route::get('/privacy_policy', [FrontendController::class, 'privacypolicy']);
 
@@ -144,7 +144,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     
     // TICKET BOOKING
     Route::post('/purchase-tournament',[BookController::class,'purchaseTournament'])->name('purchase-tournament');
-    Route::get('/confirm-ticket-book',[BookController::class,'confirmTicketBook'])->name('confirm-ticket-book');
+    Route::get('/confirm-booking',[BookController::class,'confirmTicketBook'])->name('confirm-ticket-book');
     Route::post('/store-payment-detail',[BookController::class,'storePaymentDetails'])->name('store-payment-detail');
     Route::get('/ticket-information/{id}',[BookController::class,'ticketInformationData'])->name('ticket-information');
 

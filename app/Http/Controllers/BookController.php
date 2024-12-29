@@ -206,7 +206,7 @@ class BookController extends Controller
         \Session::put('eventTicketBook',$data);
         $inputObj = new \stdClass();
         $inputObj->params = 'id='.$ticketId;
-        $inputObj->url = url('confirm-ticket-book');
+        $inputObj->url = route('confirm-ticket-book');
         $ticketCheckLink = Common::encryptLink($inputObj);
         return redirect($ticketCheckLink);
     }
@@ -1488,7 +1488,7 @@ class BookController extends Controller
 
         if(\Session::has('eventTicketBook')){
             $inputObjB = new \stdClass();
-            $inputObjB->url = url('confirm-ticket-book');
+            $inputObjB->url = route('confirm-ticket-book');
             $inputObjB->params = 'id='.json_encode($ticket).'&type=advance';
             // $inputObjB->params = 'event_id='.$eventId.'&bookDetails='.$bookingDetails;
             $subLink = Common::encryptLink($inputObjB);
@@ -1523,7 +1523,7 @@ class BookController extends Controller
         session()->put('eventTicketBook', $data);
         if(\Session::has('eventTicketBook')){
             $inputObjB = new \stdClass();
-            $inputObjB->url = url('confirm-ticket-book');
+            $inputObjB->url = route('confirm-ticket-book');
             $inputObjB->params = 'id='.$req->ticketId;
             $subLink = Common::encryptLink($inputObjB);
             return redirect($subLink);

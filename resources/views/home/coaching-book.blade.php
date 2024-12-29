@@ -1,6 +1,7 @@
 @extends('frontend.master', ['activePage' => 'home'])
 @section('og_data')
 <head>
+    <meta charset="UTF-8">
     <meta property="og:title" content="{{ $tournament_detail['event_title'] }}" />
     <meta property="og:description" content="Organizer : {{ $tournament_detail['sponsore_name'] }}" />
     <meta property="og:image" content="{{ env('BACKEND_BASE_URL') }}/{{$tournament_detail['event_cover_img'][0]}}" />
@@ -170,12 +171,12 @@
     .available-sports {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
-        margin-top: 20px;
+        gap: 15px;
+        margin-top: 0px;
     }
 
     .available-sport-card {
-        padding: 10px 15px;
+        /* padding: 10px; */
         /* border: 1px solid #444; */
         border-radius: 8px;
         width: auto;
@@ -268,6 +269,10 @@
         .coach-image {
             width: 80px;
             height: 80px;
+        }
+
+        .mbsm{
+            margin-bottom: 12px;
         }
     }
 
@@ -540,7 +545,7 @@
                 <div class="dark-gap text-white" style="margin-bottom: 0;">
                     <p class="dark-gap">Sport Catgeory : {{$tournament_detail['category']}}</p>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mbsm">
                             {{-- Timing --}}
                             <div class="d-flex align-items-center">
                                 <div class="icon_box">
@@ -554,7 +559,7 @@
                         </div>
                         <div class="col-lg-6">
                             {{-- Tickets --}}
-                            <div class="d-flex align-items-center mb-2">
+                            <div class="d-flex align-items-center ">
                                 <div class="icon_box">
                                     <i class="fas fa-ticket-alt"></i>
                                 </div>
@@ -582,7 +587,7 @@
                     <p>🎟️ Free Demo session: {{ $coachData->free_demo_session }}</p> --}}
                 </div>
                 <div class="row align-items-center mb-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mbsm">
                         <div class="text-white">
                             <h4 class="mb-3">Organized By</h4>
                             <div class="d-flex align-items-center">
@@ -632,7 +637,7 @@
                         @if(is_array($collection) && count($collection) > 0)
                             <h4 class="mb-1">Prizes & Rewards</h4>
                             @foreach ($collection as $item)
-                                <div class="fs-3 grayText">🏆 {!! $item !!}</div>
+                                <div class="fs-3 grayText">🏆 {!! mb_convert_encoding($item, 'UTF-8', 'auto') !!}</div>
                             @endforeach
                         @endif
                     </div>
@@ -657,32 +662,6 @@
                                         <span class="badge badge-primary m-1 type_cat">{{ $sport['artist_role'] }}</span>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                @if(count($tournament_Facility))
-                <div class="text-white mb-3"> 
-                    <h4 class="">Tournament Facility</h4>
-                    <div class="available-sports">
-                        @foreach ($tournament_Facility as $sport)
-                            <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="70" height="70">
-                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                @if(count($tournament_Restriction))
-                <div class="text-white mb-3"> 
-                    <h4 class="">Tournament Prohibited</h4>
-                    <div class="available-sports">
-                        @foreach ($tournament_Restriction as $sport)
-                            <div class="available-sport-card">
-                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="70" height="70">
-                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -735,7 +714,33 @@
                 </div>
             </div>
         </div>
-                
+              
+        @if(count($tournament_Facility))
+        <div class="text-white mb-3 mt-2"> 
+            <h4 class="">Tournament Facility</h4>
+            <div class="available-sports">
+                @foreach ($tournament_Facility as $sport)
+                    <div class="available-sport-card">
+                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="70" height="70">
+                        <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        @if(count($tournament_Restriction))
+        <div class="text-white mb-3 mt-4"> 
+            <h4 class="">Tournament Prohibited</h4>
+            <div class="available-sports">
+                @foreach ($tournament_Restriction as $sport)
+                    <div class="available-sport-card">
+                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="70" height="70">
+                        <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif  
         @if(count($tournament_gallery))
             <h4 class="mt-3">Tournament Gallery</h4>
             <div class="tournament-gallery">
@@ -752,9 +757,9 @@
         
         @if(count($tournament_detail['event_tags']))
             <h4 class="mt-3">Tags</h4>
-            <div class="available-sports mb-4 gap-2">
+            <div class="available-sports mb-4 gap-2 mt-3">
                 @foreach ($tournament_detail['event_tags'] as $tags)
-                    <span class="tags">{{ $tags }}</span>
+                    <span class="tags text-capitalize">{{ $tags }}</span>
                 @endforeach
             </div>
         @endif
