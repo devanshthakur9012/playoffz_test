@@ -9,10 +9,20 @@
         }
     }
 </style>
+<style>
+    @media (max-width: 576px) {
+        .imageHidden{
+            display:none !important;
+        }
+        .col-lg-6{
+            padding: 0px 15px !important;
+        }
+    }
+</style>
 <section class="section-area login-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6 p-0 d-flex align-items-stretch">
+            <div class="imageHidden col-lg-6 p-0 d-flex align-items-stretch">
                 <img src="{{asset('/images/login_banner.png')}}" width="100%" alt="">
             </div>
             <div class="col-lg-6 p-0 d-flex align-items-stretch">
@@ -41,7 +51,7 @@
                                 <form class="user" method="post" name="register_frm" id="register_frm">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label">Mobile Number</label>
                                         <input type="number" name="number" class="form-control form-control-user"
                                             id="number" placeholder="Enter Mobile Number..." required>
                                     </div>

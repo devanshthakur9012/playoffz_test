@@ -68,6 +68,10 @@ p {
     /* line-height: 50px; */
 }
 
+.btn-danger:not(:disabled):not(.disabled).active:focus, .btn-danger:not(:disabled):not(.disabled):active:focus, .show>.btn-danger.dropdown-toggle:focus{
+    box-shadow:none !important;
+}
+
 
 .form-control:focus {
     color: #fff;
@@ -1041,8 +1045,8 @@ header .navbar .navbar-brand img {
     background: #004aad !important;
     padding: 0;
     font-weight: 400;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid #fff;
+    border-top: 1px solid #070b28;
+    border-bottom: 1px solid #070b28;
 }
 
 .osahan-nav-mid a.nav-link {
