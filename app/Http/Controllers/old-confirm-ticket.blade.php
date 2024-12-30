@@ -122,10 +122,7 @@ $paymentId = "";
                                 <button type="button" class="btn default-btn btn-block" id="payBookAmount">Continue To
                                     Checkout</button>
                             @else
-                                @php
-                                    session(['redirect_url' => url()->current()]);
-                                @endphp
-                                <a href="{{ route('userLogin') }}" class="btn default-btn btn-block">Login To Continue</a>
+                                <a href="{{route('userLogin')}}" class="btn default-btn btn-block">Login To Continue</a>
                             @endif
                         </div>
                     </div>
@@ -208,51 +205,42 @@ $paymentId = "";
 </script>
 <script>
     function razorpaySubmit(amount) {
-        $.post('{{route("create-order")}}', { amount: amount }, function(response) {
-            if (response.success) {
-                let orderID = response.order_id;
-
-                var razorpayOptions = {
-                    key: "{{ $key_id }}", // Razorpay key from settings
-                    amount: amount * 100, // Amount in paise
-                    currency: "{{ $currency }}",
-                    name: "PlayOffz",
-                    description: "Order Payment",
-                    order_id: orderID, // Razorpay Order ID
-                    prefill: {
-                        name: $('#card_holder_name').val(),
-                        email: $('#email').val(),
-                        contact: $('#number').val()
-                    },
-                    handler: function(paymentResponse) {
-                        // Set the payment ID and submit the form
-                        $('#razorpay_payment_id').val(paymentResponse.razorpay_payment_id);
-                        $('#razorpay-form').submit();
-                    },
-                    modal: {
-                        ondismiss: function() {
-                            // alert("Payment canceled by user.");
-                            window.location.reload();
-                        }
-                    }
-                };
-
-                var razorpayInstance = new Razorpay(razorpayOptions);
-                razorpayInstance.open();
-            } else {
-                alert("Error creating Razorpay order: " + response.message);
+        let totalAmount = amount * 100; // Razorpay expects amount in paise
+        document.getElementById('merchant_total').value = Math.round(totalAmount);
+        // Razorpay payment options
+        var razorpayOptions = {
+            key: "{{ $key_id }}", // Razorpay key from settings
+            amount: Math.round(totalAmount), // Amount in paise
+            name: "PlayOffz",
+            description: "Order #{{ $feeToken }}", // Dynamic order ID
+            currency: "{{ $currency }}",
+            prefill: {
+                name: $('#card_holder_name').val(),
+                email: $('#email').val(),
+                contact: $('#number').val()
+            },
+            handler: function(response) {
+                // Capture Razorpay payment ID and submit form
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay-form').submit();
+            },
+            modal: {
+                ondismiss: function() {
+                    // alert('Payment canceled by the user.');
+                    location.reload();
+                }
             }
-        }).fail(function() {
-            alert("Failed to create Razorpay order. Please try again.");
-        });
+        };
+        // Open Razorpay payment gateway
+        var razorpayInstance = new Razorpay(razorpayOptions);
+        razorpayInstance.open();
     }
 
-    // Trigger Razorpay payment on button click
+    // On button click, initiate Razorpay payment
     $("#payBookAmount").on('click', function() {
         let totalAmount = {{ round($totalAmountPayable, 2) }};
         razorpaySubmit(totalAmount);
     });
-
 </script>
 <script>
     $("#apply_btn").on('click', function() {

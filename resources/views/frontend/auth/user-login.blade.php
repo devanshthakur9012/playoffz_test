@@ -272,7 +272,7 @@
                             message: response.message
                         });
                         setTimeout(() => {
-                            window.location.href = "{{ route('home') }}";
+                            window.location.href = "{{$redirectUrl}}";
                         }, 1000);
                     } else {
                         iziToast.error({

@@ -55,6 +55,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     
     Route::get('/tournament/{title}/{id}', [HomeController::class, 'coachingBook'])->name('tournament-detail');
     Route::post('/send-to-admin', [FrontendController::class, 'sentMessageToAdmin']);
+    Route::post('/create-order', [UserController::class, 'createOrder'])->name('create-order');
     // Route::get('/privacy_policy', [FrontendController::class, 'privacypolicy']);
 
     Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions']);

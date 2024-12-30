@@ -59,7 +59,6 @@ class BookController extends Controller
     //     return view('frontend.book-event.book-event-ticket',compact('ticketData','daysArr','timeSlots','type','ticketCheckLink','ticketPostLink'));
     // }
 
-
     public function bookEventTicket(){
         $id = $this->memberObj['id'];
         $type = $this->memberObj['type'];
@@ -277,6 +276,7 @@ class BookController extends Controller
     {
         // Check if the booking data is stored in the session
         $bookingData = session('booking_data');
+        session()->forget('redirect_url');
         if (!$bookingData) {
             // Redirect back if no booking data is found
             return redirect()->route('home')->with('error', 'No booking data found. Please select a package to proceed.');

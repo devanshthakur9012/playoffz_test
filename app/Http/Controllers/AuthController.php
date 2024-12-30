@@ -16,11 +16,12 @@ use Common;
 
 class AuthController extends Controller
 {
-    public function userLogin(){
+    public function userLogin(Request $request){
         if(Common::isUserLogin()){
             return redirect('/');
         }
-        return view('frontend.auth.user-login');
+        $redirectUrl = session('redirect_url', '/'); ;
+        return view('frontend.auth.user-login',compact('redirectUrl'));
     }
 
     public function organizerLogin(){

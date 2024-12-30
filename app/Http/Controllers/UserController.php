@@ -35,7 +35,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Common;
-
+use Razorpay\Api\Api;
 use Exception;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Mail;
@@ -215,6 +215,34 @@ class UserController extends Controller
         $tickets = Ticket::all()->where('event_id', $id);
         return view('admin.organizer.organizerBookTicket', compact('tickets'));
     }
+
+
+    public function createOrder(Request $request)
+    {
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+        try {
+            $orderData = [
+                'receipt'         => 'order_' . uniqid(), // Dynamic receipt ID
+                'amount'          => $request->amount * 100, // Amount in paise
+                'currency'        => 'INR',
+                'payment_capture' => 1 // Auto-capture enabled
+            ];
+
+            $order = $api->order->create($orderData);
+
+            return response()->json([
+                'success'  => true,
+                'order_id' => $order->id,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
     public function organizerCheckout(Request $request, $id)
     {

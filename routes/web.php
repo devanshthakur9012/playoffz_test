@@ -107,7 +107,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/update-scaned-user',[UserController::class,'updateScanDetails']);
 
     Route::get('/{id}/{name}/tickets', [TicketController::class, 'index']);
+
     Route::get('/book-ticket', [UserController::class, 'bookTicket']);
+
     Route::get('/organizer/{id}/{name}', [UserController::class, 'organizerEventDetails']);
     Route::get('/organizerCheckout/{id}', [UserController::class, 'organizerCheckout']);
     Route::post('/organizerCreateOrder', [UserController::class, 'organizerCreateOrder']);
