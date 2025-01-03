@@ -170,7 +170,7 @@
                                         <td>{{ $ticketData['event_address'] }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Sponsor</th>
+                                        <th scope="row">Organizer</th>
                                         <td>{{ $ticketData['sponsore_title'] }}</td>
                                     </tr>
                                     <tr>
@@ -195,7 +195,7 @@
 
                         <!-- Ticket and QR Details -->
                         <div class="col-md-3 text-center">
-                            <img src="{{ $ticketData['qrcode'] }}" alt="QR Code" class="w-100 img-fluid mb-3" style="max-width: 100%; border: 1px solid #ddd; padding: 10px;">                           
+                            <img src="{{$ticketData['qrcode']}}" alt="QR Code" class="w-100 img-fluid mb-3" style="max-width: 100%; border: 1px solid #ddd; padding: 10px;">                           
                         </div>
                     </div>
                     <hr>

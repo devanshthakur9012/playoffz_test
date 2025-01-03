@@ -325,15 +325,14 @@
                     @endforeach
                 </ul>
             </div>
-            {{-- <div>
-                <h5 class="text-white mb-2">FitSportsy Locations</h5>
+            <div>
+                <h5 class="text-white mb-2">Locations</h5>
                 <ul class="list-unstyled ">
-                    @foreach (Common::allEventCities() as $city)
-                        <li><a class="nav-link" href="{{url('city-coachings/'.$city->city_name)}}">{{ $city->city_name }}</a></li>
+                    @foreach (Common::fetchLocation() as $item)
+                        <li><a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' . request()->fullUrl()) }}">{{$item['city']}}</a></li>
                     @endforeach
                 </ul>
-            </div> --}}
-           
+            </div>
         </div>
     </address>
     <footer class="footer">

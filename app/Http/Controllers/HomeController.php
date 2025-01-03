@@ -216,8 +216,33 @@ class HomeController extends Controller
         $data['tournament_Facility'] = $details['Event_Facility'];
         $data['tournament_Restriction'] = $details['Event_Restriction'];
         $data['tournament_reviewdata'] = $details['reviewdata'];
-        // dd($data);
-        // dd($data['tournament_detail'],$details);
+        $data['related_tournament'] = $details['related'];
+
+        // $pageUrl = route('tournament-detail', ['title' => $title, 'id' => $id]);
+        // $qrCodePath = public_path('qrcodes/tournament-' . $id . '.png');
+        // \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+        //     ->size(150) // Set the size of the QR code
+        //     ->margin(0) // Minimize padding
+        //     ->generate($pageUrl, $qrCodePath);
+        // $data['qrCodePath'] = asset('qrcodes/tournament-' . $id . '.png'); // Public URL for sharing   
+        
+        
+        // Use the title to create a more descriptive QR code file name
+        $sanitizedTitle = preg_replace('/[^A-Za-z0-9\-]/', '_', $title); // Sanitize the title for use in filenames
+        $qrCodeFileName = 'tournament-' . $sanitizedTitle . '-' . $id . '.png';
+        $qrCodePath = public_path('qrcodes/' . $qrCodeFileName);
+        
+        // Check if the QR code already exists
+        if (!file_exists($qrCodePath)) {
+            \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
+                ->size(150) // Set the size of the QR code
+                ->margin(0) // Minimize padding
+                ->generate(route('tournament-detail', ['title' => $title, 'id' => $id]), $qrCodePath); // Generate and store the QR code
+        }
+        
+        // Return the public URL for the cached QR code
+        $data['qrCodePath'] = asset('qrcodes/' . $qrCodeFileName);
+
         return view('home.coaching-book', $data);
     }
 

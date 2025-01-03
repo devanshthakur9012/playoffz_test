@@ -34,6 +34,36 @@
     top: 10px;
     left: 7px;
 }
+#cancel_edit{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    border-radius: 50%;
+    background: #1a1b2e;
+    border: none;
+    width: 25px;
+    height: 25px;
+    color: #ffff;
+}
+/* Zoom-in animation */
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Apply animation to the modal */
+.modal-dialog.animate-zoom-in {
+    animation: zoomIn 0.5s ease-out;
+}
+.modal-backdrop {
+    backdrop-filter: blur(5px);
+}
 </style>
 <div class="pt-3 pb-3 shadow-sm home-slider">
     <div class="osahan-slider">
@@ -96,7 +126,6 @@
                 </div>
             </div>
         @endforeach
-        
     @endif --}}
 
     @if (isset($tournament) && count($tournament['latest_event']))
@@ -154,7 +183,15 @@
             </div>
         </div>
     @endif
-
+    @if (isset($tournament['location_images']) && isset($tournament['location_images']['adv_image_1']))
+        <div class="row my-5">
+            <div class="col-lg-12">
+                <a class="small_banner" target="_blank">
+                    <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['adv_image_1']}}" alt="">
+                </a>
+            </div>
+        </div>
+    @endif
     @if (isset($tournament) && count($tournament['nearby_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
@@ -196,8 +233,15 @@
             </div>
         </div>
     @endif
-
-
+    @if (isset($tournament['location_images']) && isset($tournament['location_images']['adv_image_2']))
+        <div class="row my-5">
+            <div class="col-lg-12">
+                <a class="small_banner" target="_blank">
+                    <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['adv_image_2']}}" alt="">
+                </a>
+            </div>
+        </div>
+    @endif
     @if (isset($tournament) && count($tournament['this_month_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
@@ -239,7 +283,15 @@
             </div>
         </div>
     @endif
-    
+    @if (isset($tournament['location_images']) && isset($tournament['location_images']['adv_image_3']))
+        <div class="row my-5">
+            <div class="col-lg-12">
+                <a class="small_banner" target="_blank">
+                    <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['adv_image_3']}}" alt="">
+                </a>
+            </div>
+        </div>
+    @endif
     @if (isset($tournament) && count($tournament['upcoming_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
@@ -281,8 +333,6 @@
             </div>
         </div>
     @endif
-    
-
     <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
         <h1 class="h4 mb-0 float-left">Categories</h1>
     </div>
@@ -388,19 +438,17 @@
 </div>
 {{-- model start --}}
 
-@if ($popup != null)
-<div class="modal fade" id="Location" tabindex="-1" aria-labelledby="LocationLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body p-1" id="model_body">
-            <button type="button" class="btn-close" id="cancel_edit"><i class="fas fa-times"></i></button>
-            <a href="{{$popup->img_url}}" class="text-decoration-none">
-                <img class="img-fluid" src="/upload/popup/{{$popup->image}}" alt="">
-            </a>
+@if (isset($tournament['location_images']) && isset($tournament['location_images']['popup_image']))
+<div class="modal fade" id="Location" tabindex="-1" role="dialog" aria-labelledby="LocationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered animate-zoom-in" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-1" id="model_body">
+                <button type="button" class="btn-close" id="cancel_edit"><i class="fas fa-times"></i></button>
+                <img class="img-fluid" src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['popup_image']}}" alt="">
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 @endif
 
 
@@ -410,10 +458,14 @@
 @push('scripts')
 <script type="text/javascript">
     $(window).on('load', function() {
-        $('#Location').modal('show');
+        // Delay the modal show by 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+            $('#Location').modal('show');
+        }, 3000);
     });
 
-    $("#cancel_edit").click(function(){
+    // Hide the modal when the cancel button is clicked
+    $("#cancel_edit").click(function() {
         $('#Location').modal('hide');
     });
 </script>

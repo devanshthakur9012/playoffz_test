@@ -510,6 +510,39 @@
             color: inherit !important;
             background: inherit !important;
         }
+
+        .btn-white{
+        background-color: #fff;
+        border-radius: 4px;
+        color: #000;
+    }
+.type_cat{
+    padding: 4px 10px !important;
+    background: #ffd700;
+    color: #000;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+.location{
+    background: #004aad;
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px !important;
+    position: absolute;
+    top: -12px;
+    right: 10px;
+}
+.category{
+    background: #ffd700;
+    color: #000000;
+    border-radius: 20px;
+    padding: 4px 10px !important;
+    font-size: 14px !important;
+    position: absolute;
+    top: 10px;
+    left: 7px;
+}
     </style>
 @endpush
 @section('content')
@@ -571,7 +604,7 @@
                         </div>
                     </div>
                     {{-- Address --}}
-                    <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center mb-3 mt-2">
                         <div class="icon_box">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
@@ -669,6 +702,23 @@
                 @endif
             </div>
             <div class="col-lg-4 col-md-4 col-12">
+                <div class="text-left event-ticket card shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="products-reviews text-center">
+                            @isset($qrCodePath)
+                                <h5 class="mb-3">📲 Scan to register instantly!</h5>
+                                <div class="qr-code-container mb-3" style="display: inline-block; padding: 10px; border: 2px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                                    <img src="{{ $qrCodePath }}" alt="QR Code">
+                                </div>
+                                <br>
+                                <!-- Download Button with Icon -->
+                                <a href="{{ $qrCodePath }}" download="coaching-book-qr.png" class="btn btn-primary btn-sm mt-2" style="display: inline-flex; align-items: center; gap: 5px;">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            @endisset 
+                        </div>
+                    </div>
+                </div>
                 <div class="event-ticket card shadow-sm mb-3">
                     <div class="card-body">
                         <div class="alert_info" style="background: #FFF3D2" role="alert">
@@ -684,7 +734,6 @@
                         </div>
                     </div>
                 </div>
-        
                 <div class="text-left event-ticket card shadow-sm mb-3">
                     <div class="card-body">
                         <div class="products-reviews">
@@ -708,7 +757,10 @@
                                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 10;">
                                     </a>
                                 </div>    
-                            @endisset                       
+                            @endisset      
+                            @isset($qrCode)
+                            {!! $qrCode !!}
+                            @endisset                 
                         </div>
                     </div>
                 </div>
@@ -721,7 +773,7 @@
             <div class="available-sports">
                 @foreach ($tournament_Facility as $sport)
                     <div class="available-sport-card">
-                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" width="70" height="70">
+                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" >
                         <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
                     </div>
                 @endforeach
@@ -734,7 +786,7 @@
             <div class="available-sports">
                 @foreach ($tournament_Restriction as $sport)
                     <div class="available-sport-card">
-                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" width="70" height="70">
+                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" >
                         <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
                     </div>
                 @endforeach
@@ -797,6 +849,61 @@
                 @endforeach
             </div>
         </div> --}}
+
+        @if (isset($related_tournament) && count($related_tournament))
+            <div class="hawan_section">
+                <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
+                    <h1 class="h4 mb-0 float-left">Related Tournament</h1>
+                </div>
+                <div class="event-block-slider">
+                    @foreach ($related_tournament as $tour)
+                        <div class="card m-card shadow-sm border-0 listcard">
+                            <div>
+                                <div class="m-card-cover  position-relative">
+                                    <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
+                                    @isset($tour['cid'])
+                                        <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    @endisset
+                                </div>
+                                <div class="card-body position-relative">
+                                    <h5 class="card-title mb-2"><u>{{$tour['event_title']}}</u></h5>
+                                    <small>{{$tour['event_sdate']}}</small>
+                                    <p class="my-2"><small class="location"><i class="fas fa-map-marker-alt pr-1"></i>{{$tour['event_place_name']}}</small></p>
+                                    <p class="card-text mb-0">
+                                        <small class="text-dark" title="{{$tour['event_place_address']}}"><i class="fas fa-map pr-1"></i>
+                                        {{ strlen($tour['event_place_address']) > 50 ? substr($tour['event_place_address'], 0, 50) . '...' : $tour['event_place_address'] }}
+                                        </small>
+                                    </p>
+                                    @isset($tour['ticket_types'])
+                                        @foreach ($tour['ticket_types'] as $key => $item)
+                                            <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
+                                        @endforeach
+                                    @endisset
+                                    <div class="mt-2">
+                                        <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    </div>
+                                    @php
+                                        // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
+                                    @endphp
+                                    {{-- @if(isset($coaching->coachingPackage) && $coaching->coachingPackage!=null)
+                                        <p class="my-1 text-light"><small> 
+                                            {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}    
+                                        </small></p>
+
+                                        <div class="mt-2">
+                                        {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
+                                            <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</>
+                                        </div>
+                                    @endif --}}
+                                
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
         {{-- @if(count($relatedCoaching))
             <div class="hawan_section">
                 <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
