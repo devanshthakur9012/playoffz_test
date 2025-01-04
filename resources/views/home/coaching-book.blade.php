@@ -712,7 +712,7 @@
                                 </div>
                                 <br>
                                 <!-- Download Button with Icon -->
-                                <a href="{{ $qrCodePath }}" download="coaching-book-qr.png" class="btn btn-primary btn-sm mt-2" style="display: inline-flex; align-items: center; gap: 5px;">
+                                <a href="{{ $qrCodePath }}" download="tournament-booking.png" class="btn btn-primary btn-sm mt-2" style="display: inline-flex; align-items: center; gap: 5px;">
                                     <i class="fas fa-download"></i> Download
                                 </a>
                             @endisset 

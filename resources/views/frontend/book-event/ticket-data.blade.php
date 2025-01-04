@@ -16,6 +16,9 @@
     .ticket-area .card {
         border: none;
         box-shadow: none;
+        border-radius: 10px !important;
+        overflow: hidden;
+        padding: 15px 20px !important;
     }
 
     .ticket-area .card-body {
@@ -143,6 +146,12 @@
             display: none !important;
         }
     }
+    .textDark{
+        color: #000 !important;
+    }
+    body{
+        color: #000 !important;
+    }
 </style>
 
 @section('content')
@@ -150,11 +159,11 @@
     <div class="container">
         <div class="card shadow-sm border-0">
             <div class="card-body p-0">
-                <img src="{{asset('/images/ticket_bg.png')}}" class="img-fluid" alt="">
+                <img src="{{asset('/images/ticketbg.png')}}" class="img-fluid" alt="">
                 <div class="pt-2 px-4">
                     <div class="text-center mb-4">
-                        <h2 class="text-dark">{{ $ticketData['ticket_title'] }}</h2>
-                        <p class="text-muted"><strong>Event Time:</strong> {{ $ticketData['start_time'] }}</p>
+                        <h2 class="textDark">{{ $ticketData['ticket_title'] }}</h2>
+                        <p class="textDark"><strong>Event Time:</strong> {{ $ticketData['start_time'] }}</p>
                     </div>
                     <div class="row p-2 align-items-center">
                         <!-- Event Details -->
