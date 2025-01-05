@@ -334,7 +334,7 @@ class BookController extends Controller
             $settingDetails = \Common::siteGeneralSettingsApi();
 
             $totalAmount =  $request->total_amount_pay;
-            $couponAmount = $request->coupon_amt;
+            $couponAmount = $request->coupon_amt  ?? 0;
             $paymentId = $request->payment_id;
             $transaction_id = $request->merchant_trans_id;
             $cacheKey = "user_profile_{$uid}";
@@ -353,8 +353,8 @@ class BookController extends Controller
                 "total_ticket"=>$bookingData['quantity'],
                 "subtotal"=>$bookingData['quantity']*$eventDetails['ticket'],
                 "tax"=>$settingDetails['tax'],
-                "cou_amt"=>$couponAmount, 
-                "total_amt"=>$totalAmount,
+                "cou_amt"=>$couponAmount,
+                "total_amt"=>$totalAmount - $couponAmount,
                 "wall_amt"=>$userDetails['wallet'], 
                 "p_method_id"=>$paymentId ?? 1, 
                 "plimit"=>$eventDetails['tlimit'],
@@ -439,7 +439,6 @@ class BookController extends Controller
         }
     }
 
-
     public function purchaseTournament(Request $request)
     {
         $tourId = $request->input('tour_id');
@@ -472,61 +471,151 @@ class BookController extends Controller
         ]);
     }
 
-
-    public function getPromoDiscount(Request $request){
+    public function getPromoDiscount(Request $request)
+    {
         $code = $request->code;
         $sponserId = $request->sid;
         $ticketAmount = (float)$request->amount;
-        $couponData = $this->checkCouponCode($code,$sponserId);
-        dd($couponData);
-        if($couponData['status'] == true){
-            if($ticketAmount >= $couponData['Data']['min_amt']){
-                $couponVal = $couponData['Data']['coupon_val'];
-                $famount = $ticketAmount - $couponVal;
-                return response()->json(['s'=>1,'amount'=>round($amount,2),'famount'=>round($famount,2),'id'=>$couponData['id']]);
+
+        // Check the coupon code
+        $couponData = $this->checkCouponCode($code, $sponserId);
+
+        if ($couponData['status']) {
+            $couponDetails = $couponData['data'];
+
+            // Check if the ticket amount meets the minimum amount criteria
+            if ($ticketAmount >= $couponDetails['min_amt']) {
+                $couponVal = $couponDetails['coupon_val'];
+                $finalAmount = $ticketAmount - $couponVal;
+
+                return response()->json([
+                    's' => 1,
+                    'amount' => round($ticketAmount, 2),
+                    'famount' => round($finalAmount, 2),
+                    'id' => $couponDetails['id'] ?? null,
+                    'coupon'=> round($couponVal,2)
+                ]);
             }
-            return response()->json(['s'=>1,'amount'=>round($ticketAmount,2),'famount'=>round($ticketAmount,2),'id'=>$couponData['id']]);
-        }else{
-            return response()->json(['s'=>0]);
+
+            // If ticket amount is less than the minimum required amount
+            return response()->json([
+                's' => 0,
+                'message' => 'Ticket Amount must be at least ₹'.$couponDetails['min_amt'].' to apply this coupon.',
+            ]);
         }
+
+        // If the coupon code is invalid or not applicable
+        return response()->json(['s' => 0]);
     }
 
-    private function checkCouponCode($code,$sponserId){
+    private function checkCouponCode($code, $sponserId)
+    {
         try {
             // Instantiate the Guzzle client
-            $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client([
+                'timeout' => 10.0, // Set a timeout for the request
+            ]);
+
             $baseUrl = env('BACKEND_BASE_URL');
+            if (!$baseUrl) {
+                throw new \Exception('Backend base URL is not defined in the environment file.');
+            }
 
             $user = Common::userId();
+
             // Make a POST request to the backend API
             $response = $client->post("{$baseUrl}/web_api/u_check_coupon.php", [
                 'json' => [
                     'uid' => $user,
                     'coupon_code' => $code,
-                    'sid' =>$sponserId
-                ]
+                    'sid' => $sponserId,
+                ],
             ]);
 
+            // Decode the response body
             $data = json_decode($response->getBody(), true);
-            if($data['Result'] == "true"){
+
+            // Validate the response and return data
+            if (isset($data['Result']) && $data['Result'] === "true" && isset($data['Coupon_Data'])) {
                 return [
-                    'status'=>true,
-                    'data'=>$data['Coupon_Data'],
-                ];
-            }else{
-                return [
-                    'status'=>false,
-                    'data'=>[],
+                    'status' => true,
+                    'data' => $data['Coupon_Data'],
                 ];
             }
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
+
             return [
-                'status'=>false,
-                'data'=>[],
+                'status' => false,
+                'data' => [],
+            ];
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            \Log::error("Error in checkCouponCode: " . $e->getMessage());
+            return [
+                'status' => false,
+                'data' => [],
+            ];
+        } catch (\Throwable $th) {
+            \Log::error("Unexpected Error in checkCouponCode: " . $th->getMessage());
+            return [
+                'status' => false,
+                'data' => [],
             ];
         }
     }
+
+
+    // public function getPromoDiscount(Request $request){
+    //     $code = $request->code;
+    //     $sponserId = $request->sid;
+    //     $ticketAmount = (float)$request->amount;
+    //     $couponData = $this->checkCouponCode($code,$sponserId);
+    //     // dd($couponData);
+    //     if($couponData['status'] == true){
+    //         if($ticketAmount >= $couponData['Data']['min_amt']){
+    //             $couponVal = $couponData['Data']['coupon_val'];
+    //             $famount = $ticketAmount - $couponVal;
+    //             return response()->json(['s'=>1,'amount'=>round($amount,2),'famount'=>round($famount,2),'id'=>$couponData['id']]);
+    //         }
+    //         return response()->json(['s'=>1,'amount'=>round($ticketAmount,2),'famount'=>round($ticketAmount,2),'id'=>$couponData['id']]);
+    //     }else{
+    //         return response()->json(['s'=>0]);
+    //     }
+    // }
+
+    // private function checkCouponCode($code,$sponserId){
+    //     try {
+    //         // Instantiate the Guzzle client
+    //         $client = new \GuzzleHttp\Client();
+    //         $baseUrl = env('BACKEND_BASE_URL');
+
+    //         $user = Common::userId();
+    //         // Make a POST request to the backend API
+    //         $response = $client->post("{$baseUrl}/web_api/u_check_coupon.php", [
+    //             'json' => [
+    //                 'uid' => $user,
+    //                 'coupon_code' => $code,
+    //                 'sid' =>$sponserId
+    //             ]
+    //         ]);
+
+    //         $data = json_decode($response->getBody(), true);
+    //         if($data['Result'] == "true"){
+    //             return [
+    //                 'status'=>true,
+    //                 'data'=>$data['Coupon_Data'],
+    //             ];
+    //         }else{
+    //             return [
+    //                 'status'=>false,
+    //                 'data'=>[],
+    //             ];
+    //         }
+    //     } catch (\Throwable $th) {
+    //         return [
+    //             'status'=>false,
+    //             'data'=>[],
+    //         ];
+    //     }
+    // }
 
     public function calculateBookAmount(Request $request){
         $coupon = $request->coupon;

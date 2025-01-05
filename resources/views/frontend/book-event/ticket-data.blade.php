@@ -38,12 +38,15 @@
 
     .ticket-area table th {
         background-color: #f8f9fa;
-        font-weight: bold;
+        font-weight: 600;
+        color: #000;
+        font-size: 15px !important;
     }
 
     .ticket-area table td {
         font-size: 14px;
         padding: 8px;
+        vertical-align: middle;
     }
 
     /* Print specific styles to match screen */
@@ -129,7 +132,7 @@
         }
         .ticket-area table th {
             background-color: #f8f9fa;
-            font-weight: bold;
+            font-weight: 400;
         }
         .badge-success {
             color: #fff !important;
@@ -211,7 +214,7 @@
                     <!-- User Details -->
                     <div class="row">
                         <div class="col-lg-6">
-                            <h4 class="text-dark">User Details</h4>
+                            <h5 class="textDark"><b>User Details</b></h5>
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
@@ -230,7 +233,7 @@
                             </table>   
                         </div>
                         <div class="col-lg-6">
-                            <h4 class="text-dark">Transaction Details</h4>
+                            <h5 class="textDark"><b>Transaction Details</b></h5>
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
@@ -249,6 +252,12 @@
                                         <th scope="row">Tax</th>
                                         <td>₹{{ $ticketData['ticket_tax'] }}</td>
                                     </tr>
+                                    @if(isset($ticketData['ticket_cou_amt']) && $ticketData['ticket_cou_amt'] > 0) 
+                                        <tr>
+                                            <th scope="row">Coupon</th>
+                                            <td>-₹{{ $ticketData['ticket_cou_amt'] }}</td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <th scope="row">Total Paid</th>
                                         <td>₹{{ $ticketData['ticket_total_amt'] }}</td>

@@ -106,7 +106,7 @@ $paymentId = "";
                                     </div>
                                     <span class="text-white">{{$settingDetails['currency']}}{{$settingDetails['tax']}}</span>
                                 </li>
-                                <li class="list-group-item d-none justify-content-between" id="couponBox">
+                                <li class="list-group-item d-none justify-content-between lh-condensed" id="couponBox">
                                     <div class="text-white">
                                         <p class="my-0">Coupon</p>
                                     </div>
@@ -177,41 +177,41 @@ $paymentId = "";
 </section>
 @endsection
 @push('scripts')
+@include('alert-messages')
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 <script>
-    $("#payBookAmount").on('click', function() {
-        $name = $('#card_holder_name').val();
-        $number = $('#number').val();
-        $email = $('#email').val();
-        if ($name != "" && $number != "" && $email != "") {
-            $("#payBookAmount").attr('disabled', 'disabled').text('Processing Payment...');
-            $.post('', {
-                '_token': '{{csrf_token()}}',
-                'coupon': $("#promo_text").val(),
-                'donation': $('#donate_checked').val(),
-            }, function(data) {
-                if ($('input[name="payment_method"]:checked').val() == 2) {
-                    $("#payment_type").val('2');
-                    setTimeout(() => {
-                        document.getElementById('razorpay-form').submit();
-                    }, 2000);
-                } else {
-                    console.log(data);
-                    razorpaySubmit(data.amount);
-                }
-            })
-        } else {
-            $('#errors').html('Please Fill Required Details');
-        }
-    })
+    // $("#payBookAmount").on('click', function() {
+    //     $name = $('#card_holder_name').val();
+    //     $number = $('#number').val();
+    //     $email = $('#email').val();
+    //     if ($name != "" && $number != "" && $email != "") {
+    //         $("#payBookAmount").attr('disabled', 'disabled').text('Processing Payment...');
+    //         $.post('', {
+    //             '_token': '{{csrf_token()}}',
+    //             'coupon': $("#promo_text").val(),
+    //             'donation': $('#donate_checked').val(),
+    //         }, function(data) {
+    //             if ($('input[name="payment_method"]:checked').val() == 2) {
+    //                 $("#payment_type").val('2');
+    //                 setTimeout(() => {
+    //                     document.getElementById('razorpay-form').submit();
+    //                 }, 2000);
+    //             } else {
+    //                 console.log(data);
+    //                 razorpaySubmit(data.amount);
+    //             }
+    //         })
+    //     } else {
+    //         $('#errors').html('Please Fill Required Details');
+    //     }
+    // })
 </script>
 <script>
     function razorpaySubmit(amount) {
         $.post('{{route("create-order")}}', { amount: amount }, function(response) {
             if (response.success) {
                 let orderID = response.order_id;
-
                 var razorpayOptions = {
                     key: "{{ $key_id }}", // Razorpay key from settings
                     amount: amount * 100, // Amount in paise
@@ -240,40 +240,68 @@ $paymentId = "";
                 var razorpayInstance = new Razorpay(razorpayOptions);
                 razorpayInstance.open();
             } else {
-                alert("Error creating Razorpay order: " + response.message);
+                // alert("Error creating Razorpay order: " + response.message);
+                iziToast.error({
+                    title: 'Error',
+                    position: 'topRight',
+                    message: "Error creating Razorpay order: " + response.message,
+                });
             }
         }).fail(function() {
-            alert("Failed to create Razorpay order. Please try again.");
+            // alert("Failed to create Razorpay order. Please try again.");
+            iziToast.error({
+                title: 'Error',
+                position: 'topRight',
+                message: "Failed to create Razorpay order. Please try again.",
+            });
         });
     }
 
     // Trigger Razorpay payment on button click
     $("#payBookAmount").on('click', function() {
         let totalAmount = {{ round($totalAmountPayable, 2) }};
-        razorpaySubmit(totalAmount);
+        let couponAmount = $('#coupon_amt').val();
+        razorpaySubmit(totalAmount-couponAmount);
     });
 
 </script>
 <script>
     $("#apply_btn").on('click', function() {
-        var txt = $("#promo_text").val();
+        var txt = $("#promo_text").val(); // Get the entered/selected coupon code
         if (txt != '') {
             $("#apply_btn").text('Processing...').attr('disabled', 'disabled');
-            $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount={{$ticketAmount+$charges}}' + '&sid={{$packageDetails['sponser_id']}}', function(
-                data) {
+            // Make AJAX GET request to validate and apply the coupon
+            $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount={{$ticketAmount+$charges}}' + '&sid={{$packageDetails["sponser_id"]}}', function(data) {
                 if (data.s == 1) {
-                    $("#coupon_err").text("");
-                    $("#coupon_disc").text('-₹' + data.amount)
-                    $("#total_amount").text('₹' + data.famount)
-                    $("#coupon_id").val(data.id)
-                    $("#coupon_discount").val(data.amount)
-                    $("#pretotalAmount").val(data.famount)
+                    iziToast.success({
+                        title: 'Success',
+                        position: 'topRight',
+                        message: 'Coupon applied successfully!!',
+                    });
+                    // Update UI for successful coupon application
+                    $("#coupon_err").text(""); // Clear error messages
+                    $('#couponBox').removeClass('d-none');
+                    $('#couponBox').addClass('d-flex');
+                    $('#coupon_amt').val(data.coupon);
+                    $("#coupon_disc").text('-₹' + data.coupon); // Show discount
+                    $("#total_amount").text('₹' + data.famount); // Update total amount
+                    $("#coupon_id").val(data.id); // Save coupon ID in a hidden field
+                    $("#coupon_discount").val(data.amount); // Save discount amount in a hidden field
+                    $("#pretotalAmount").val(data.famount); // Save the final amount
+                    $("#merchant_total").val(Math.round(data.famount * 100)); // Razorpay requires amount in paise
                 } else {
-                    $("#coupon_err").text('Invalid coupon code or coupon is expired');
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: data.message || 'Invalid coupon code or coupon is expired',
+                    });
+                    // Handle invalid or expired coupon
+                    $("#coupon_err").text(data.message || 'Invalid coupon code or coupon is expired');
                 }
+                // Reset Apply button
                 $("#apply_btn").text('Apply').removeAttr('disabled');
-            })
+            });
         }
-    })
+    });
 </script>
 @endpush
