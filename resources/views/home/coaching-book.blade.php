@@ -992,5 +992,11 @@
         }
     });
 </script> --}}
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 @endsection
 @include('alert-messages')
