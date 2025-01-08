@@ -326,7 +326,7 @@
     <style>
         .icon_box{
             /* background: #f8f9fa; */
-            color: #ffffff;
+            color: #004aad;
             padding: 23px;
             border-radius: 32px;
             margin-right: 15px;
@@ -335,7 +335,7 @@
             justify-content: center;
             align-items: center;
             display: flex;
-            border: 1px solid #ffffff;
+            border: 1px solid #004aad;
         }
         .icon_box i{
             font-size: 20px;
@@ -678,7 +678,7 @@
 
                 @if(count($tournament_Artist))
                 <div class="text-white mb-3"> 
-                    <h4 >Tournament Referee</h4>
+                    <h4 >Tournament Organizing Team & Referee</h4>
                     <div class="row">
                         @foreach ($tournament_Artist as $sport)
                             <div class="col-md-3 col-sm-6 mb-3">
