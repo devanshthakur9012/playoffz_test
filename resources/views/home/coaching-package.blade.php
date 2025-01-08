@@ -258,7 +258,7 @@
                                     <h3 class="subscription-card-title text-center">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Slot</small></h3>
                                     <div class="price-list">
                                         <p><span class="badge badge-danger p-2 mb-0 slotBadge">{{$package['TotalTicket']}} Slot Left</span></p>
-                                        <p class="text-center"><i class="far fa-calendar-alt mr-2"></i>{{$package['description']}}</p>
+                                        <p class="text-center"><i class="fas fa-trophy mr-2"></i>{{$package['description']}}</p>
                                     </div>
                                     <h6 class="mt-2 mb-0"><small>Quantity :</small></h6>
                                     <div class="d-flex align-items-center justify-content-center mt-3">
@@ -389,14 +389,27 @@ $(document).ready(function () {
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const ticketTitle = document.querySelector('.subscription-card-header');
-      const ticketBody = document.querySelector('.subscription-card-body');
-      const btnBuy = document.querySelector('.btn-buy');
-      const textContent = ticketTitle.textContent.toLowerCase();
-      if (textContent.includes("girl") || textContent.includes("women")) {
-        ticketTitle.style.backgroundColor = "#db207b";
-        btnBuy.style.backgroundColor = "#db207b";
-      }
+        // Get all the headers and buttons
+        const ticketHeaders = document.querySelectorAll('.subscription-card-header');
+        
+        // Loop through each header
+        ticketHeaders.forEach(function (ticketHeader) {
+            const textContent = ticketHeader.textContent.toLowerCase();
+            
+            // Check if it contains "girl" or "women"
+            if (textContent.includes("girl") || textContent.includes("women")) {
+                ticketHeader.style.backgroundColor = "#db207b"; // Change header background color
+                
+                // Find the associated buy button and change its background color
+                const btnBuy = ticketHeader
+                    .closest('.subscription-card') // Find the parent card
+                    .querySelector('.btn-buy'); // Find the buy button inside the card
+                
+                if (btnBuy) {
+                    btnBuy.style.backgroundColor = "#db207b";
+                }
+            }
+        });
     });
-  </script>
+</script>
 @endpush

@@ -326,7 +326,7 @@
     <style>
         .icon_box{
             /* background: #f8f9fa; */
-            color: #004aad;
+            /* color: gold; */
             padding: 23px;
             border-radius: 32px;
             margin-right: 15px;
@@ -335,11 +335,32 @@
             justify-content: center;
             align-items: center;
             display: flex;
-            border: 1px solid #004aad;
+            /* border: 1px solid #004aad; */
+            color: initial; /* Default styling */
+            border: 1px solid transparent; /* Default border */
         }
         .icon_box i{
             font-size: 20px;
         }
+        
+        /* Calendar Icon */
+        .calendar_icon {
+            color: #4A90E2; /* Vibrant blue */
+            border: 2px solid #4A90E2;
+        }
+
+        /* Ticket Icon */
+        .ticket_icon {
+            color: #FF8C42; /* Bold orange */
+            border: 2px solid #FF8C42;
+        }
+
+        /* Location Icon */
+        .location_icon {
+            color: #3AB795; /* Deep green */
+            border: 2px solid #3AB795;
+        }
+
         .profile-img {
             width: 40px;       /* Set the width of the image (adjust as necessary) */
             height: 40px;      /* Set the height of the image (adjust as necessary) */
@@ -349,10 +370,10 @@
             margin-right: 15px;
         }
         .tags{
-            background:#004aad;
-            color: #fff;
+            background: #004aad;
+            color: #ffffff;
             border-radius: 20px;
-            padding: 10px 15px;
+            padding: 3px 10px;
         }
 
         /* Container for the slider */
@@ -401,6 +422,7 @@
 
         .alert_info span{
             color:#004aad;
+            cursor: pointer;
         }
 
         .alert_info .iconBox{
@@ -481,6 +503,10 @@
             margin-bottom: 8px !important;
         }
 
+        .grayText{
+            padding-left: .5rem !important;
+        }
+
         .grayText p{
             font-size: 16px !important;
             font-weight: 400;
@@ -543,6 +569,79 @@
     top: 10px;
     left: 7px;
 }
+
+    /* .highlighter{
+        color: #ffffff !important;
+        margin-bottom: 15px !important;
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        border-bottom: 1px solid #0dc1e3;
+        font-size: 18px !important;
+        box-shadow: 1px 1px 7px #fff;
+        font-weight: 600 !important;
+    } */
+
+    .bgFilter{
+        background: #111635;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px !important;
+    }
+
+    .highlighter{
+        position: relative;
+        display: inline-block;
+        padding: 9px 20px;
+        font-weight: 400 !important;
+        background: #070b28;
+        margin-bottom: 14px !important;
+        font-size: 18px !important;
+        color: #ffffff !important;
+        border-radius: 2px;
+    }
+
+    .bgFilter2{
+        margin-bottom: 20px !important;
+    }
+
+    .bgFilter2 .highlighter{
+        color: #ffffff !important;
+        border-radius: 20px;
+        box-shadow: 0px 0px 6px #004aad;
+    }
+
+    /* .highlighter:before {
+        content: " ";
+        display: block;
+        height: 90%;
+        width: 100%;
+        margin-left: -3px;
+        margin-right: -3px;
+        position: absolute;
+        background: #0cc2e6;
+        transform: rotate(2deg);
+        top: -1px;
+        left: -1px;
+        border-radius: 20% 25% 20% 24%;
+        padding: 10px 3px 3px 10px;
+    } */
+     .img-thumbnail{
+        background-color: #a7a7a7 !important;
+     }
+
+     .modalClose span{
+        background: #ffffff;
+        border-radius: 50%;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        font-size: 22px;
+        line-height: 20px;
+        top: -10px;
+        right: -10px;
+        color: #1a1b2e;
+     }
     </style>
 @endpush
 @section('content')
@@ -581,7 +680,7 @@
                         <div class="col-lg-6 mbsm">
                             {{-- Timing --}}
                             <div class="d-flex align-items-center">
-                                <div class="icon_box">
+                                <div class="icon_box calendar_icon">
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
                                 <div class="text_box">
@@ -593,7 +692,7 @@
                         <div class="col-lg-6">
                             {{-- Tickets --}}
                             <div class="d-flex align-items-center ">
-                                <div class="icon_box">
+                                <div class="icon_box ticket_icon">
                                     <i class="fas fa-ticket-alt"></i>
                                 </div>
                                 <div class="text_box">
@@ -605,7 +704,7 @@
                     </div>
                     {{-- Address --}}
                     <div class="d-flex align-items-center mb-3 mt-2">
-                        <div class="icon_box">
+                        <div class="icon_box location_icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="text_box">
@@ -625,7 +724,7 @@
                             <h4 class="mb-3">Organized By</h4>
                             <div class="d-flex align-items-center">
                                 <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
-                                <p class="mb-0 fs-2">{{ $tournament_detail['sponsore_name'] }}</p>
+                                <p class="mb-0 fs-2">{{$tournament_detail['sponsore_name']}}</p>
                             </div>
                         </div>
                     </div>
@@ -654,21 +753,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-white mb-3"> 
-                    <h4 class="mb-1">About Tournament</h4>
+                <div class="text-white bgFilter"> 
+                    <h4 class="mb-1 highlighter">About Tournament</h4>
                     <div class="fs-3 grayText">{!! $tournament_detail['event_about'] !!}</div>
                 </div>
-                <div class="mb-3 text-white"> 
-                    <h4 class="mb-1">Rules & Regulations</h4>
+                <div class="bgFilter text-white"> 
+                    <h4 class="mb-1 highlighter">Rules & Regulations</h4>
                     <div class="fs-3 grayText">{!! $tournament_detail['event_disclaimer'] !!}</div>
                 </div>
                 @if(!empty($tournament_detail['prize_reward']))
-                    <div class="mb-3 text-white">
+                    <div class="bgFilter text-white">
                         @php 
                             $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
                         @endphp
                         @if(is_array($collection) && count($collection) > 0)
-                            <h4 class="mb-1">Prizes & Rewards</h4>
+                            <h4 class="highlighter mb-1">Prizes & Rewards</h4>
                             @foreach ($collection as $item)
                                 <div class="fs-3 grayText">🏆 {!! mb_convert_encoding($item, 'UTF-8', 'auto') !!}</div>
                             @endforeach
@@ -677,8 +776,8 @@
                 @endif
 
                 @if(count($tournament_Artist))
-                <div class="text-white mb-3"> 
-                    <h4 >Tournament Organizing Team & Referee</h4>
+                <div class="text-white bgFilter2"> 
+                    <h4 class="highlighter">Tournament Organizing Team & Referee</h4>
                     <div class="row">
                         @foreach ($tournament_Artist as $sport)
                             <div class="col-md-3 col-sm-6 mb-3">
@@ -723,7 +822,7 @@
                     <div class="card-body">
                         <div class="alert_info" style="background: #FFF3D2" role="alert">
                             <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
-                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default">Learn How ></span></div>
+                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default" data-toggle="modal" data-target="#exampleModal">Learn How ></span></div>
                         </div>
                         <div class="single-ticket">
                             @if($tournament_detail['total_ticket'] <= 0)
@@ -766,10 +865,31 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                {{-- <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                </div> --}}
+                <div class="modal-body position-relative">
+                    <button type="button" class="close modalClose" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <img src="{{asset('/images/contactlessm Ticket.png')}}" width="100%" alt="">
+                </div>
+                {{-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div> --}}
+            </div>
+            </div>
+        </div>
               
         @if(count($tournament_Facility))
-        <div class="text-white mb-3 mt-2"> 
-            <h4 class="">Tournament Facility</h4>
+        <div class="text-white bgFilter2"> 
+            <h4 class="highlighter">Tournament Facility</h4>
             <div class="available-sports">
                 @foreach ($tournament_Facility as $sport)
                     <div class="available-sport-card">
@@ -781,8 +901,8 @@
         </div>
         @endif
         @if(count($tournament_Restriction))
-        <div class="text-white mb-3 mt-4"> 
-            <h4 class="">Tournament Prohibited</h4>
+        <div class="text-white bgFilter2"> 
+            <h4 class="highlighter">Tournament Prohibited</h4>
             <div class="available-sports">
                 @foreach ($tournament_Restriction as $sport)
                     <div class="available-sport-card">
@@ -794,7 +914,7 @@
         </div>
         @endif  
         @if(count($tournament_gallery))
-            <h4 class="mt-3">Tournament Gallery</h4>
+            <h4 class="highlighter bgFilter2">Tournament Gallery</h4>
             <div class="tournament-gallery">
                 <div class="row gap-3">
                     @foreach ($tournament_gallery as $sport)
@@ -808,11 +928,13 @@
     
         
         @if(count($tournament_detail['event_tags']))
-            <h4 class="mt-3">Tags</h4>
-            <div class="available-sports mb-4 gap-2 mt-3">
-                @foreach ($tournament_detail['event_tags'] as $tags)
-                    <span class="tags text-capitalize">{{ $tags }}</span>
-                @endforeach
+            <div class="text-white bgFilter2"> 
+                <h4 class="highlighter ">Tags</h4>
+                <div class="available-sports mb-4 gap-2">
+                    @foreach ($tournament_detail['event_tags'] as $tags)
+                        <span class="tags text-capitalize">{{ $tags }}</span>
+                    @endforeach
+                </div>
             </div>
         @endif
         <!-- Progress Section -->

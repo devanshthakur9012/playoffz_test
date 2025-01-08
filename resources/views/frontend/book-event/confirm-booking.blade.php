@@ -117,7 +117,7 @@ $paymentId = "";
                                     <strong id="total_amount">{{$settingDetails['currency']}}{{$packageDetails['ticket']*$bookingData['quantity']}}</strong>
                                 </li>
                             </ul>
-                            <p>Show the ticket content QR Code on your mobile to enter the event place. By Proceeding, I express my consent to complete this Transaction.</p>
+                            <p>Present the QR code on your mobile ticket at the tournament entrance for seamless entry. By proceeding, I confirm my consent to complete this transaction.</p>
                             @if (Common::isUserLogin())
                                 <button type="button" class="btn default-btn btn-block" id="payBookAmount">Continue To
                                     Checkout</button>
