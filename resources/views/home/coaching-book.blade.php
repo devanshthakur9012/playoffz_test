@@ -874,6 +874,25 @@
                                         {{ strlen($tour['event_place_address']) > 50 ? substr($tour['event_place_address'], 0, 50) . '...' : $tour['event_place_address'] }}
                                         </small>
                                     </p>
+                                    @php
+                                        // Ensure ticket_types exists and is an array
+                                        if (isset($tour['ticket_types']) && is_array($tour['ticket_types'])) {
+                                            // Sort the array by extracting numeric and alphabetic parts
+                                            uksort($tour['ticket_types'], function ($a, $b) {
+                                                // Extract the numeric part of the keys
+                                                $numA = (int) preg_replace('/\D/', '', $a); // Get numbers only
+                                                $numB = (int) preg_replace('/\D/', '', $b); // Get numbers only
+                                    
+                                                // Compare numeric parts first
+                                                if ($numA !== $numB) {
+                                                    return $numA <=> $numB;
+                                                }
+                                    
+                                                // If numeric parts are the same, compare alphabetically (B vs G)
+                                                return strcmp($a, $b);
+                                            });
+                                        }
+                                    @endphp
                                     @isset($tour['ticket_types'])
                                         @foreach ($tour['ticket_types'] as $key => $item)
                                             <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>

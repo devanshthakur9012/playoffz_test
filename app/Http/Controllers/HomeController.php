@@ -282,12 +282,12 @@ class HomeController extends Controller
 
     public function coachingPackages(){
         $coachingId = $this->memberObj['coach_id'];
-        $data['coachData'] = HomeService::coachingBookDataById($coachingId);
-        $data['packageData'] = HomeService::getCoachingPackagesDataByCoachId($coachingId);
-        $availableData = HomeService::checkedIfTicketSoldOut($coachingId);
-        if($availableData < 1){
-            return redirect('/');
-        }
+        // $data['coachData'] = HomeService::coachingBookDataById($coachingId);
+        // $data['packageData'] = HomeService::getCoachingPackagesDataByCoachId($coachingId);
+        // $availableData = HomeService::checkedIfTicketSoldOut($coachingId);
+        // if($availableData < 1){
+        //     return redirect('/');
+        // }
         
         $data['tour_plans'] = $this->coachingPrice($coachingId);
         $data['coaching_id'] = $coachingId;
