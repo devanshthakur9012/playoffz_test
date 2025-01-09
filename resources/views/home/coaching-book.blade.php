@@ -583,10 +583,11 @@
     } */
 
     .bgFilter{
-        background: #111635;
+        /* background: #111635;
         padding: 20px;
         border-radius: 5px;
-        margin-bottom: 20px !important;
+        margin-bottom: 20px !important; */
+        margin-bottom: 20px
     }
 
     .highlighter{
@@ -599,6 +600,8 @@
         font-size: 18px !important;
         color: #ffffff !important;
         border-radius: 2px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 6px #004aad;
     }
 
     .bgFilter2{

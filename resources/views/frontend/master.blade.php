@@ -126,6 +126,11 @@
                         <li>
                             <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img src="{{asset('/images/org_btn.png')}}" alt="" style="height:55px"></a>
                         </li>
+                        @isset($favicon['appUrl'])
+                            <li>
+                                <a href="{{$favicon['appUrl']}}" class="mx-3 btn default-btn py-2">Get App</a>
+                            </li>
+                        @endisset
                         @if (Common::isUserLogin())
                             <li class="nav-item dropdown no-arrow ">
                                 @if (Common::isUserLogin())
