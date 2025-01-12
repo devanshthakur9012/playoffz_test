@@ -758,25 +758,26 @@
                 </div>
                 <div class="text-white bgFilter"> 
                     <h4 class="mb-1 highlighter">About Tournament</h4>
-                    <div class="fs-3 grayText">{!! $tournament_detail['event_about'] !!}</div>
+                    <div class="fs-3 grayText">{!! stripslashes($tournament_detail['event_about']) !!}</div>
                 </div>
                 <div class="bgFilter text-white"> 
                     <h4 class="mb-1 highlighter">Rules & Regulations</h4>
-                    <div class="fs-3 grayText">{!! $tournament_detail['event_disclaimer'] !!}</div>
+                    <div class="fs-3 grayText">{!! stripslashes($tournament_detail['event_disclaimer']) !!}</div>
                 </div>
                 @if(!empty($tournament_detail['prize_reward']))
-                    <div class="bgFilter text-white">
-                        @php 
-                            $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
-                        @endphp
-                        @if(is_array($collection) && count($collection) > 0)
+                    @php 
+                        $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
+                    @endphp
+                    @if(is_array($collection) && count($collection) > 0 && !empty($collection[0]))
+                        <div class="bgFilter text-white">
                             <h4 class="highlighter mb-1">Prizes & Rewards</h4>
                             @foreach ($collection as $item)
                                 <div class="fs-3 grayText">🏆 {!! mb_convert_encoding($item, 'UTF-8', 'auto') !!}</div>
                             @endforeach
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @endif
+            
 
                 @if(count($tournament_Artist))
                 <div class="text-white bgFilter2"> 
