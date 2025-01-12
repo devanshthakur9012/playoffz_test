@@ -19,6 +19,25 @@ $paymentId = "";
             font-size: 18px !important;
         }
     }
+
+    .ticketHeading{
+        background: #004aad;
+        color: #ffffff;
+        padding: 6px;
+    }
+
+    .playerHead{
+        color: #fff;
+        background: #070b28;
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 3px;
+        font-weight: 300;
+    }
+
+    .playerForm{
+        padding: 0px 10px;
+    }
 </style>
 <section class="section-area checkout-event-area">
     <div class="container">
@@ -41,6 +60,129 @@ $paymentId = "";
                                         <p class="mb-0">{{$packageDetails['event_address_title']}}</p>
                                     </div>
                                 </div>
+                                <div class="formBox mt-4">
+                                    @php
+                                        $fields = $packageDetails['fields'] ?? [];
+                                        $isDouble = strpos(strtolower($packageDetails['type']), 'double') !== false || strpos(strtolower($packageDetails['type']), 'doubles') !== false;
+                                        $groupSize = $isDouble ? 2 : 1; // 2 players per group if double, else 1
+                                        $totalGroups = ($bookingData['quantity'] ?? 1); // Number of ticket quantities
+                                        $totalPlayers = $groupSize * $totalGroups; // Total number of players to render
+                                    @endphp
+                        
+                                    @for($group = 1; $group <= $totalGroups; $group++)
+                                        <div class="playerGroup">
+                                            @if ($totalGroups > 1)
+                                                <h4 class="mb-3 text-center ticketHeading">Ticket {{ $group }}</h4>
+                                            @endif
+                        
+                                            @for($player = 1; $player <= $groupSize; $player++)
+                                                <div class="playerForm">
+                                                    @if ($groupSize > 1)
+                                                    <h6 class="playerHead">Player {{ ($group - 1) * $groupSize + $player }}</h6>
+                                                    @endif
+                                                    <!-- Fixed fields: Name and Phone Number -->
+                                                    <div class="row">
+                                                    <div class="mb-3 col-lg-6">
+                                                        <label for="player_name_{{ $group }}_{{ $player }}" class="form-label">Name <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" name="player_name_{{ $group }}_{{ $player }}" id="player_name_{{ $group }}_{{ $player }}" placeholder="Player Name" required>
+                                                    </div>
+                        
+                                                    <div class="mb-3 col-lg-6">
+                                                        <label for="player_contact_{{ $group }}_{{ $player }}" class="form-label">Contact Number</label>
+                                                        <input type="text" class="form-control" name="player_contact_{{ $group }}_{{ $player }}" id="player_contact_{{ $group }}_{{ $player }}" placeholder="Player Contact Number">
+                                                    </div>
+                        
+                                                    <!-- Optional fields based on the "fields" array -->
+                                                    @foreach($fields as $field)
+                                                        @switch($field)
+                                                            @case('gender')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="gender_{{ $group }}_{{ $player }}" class="form-label">Gender</label>
+                                                                    <select class="form-select form-control" name="player_gender_{{ $group }}_{{ $player }}" id="gender_{{ $group }}_{{ $player }}">
+                                                                        <option value="">Choose Anyone</option>
+                                                                        <option value="male">Male</option>
+                                                                        <option value="female">Female</option>
+                                                                        <option value="other">Other</option>
+                                                                    </select>
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('club_name')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="club_name_{{ $group }}_{{ $player }}" class="form-label">Club Name</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Club Name" name="player_club_name_{{ $group }}_{{ $player }}" id="club_name_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('academy_name')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="academy_name_{{ $group }}_{{ $player }}" class="form-label">Academy Name</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Academy Name" name="player_academy_name_{{ $group }}_{{ $player }}" id="academy_name_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('age')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="age_{{ $group }}_{{ $player }}" class="form-label">Age</label>
+                                                                    <input type="number" placeholder="Enter Age"  class="form-control" name="player_age_{{ $group }}_{{ $player }}" id="age_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('shirt_size')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="shirt_size_{{ $group }}_{{ $player }}" class="form-label">T-Shirt Size</label>
+                                                                    <select class="form-select" name="player_shirt_size_{{ $group }}_{{ $player }}" id="shirt_size_{{ $group }}_{{ $player }}">
+                                                                        <option value="">Choose Anyone</option>
+                                                                        <option value="S">Small</option>
+                                                                        <option value="M">Medium</option>
+                                                                        <option value="L">Large</option>
+                                                                        <option value="XL">Extra Large</option>
+                                                                    </select>
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('emergency_contact')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="emergency_contact_{{ $group }}_{{ $player }}" class="form-label">Emergency Contact No.</label>
+                                                                    <input type="number" placeholder="Enter Emergency Contact No." class="form-control" name="player_emergency_contact_{{ $group }}_{{ $player }}" id="emergency_contact_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('study_class')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="study_class_{{ $group }}_{{ $player }}" class="form-label">Study Class</label>
+                                                                    <input type="text" placeholder="Enter Study Class" class="form-control" name="player_study_class_{{ $group }}_{{ $player }}" id="study_class_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('section')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="section_{{ $group }}_{{ $player }}" class="form-label">Section</label>
+                                                                    <input type="text" placeholder="Enter Section"  class="form-control" name="player_section_{{ $group }}_{{ $player }}" id="section_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('school_name')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="school_name_{{ $group }}_{{ $player }}" class="form-label">School Name</label>
+                                                                    <input type="text"  placeholder="Enter School Name"  class="form-control" name="player_school_name_{{ $group }}_{{ $player }}" id="school_name_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                        
+                                                            @case('college_name')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="college_name_{{ $group }}_{{ $player }}" class="form-label">College Name</label>
+                                                                    <input type="text" placeholder="Enter College Name" class="form-control" name="player_college_name_{{ $group }}_{{ $player }}" id="college_name_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
+                                                        @endswitch
+                                                    @endforeach
+                                                </div>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                    @endfor
+                                </div>                                                            
                             @endisset
                             @isset($payData)
                                 {{-- <form> --}}
@@ -181,34 +323,38 @@ $paymentId = "";
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 <script>
-    // $("#payBookAmount").on('click', function() {
-    //     $name = $('#card_holder_name').val();
-    //     $number = $('#number').val();
-    //     $email = $('#email').val();
-    //     if ($name != "" && $number != "" && $email != "") {
-    //         $("#payBookAmount").attr('disabled', 'disabled').text('Processing Payment...');
-    //         $.post('', {
-    //             '_token': '{{csrf_token()}}',
-    //             'coupon': $("#promo_text").val(),
-    //             'donation': $('#donate_checked').val(),
-    //         }, function(data) {
-    //             if ($('input[name="payment_method"]:checked').val() == 2) {
-    //                 $("#payment_type").val('2');
-    //                 setTimeout(() => {
-    //                     document.getElementById('razorpay-form').submit();
-    //                 }, 2000);
-    //             } else {
-    //                 console.log(data);
-    //                 razorpaySubmit(data.amount);
-    //             }
-    //         })
-    //     } else {
-    //         $('#errors').html('Please Fill Required Details');
-    //     }
-    // })
+    function validateDynamicForm() {
+        let isValid = true;
+
+        // Iterate through all required fields
+        $('input[required], select[required]').each(function () {
+            const $field = $(this);
+            if (!$field.val()) {
+                // Highlight invalid fields
+                $field.addClass('is-invalid');
+                isValid = false;
+            } else {
+                $field.removeClass('is-invalid');
+            }
+        });
+
+        // Display a message if the form is invalid
+        if (!isValid) {
+            iziToast.error({
+                title: 'Error',
+                position: 'topRight',
+                message: 'Please fill all required fields before proceeding.',
+            });
+        }
+
+        return isValid;
+    }
 </script>
 <script>
     function razorpaySubmit(amount) {
+        if (!validateDynamicForm()) {
+            return; // Stop if the form is invalid
+        }
         $.post('{{route("create-order")}}', { amount: amount }, function(response) {
             if (response.success) {
                 let orderID = response.order_id;

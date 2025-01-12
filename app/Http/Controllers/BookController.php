@@ -294,6 +294,8 @@ class BookController extends Controller
             $couponList = $this->getCopunByApi($sponserId);
         }
 
+        // dd($packageDetails);
+
         // Pass booking data to the view
         return view('frontend.book-event.confirm-booking', compact('packageDetails','settingDetails','bookingData','payData','couponList'));
     }
@@ -326,7 +328,6 @@ class BookController extends Controller
     }
 
     public function storePaymentDetails(Request $request){
-
         try {
             $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
             $eventDetails = session('book_event_data');
@@ -344,6 +345,40 @@ class BookController extends Controller
 
             $userDetails = Common::fetchUserDetails();
 
+            $userInputData = [];
+            
+            // Loop through the quantity to gather all the player details
+            for ($group = 1; $group <= $bookingData['quantity']; $group++) {
+                $playersData = [];
+
+                // Loop through each player in the group (in case of doubles, there are two players)
+                for ($player = 1; $player <= 2; $player++) { // Assuming 2 players for each group
+                    // Check and add only non-empty fields
+                    $playerData = [];
+                    $name = $request->input("player_name_{$group}_{$player}");
+                    if ($name) $playerData['name'] = $name;
+
+                    $contact = $request->input("player_contact_{$group}_{$player}");
+                    if ($contact) $playerData['contact'] = $contact;
+
+                    $gender = $request->input("player_gender_{$group}_{$player}");
+                    if ($gender) $playerData['gender'] = $gender;
+
+                    $clubName = $request->input("player_club_name_{$group}_{$player}");
+                    if ($clubName) $playerData['club_name'] = $clubName;
+
+                    // Add this player data to the group data
+                    if (!empty($playerData)) {
+                        $playersData[] = $playerData;
+                    }
+                }
+
+                // Store group data with players' data
+                if (!empty($playersData)) {
+                    $userInputData[] = ['group' => $group, 'players' => $playersData];
+                }
+            }
+
             $data = [
                 "uid"=>$uid,
                 "eid"=>$eventDetails['event_id'], 
@@ -360,6 +395,7 @@ class BookController extends Controller
                 "plimit"=>$eventDetails['tlimit'],
                 'transaction_id'=>$transaction_id,
                 "sponsore_id"=>$eventDetails['sponser_id'], 
+                "user_info" => isset($userInputData) ? $userInputData : null, 
             ];
 
             $storePaymentDetails = $this->savebookingDetails($data);
@@ -466,7 +502,7 @@ class BookController extends Controller
         $redirectUrl = route('confirm-ticket-book');
         return response()->json([
             'status' => 'success',
-            'message' => 'Booking successful! Redirecting...',
+            'message' => 'Proceeding to Checkout...',
             'redirect_url' => $redirectUrl,
         ]);
     }
