@@ -652,7 +652,7 @@
         align-items: center;
         text-align: center;
         text-transform: capitalize;
-        background: #070b28;
+        background: #004aad;
         padding: 10px;
         border-radius: 4px;
      }
@@ -1181,7 +1181,7 @@
     const eventDate = new Date(eventDateTime).getTime();
 
     // Update the countdown every second
-    const countdownInterval = setInterval(() => {
+    // const countdownInterval = setInterval(() => {
         const now = new Date().getTime();
         const timeLeft = eventDate - now;
 
@@ -1219,6 +1219,6 @@
             clearInterval(countdownInterval);
             document.getElementById("countdown").innerHTML = "<p class='mb-0'>Event has started!</p>";
         }
-    }, 1000);
+    // }, 1000);
 </script>
 @endpush
