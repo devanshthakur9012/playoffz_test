@@ -645,6 +645,17 @@
         right: -10px;
         color: #1a1b2e;
      }
+
+     .timeCounter{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        text-transform: capitalize;
+        background: #070b28;
+        padding: 10px;
+        border-radius: 4px;
+     }
     </style>
 @endpush
 @section('content')
@@ -805,6 +816,11 @@
                 @endif
             </div>
             <div class="col-lg-4 col-md-4 col-12">
+                <div class="countdown text-left event-ticket card shadow-sm mb-3">
+                    <div class="card-body" id="countdown">
+                        <p class="mb-0">Loading countdown...</p>
+                    </div>
+                </div>
                 <div class="text-left event-ticket card shadow-sm mb-3">
                     <div class="card-body">
                         <div class="products-reviews text-center">
@@ -1137,7 +1153,17 @@
         }
     });
 </script> --}}
+@php
+    $date = $tournament_detail['event_sdate']; // Example: "26 January, 2025"
+    $time = $tournament_detail['event_time_day']; // Example: "Sunday, 9:00 AM TO 7:00 PM"
 
+    // Split the time string to get the start time
+    $time_parts = explode(', ', $time);
+    $start_time = isset($time_parts[1]) ? explode(' TO ', $time_parts[1])[0] : ''; // Extract "9:00 AM"
+
+    // Combine date and start time into a single datetime string
+    $event_datetime = "$date $start_time"; // Example: "26 January, 2025 9:00 AM"
+@endphp
 @endsection
 @include('alert-messages')
 
@@ -1146,5 +1172,53 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+</script>
+<script>
+    // Get the event date and time from PHP
+    const eventDateTime = "{{ $event_datetime }}"; // Example: "26 January, 2025 9:00 AM"
+
+    // Parse the date and time into a JavaScript Date object
+    const eventDate = new Date(eventDateTime).getTime();
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = eventDate - now;
+
+        if (timeLeft >= 0) {
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `
+                <h5 class="mb-3">⏳ Starts In</h5>
+                <div class="timeCounter">
+                    <div class="days">
+                        <span>${days < 10 ? "0" + days : days}</span>
+                        <div>days</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${hours < 10 ? "0" + hours : hours}</span>
+                        <div>hours</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${minutes < 10 ? "0" + minutes : minutes}</span>
+                        <div>minutes</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${seconds < 10 ? "0" + seconds : seconds}</span>
+                        <div>seconds</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown").innerHTML = "<p class='mb-0'>Event has started!</p>";
+        }
+    }, 1000);
 </script>
 @endpush
