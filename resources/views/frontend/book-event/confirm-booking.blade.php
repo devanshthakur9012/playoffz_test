@@ -84,7 +84,7 @@ $paymentId = "";
                                                     <div class="row">
                                                     <div class="mb-3 col-lg-6">
                                                         <label for="player_name_{{ $group }}_{{ $player }}" class="form-label">Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="player_name_{{ $group }}_{{ $player }}" id="player_name_{{ $group }}_{{ $player }}" placeholder="Player Name" required>
+                                                        <input type="text" class="form-control" name="player_name_{{ $group }}_{{ $player }}" id="player_name_{{ $group }}_{{ $player }}" placeholder="Player Name/Team name" required>
                                                     </div>
                         
                                                     <div class="mb-3 col-lg-6">
@@ -131,7 +131,7 @@ $paymentId = "";
                                                             @case('shirt_size')
                                                                 <div class="mb-3 col-lg-6">
                                                                     <label for="shirt_size_{{ $group }}_{{ $player }}" class="form-label">T-Shirt Size</label>
-                                                                    <select class="form-select" name="player_shirt_size_{{ $group }}_{{ $player }}" id="shirt_size_{{ $group }}_{{ $player }}">
+                                                                    <select class="form-select form-control" name="player_shirt_size_{{ $group }}_{{ $player }}" id="shirt_size_{{ $group }}_{{ $player }}">
                                                                         <option value="">Choose Anyone</option>
                                                                         <option value="S">Small</option>
                                                                         <option value="M">Medium</option>
