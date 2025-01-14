@@ -38,6 +38,11 @@ $paymentId = "";
     .playerForm{
         padding: 0px 10px;
     }
+
+    .smaller-modal .swal2-confirm{
+        margin: 0px;
+        border: 0px;
+    }
 </style>
 <section class="section-area checkout-event-area">
     <div class="container">
@@ -450,4 +455,39 @@ $paymentId = "";
         }
     });
 </script>
+@if (!Common::isUserLogin())
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const formElements = document.querySelectorAll('#razorpay-form input, #razorpay-form select, #razorpay-form textarea');
+                let isAlertShown = false; // Prevent duplicate alerts
+                let isRedirecting = false; // Prevent multiple redirects
+
+                formElements.forEach(element => {
+                    element.addEventListener('focus', (event) => {
+                        if (!isAlertShown && !isRedirecting) {
+                            isAlertShown = true; // Set the flag to true to show alert only once
+                            Swal.fire({
+                                title: 'Login Required',
+                                text: 'Please log in to continue.',
+                                confirmButtonText: 'Login To Continue',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                customClass: {
+                                    popup: 'smaller-modal', // Add a custom class if further styling is needed
+                                },
+                            }).then((result) => {
+                                isAlertShown = false; // Reset flag only if no redirection happens
+                                if (result.isConfirmed && !isRedirecting) {
+                                    isRedirecting = true; // Prevent multiple redirects
+                                    window.location.href = "{{ route('userLogin') }}"; // Redirect to login page
+                                }
+                            });
+                        }
+                        event.target.blur(); // Immediately remove focus to prevent input
+                    });
+                });
+        });
+    </script>
+@endif
 @endpush
