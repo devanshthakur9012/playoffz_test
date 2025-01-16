@@ -781,7 +781,7 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
 📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A
 📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A
 🔗 Register here: {{ url()->current() }}"
-   target="_blank" class="d-none social-button whatsapp">
+   target="_blank" class="social-button whatsapp">
    <i class="fab fa-whatsapp text-white"></i>
 </a>
 
