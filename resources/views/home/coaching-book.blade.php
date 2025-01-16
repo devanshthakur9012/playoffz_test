@@ -760,20 +760,32 @@
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
                             <!-- WhatsApp Share Button -->
-                            {{-- <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
-                                target="_blank" class="social-button whatsapp">
-                                <i class="fab fa-whatsapp text-white"></i>
-                            </a> --}}
-                            <!-- WhatsApp Share Button -->
-                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
+                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
                                 target="_blank" class="d-none social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
-                            </a>
-                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🖼️ Event Image: {{ env('BACKEND_BASE_URL') }}/{{ $tournament_detail['event_cover_img'][0] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
-                                target="_blank" class="social-button whatsapp">
-                                 <i class="fab fa-whatsapp text-white"></i>
-                             </a> --}}
-                             <button id="shareBtn" 
+                            </a> --}}
+
+                            {{-- WORKING FINE WITH GROUP LOGIC --}}
+                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A
+{{ strip_tags(stripslashes($tournament_detail['event_about'])) }}%0A%0A
+📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A
+📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A
+🔗 Register here: {{ url()->current() }}%0A%0A
+Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
+   target="_blank" class="social-button whatsapp">
+   <i class="fab fa-whatsapp text-white"></i>
+</a> --}}
+
+<a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A
+{{ strip_tags(stripslashes($tournament_detail['event_about'])) }}%0A%0A
+📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A
+📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A
+🔗 Register here: {{ url()->current() }}"
+   target="_blank" class="d-none social-button whatsapp">
+   <i class="fab fa-whatsapp text-white"></i>
+</a>
+
+                             {{-- <button id="shareBtn" 
                                 data-title="{{ $tournament_detail['event_title'] }}" 
                                 data-sdate="{{ $tournament_detail['event_sdate'] }}" 
                                 data-time="{{ $tournament_detail['event_time_day'] }}" 
@@ -782,7 +794,7 @@
                                 data-link="{{url()->current()}}" 
                                 class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                 </div>
