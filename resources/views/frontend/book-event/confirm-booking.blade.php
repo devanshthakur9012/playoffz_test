@@ -42,6 +42,20 @@ $paymentId = "";
     .smaller-modal .swal2-confirm{
         margin: 0px;
         border: 0px;
+        background: #fff !important;
+        color: #002c68 !important;
+    }
+
+    .smaller-modal .swal2-show{
+        background: #002c68 !important;
+        color: #fff !important;
+    }
+    .swal2-show{
+        background: #002c68 !important;
+        color: #fff !important;
+    }
+    button:focus{
+        outline:none !important;
     }
 </style>
 <section class="section-area checkout-event-area">

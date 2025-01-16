@@ -196,10 +196,6 @@ class HomeController extends Controller
     public function coachingBook(string $title,int $id)
     {
         $selectedCity = Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'All';
-        // $data['coachData'] = HomeService::coachingBookDataById($id);
-        // $sessionDurationData = json_decode($data['coachData']->session_duration, true);
-        // $data['sessionDurationData'] = $sessionDurationData;
-        // $data['relatedCoaching'] = HomeService::getRelateCoachingData($id, $selectedCity, $data['coachData']->category->id);
         $data['isTicketSoldAvailable'] = HomeService::checkedIfTicketSoldOut($id);
         
         $inputObj = new stdClass();
@@ -217,14 +213,6 @@ class HomeController extends Controller
         $data['tournament_Restriction'] = $details['Event_Restriction'];
         $data['tournament_reviewdata'] = $details['reviewdata'];
         $data['related_tournament'] = $details['related'];
-
-        // $pageUrl = route('tournament-detail', ['title' => $title, 'id' => $id]);
-        // $qrCodePath = public_path('qrcodes/tournament-' . $id . '.png');
-        // \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
-        //     ->size(150) // Set the size of the QR code
-        //     ->margin(0) // Minimize padding
-        //     ->generate($pageUrl, $qrCodePath);
-        // $data['qrCodePath'] = asset('qrcodes/tournament-' . $id . '.png'); // Public URL for sharing   
         
         
         // Use the title to create a more descriptive QR code file name
@@ -242,7 +230,7 @@ class HomeController extends Controller
         
         // Return the public URL for the cached QR code
         $data['qrCodePath'] = asset('qrcodes/' . $qrCodeFileName);
-
+        // Generate share message
         return view('home.coaching-book', $data);
     }
 

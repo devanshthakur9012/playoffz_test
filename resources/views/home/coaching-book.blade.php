@@ -760,10 +760,29 @@
                                 <i class="fab fa-linkedin-in text-white"></i>
                             </a>
                             <!-- WhatsApp Share Button -->
-                            <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
+                            {{-- <a href="https://api.whatsapp.com/send?text={{$url}}%0A%0A{{ urlencode($tournament_detail['event_title']) }}%0A{{ urlencode($tournament_detail['event_address']) }}%0A{{ urlencode(url()->current()) }}" 
                                 target="_blank" class="social-button whatsapp">
                                 <i class="fab fa-whatsapp text-white"></i>
+                            </a> --}}
+                            <!-- WhatsApp Share Button -->
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
+                                target="_blank" class="d-none social-button whatsapp">
+                                <i class="fab fa-whatsapp text-white"></i>
                             </a>
+                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🖼️ Event Image: {{ env('BACKEND_BASE_URL') }}/{{ $tournament_detail['event_cover_img'][0] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
+                                target="_blank" class="social-button whatsapp">
+                                 <i class="fab fa-whatsapp text-white"></i>
+                             </a> --}}
+                             <button id="shareBtn" 
+                                data-title="{{ $tournament_detail['event_title'] }}" 
+                                data-sdate="{{ $tournament_detail['event_sdate'] }}" 
+                                data-time="{{ $tournament_detail['event_time_day'] }}" 
+                                data-ticket="{{ $tournament_detail['ticket_price'] }}" 
+                                data-total="{{ $tournament_detail['total_ticket'] }}" 
+                                data-link="{{url()->current()}}" 
+                                class="social-button whatsapp">
+                                <i class="fab fa-whatsapp text-white"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1221,4 +1240,33 @@
         }
     // }, 1000);
 </script>
+<script>
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        // Get data attributes from the button
+        var title = this.getAttribute('data-title');
+        var eventDate = this.getAttribute('data-sdate');
+        var eventTime = this.getAttribute('data-time');
+        var ticketPrice = this.getAttribute('data-ticket');
+        var totalSpots = this.getAttribute('data-total');
+        var tournamentLink = this.getAttribute('data-link');
+        var imageUrl = this.getAttribute('data-img');  // Get the image URL
+
+        // Create the WhatsApp message with the image URL included directly in the message text
+        var message = `Hey! Check out this tournament: 
+        \nTitle: ${title}
+        \nDate: ${eventDate}
+        \nTime: ${eventTime}
+        \nTicket Price: ${ticketPrice}
+        \nRemaining Spots: ${totalSpots}
+        \n\nMore details: ${tournamentLink}`;  // WhatsApp will recognize this as an image URL for preview
+
+        // Encode the message for URL
+        var encodedMessage = encodeURIComponent(message);
+
+        // Open WhatsApp with the pre-filled message (image preview will automatically be handled by WhatsApp)
+        var whatsappURL = `https://wa.me/?text=${encodedMessage}`;
+        window.open(whatsappURL, '_blank');
+    });
+</script>
+
 @endpush
