@@ -323,17 +323,30 @@ class HomeController extends Controller
         }
     }
 
-    public function coachings($category, $Id)
+    public function coachings($categorySlug)
     {
         $selectedCity = Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'All';
-        $coachData = HomeService::getCoachingDataByCateoryId($selectedCity, $Id);
-        $data['coachingData'] = $coachData['coachesData'];
-        $data['categoryData'] = $coachData['categoryData'];
 
-        $data['category_tournament'] = $this->getCatgeoryData($Id);
-        $data['category'] = $category;
+        // Fetch all categories and find the one that matches the slug
+        $categories = Common::allEventCategoriesByApi();
+        $category = collect($categories)->firstWhere('slug', $categorySlug);
+
+        // If the category is not found, return a 404 error
+        if (!$category) {
+            abort(404, 'Category not found.');
+        }
+
+        // Get the ID of the matched category
+        $categoryId = $category['id'];
+
+        // Get category tournament data
+        $data['category_tournament'] = $this->getCatgeoryData($categoryId);
+        $data['category'] = $categorySlug;
+        $data['category_desciption'] = $category['description'];
+
         return view('home.coachings', $data);
     }
+
 
     public function getCatgeoryData($catId){
         try {
@@ -362,6 +375,62 @@ class HomeController extends Controller
            return [];
         }
     }
+
+    public function locationTournament($location)
+    {
+        try {
+            // Get category tournament data
+            $fetchData = $this->getLocationTournament($location);
+    
+            // Prepare data for the view
+            $data['category_tournament'] = $fetchData['catData'];
+            $data['location'] = $fetchData['location'];
+            $data['category'] = $location;
+    
+            return view('home.locations', $data);
+        } catch (\Exception $e) {
+            // Catch exceptions to prevent the app from breaking
+            return redirect()->back()->with('error', 'An error occurred while fetching tournament data: ' . $e->getMessage());
+        }
+    }
+    
+    public function getLocationTournament($location)
+    {
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+    
+            // Prepare the data to send in the request body
+            $data = [
+                'location' => $location,
+            ];
+    
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/location_event.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+    
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+    
+            // Return the relevant data
+            return [
+                'catData' => $responseData['CatEventData'],
+                'location' => $responseData['Location']
+            ];
+        } catch (\Exception $e) {
+            // Catch exceptions and provide a fallback
+            // Log the error for debugging
+            \Log::error('Error fetching location tournament data: ' . $e->getMessage());
+    
+            // Return empty data in case of error
+            return [
+                'catData' => [],
+                'location' => ''
+            ];
+        }
+    }    
 
     public function bookCoachingPackage()
     {

@@ -1,9 +1,13 @@
 @extends('frontend.master', ['activePage' => 'home'])
-@php $catName = ucwords(str_replace('-', ' ', $category)); @endphp
-@section('title', __($catName.' Tournaments'))
+
+@php $locationName = ""; @endphp
+@isset($location['city'])
+    @php $locationName = $location['city'] @endphp
+@endisset
+@section('title', __('Tournaments In ' .$locationName))
 @section('og_data')
-    <meta name="description" content="@isset($category_desciption){{$category_desciption}}@endisset" />
-    <meta name="keywords" content="@isset($catName){{$catName}}@endisset Tournaments" />
+    <meta name="description" content="@isset($location['description']){{$location['description']}}@endisset" />
+    <meta name="keywords" content="Tournaments In @isset($location['city']){{$location['city']}}@endisset" />
 @endsection
 @section('content')
 <style>
@@ -48,10 +52,8 @@
 <div class="container my-5">
     <div class="hawan_section">
         <div class="mt-5 mb-3">
-            <h1 class="h4 mb-2">{{$catName}} Tournament</h1>
-            @isset($category_desciption)
-                <p>{{$category_desciption}}</p>
-            @endisset
+            <h1 class="h4 mb-2">{{ ucwords(str_replace('-', ' ', $category)) }} Tournament</h1>
+            @isset($location['description'])<p>{{$location['description']}}</p>@endisset
         </div>
         <div class="row list-bp">
             @foreach ($category_tournament as $tour)

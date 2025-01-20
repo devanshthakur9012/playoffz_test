@@ -46,7 +46,10 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('tournaments/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
 
     Route::get('tournament-tickets', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
-    Route::get('tournaments/{category}/{id}', [HomeController::class, 'coachings'])->name('tournament');
+    Route::get('{category}-tournament', [HomeController::class, 'coachings'])->name('tournament');
+
+    Route::get('tournaments-in-{location}', [HomeController::class, 'locationTournament'])->name('location-tournament');
+
     Route::get('city-coachings/{cityName}', [HomeController::class, 'cityCoachings']);
     Route::get('book-coaching-package', [HomeController::class, 'bookCoachingPackage']);
     Route::post('store-book-coaching-package', [HomeController::class, 'storeBookCoachingPackage']);

@@ -187,28 +187,44 @@ class Common
     return $payData;
   }
 
-  public static function allEventCategoriesByApi(){
+  // public static function allEventCategoriesByApi(){
     
-    $catData = \Cache::remember('tournament-categories', 10, function(){
+  //   $catData = \Cache::remember('tournament-categories', 10, function(){
      
-       // Instantiate the Guzzle client
-      $client = new Client();
+  //      // Instantiate the Guzzle client
+  //     $client = new Client();
 
-      // Send GET request to the PHP admin panel API
-      $baseUrl = env('BACKEND_BASE_URL');
-      $response = $client->get("{$baseUrl}/web_api/cat_data.php");
+  //     // Send GET request to the PHP admin panel API
+  //     $baseUrl = env('BACKEND_BASE_URL');
+  //     $response = $client->get("{$baseUrl}/web_api/cat_data.php");
 
-      // Decode the JSON response
-      $data = json_decode($response->getBody(), true);
+  //     // Decode the JSON response
+  //     $data = json_decode($response->getBody(), true);
 
-      return $catData = $data['HomeData'];
+  //     return $catData = $data['HomeData'];
 
-      // Pass the data to the view to display in the frontend
-      // return view('frontend.content', ['data' => $data]);
+  //   });
+  //   return $catData;
+  // }
 
-    });
-    return $catData;
+  public static function allEventCategoriesByApi()
+  {
+      $catData = \Cache::remember('tournament-categories', 10, function () {
+          $client = new Client();
+          $baseUrl = env('BACKEND_BASE_URL');
+          $response = $client->get("{$baseUrl}/web_api/cat_data.php");
+          $data = json_decode($response->getBody(), true);
+          
+          // Generate slugs for each category
+          return collect($data['HomeData'])->map(function ($cat) {
+              $cat['slug'] = Str::slug($cat['title']);
+              return $cat;
+          })->toArray();
+      });
+
+      return $catData;
   }
+
 
   public static function fetchUserDetails()
   {

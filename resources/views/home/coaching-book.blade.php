@@ -1035,7 +1035,8 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
                                 <div class="m-card-cover  position-relative">
                                     <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                     @isset($tour['cid'])
-                                        <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    
+                                        <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                     @endisset
                                 </div>
                                 <div class="card-body position-relative">

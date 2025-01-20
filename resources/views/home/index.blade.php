@@ -141,7 +141,7 @@
                             <div class="m-card-cover  position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -224,7 +224,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body  position-relative">
@@ -293,7 +293,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -362,7 +362,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>$tour['category'],'id'=>$tour['cid']])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -415,7 +415,7 @@
     <div class="all-category mb-5">
         @foreach (Common::allEventCategoriesByApi() as $cat)
         <div class="category-card">
-            <a href="{{ route('tournament', [Str::slug($cat['title']), $cat['id']]) }}">
+            <a href="{{ route('tournament', [Str::slug($tour['category'])]) }}">
                 <img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cover_img']}}" class="category-img" alt="...">
                 <div class="cat-content">
                     <p class="cat-title text-truncate">{{$cat['title']}}</p>

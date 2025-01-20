@@ -44,6 +44,14 @@
             color: #ffffff;
             line-height: 20px;
         }
+        .socialFooter{
+            gap: 10px;
+        }
+        .socialFooter i{
+            border: 1px solid #fff;
+            padding: 10px;
+            border-radius: 50%;
+        }
     </style>
 </head>
 
@@ -234,7 +242,7 @@
                     <ul class="navbar-nav w-100 justify-content-center">
                         @foreach (Common::allEventCategoriesByApi() as $cat)
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('tournament', [Str::slug($cat['title']), $cat['id']]) }}">
+                                <a class="nav-link" href="{{ route('tournament', [Str::slug($cat['slug'])]) }}">
                                     <span class="menu_item"><img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cat_img']}}" class="mr-1" width="20px" alt="{{$cat['title']}}">{{$cat['title']}}</span></a>
                             </li>
                         @endforeach
@@ -324,17 +332,24 @@
                 <h5 class="text-white mb-2">Categories</h5>
                 <ul class="list-unstyled ">
                     @foreach (Common::allEventCategoriesByApi() as $cat)
-                        <li><a href="{{ route('tournament', [Str::slug($cat['title']), $cat['id']]) }}">
-                            {{$cat['title']}}</a></li>
-                            {{-- <img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cat_img']}}" class="me-2" alt="{{$cat['title']}}"> --}}
+                        <li>
+                            <a href="{{ route('tournament', ['category' => $cat['slug']]) }}">
+                                {{ $cat['title'] }}
+                            </a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
             <div>
                 <h5 class="text-white mb-2">Locations</h5>
                 <ul class="list-unstyled ">
-                    @foreach (Common::fetchLocation() as $item)
+                    {{-- @foreach (Common::fetchLocation() as $item)
                         <li><a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' . request()->fullUrl()) }}">{{$item['city']}}</a></li>
+                    @endforeach --}}
+                    @foreach (Common::fetchLocation() as $item)
+                        <li> <a href="{{ route('location-tournament', ['location' => Str::slug($item['city'])]) }}">
+                           {{ $item['city'] }}
+                        </a></li>
                     @endforeach
                 </ul>
             </div>
@@ -343,6 +358,12 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
+                <div class="col-sm-6 col-md-4 mt-4 col-lg-4 col-6 ">
+                    <div class="resources">
+                        <h6 class="footer-heading text-uppercase text-white fw-bold">About Us</h6>
+                        <p>PlayOffz is the ultimate platform for sports enthusiasts, connecting players to exciting tournaments nearby. Easily book tickets online and stay updated with match schedules, fixtures, live scoring, and results. For organizers, PlayOffz offers seamless tools to manage and promote tournaments effortlessly. Join us to elevate your sports experience!</p>
+                    </div>
+                </div>
                 <div class="col-sm-6 col-md-4 mt-4 col-lg-4 col-6 ">
                     <div class="resources">
                         <h6 class="footer-heading text-uppercase text-white fw-bold">Quick Links</h6>
@@ -359,37 +380,6 @@
                                     <li class="mb-1"><a href="{{ url('/pages/' . $item['slug']) }}" class="text-white text-decoration-none">{{ $item['title'] }}</a></li>
                                 @endforeach
                             @endif  
-                            {{-- <li class="mb-1"><a href="contact" class="text-white text-decoration-none ">Contact
-                                    Us</a></li>
-                            <li class="mb-1"><a href="{{url('terms-and-conditions')}}"
-                                    class="text-white text-decoration-none ">Terms & Conditions </a></li>
-                            <li class=""><a href="{{url('privacy-policy')}}"
-                                    class="text-white text-decoration-none ">Privacy Policy</a></li>
-                            <li class=""><a href="{{url('cancellation-policy')}}"
-                                class="text-white text-decoration-none ">Cancellation Policy</a></li> --}}
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 mt-4 col-lg-4 col-6">
-                    <div class="social">
-                        <h6 class="footer-heading text-uppercase text-white fw-bold">Social Links</h6>
-                        <ul class=" my-4">
-                            @isset($favicon['Facebook'])
-                                <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank"
-                                        class="text-white mb-2"><i class="fab fa-facebook"></i> Facebook</a></li>
-                            @endisset
-                            @isset($favicon['Instagram'])
-                            <li class=""><a href="{{ $favicon['Instagram'] }}" target="_blank"
-                                    class="text-white mb-2"><i class="fab fa-instagram"></i> Instagram</a></li>
-                            @endisset
-                            @isset($favicon['Twitter'])
-                            <li class=""><a href="{{ $favicon['Twitter'] }}" target="_blank"
-                                    class="text-white mb-2"><i class="fab fa-twitter"></i> Twitter</a></li>
-                            @endisset
-                            @isset($favicon['Linkedin'])
-                            <li class=""><a href="{{ $favicon['Linkedin'] }}" target="_blank"
-                                    class="text-white mb-2"><i class="fab fa-linkedin"></i> Linkedin</a></li>
-                            @endisset
                         </ul>
                     </div>
                 </div>
@@ -401,7 +391,25 @@
                                 class="fas fa-phone-alt"></i> {{ $favicon['mobile'] }}</a>
                         <a href="mailto:{{$favicon['email']}}"
                             class="text-white mb-1 text-decoration-none d-block "><i class="fas fa-envelope"></i>
-                            {{ $favicon['email'] }}</a>
+                            {{ $favicon['email'] }}</a>     
+                        <ul class="mt-2 d-flex gap-2 socialFooter">
+                            @isset($favicon['Facebook'])
+                                <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank"
+                                        class="text-white mb-2"><i class="fab fa-facebook"></i></a></li>
+                            @endisset
+                            @isset($favicon['Instagram'])
+                            <li class=""><a href="{{ $favicon['Instagram'] }}" target="_blank"
+                                    class="text-white mb-2"><i class="fab fa-instagram"></i></a></li>
+                            @endisset
+                            @isset($favicon['Twitter'])
+                            <li class=""><a href="{{ $favicon['Twitter'] }}" target="_blank"
+                                    class="text-white mb-2"><i class="fab fa-twitter"></i></a></li>
+                            @endisset
+                            @isset($favicon['Linkedin'])
+                            <li class=""><a href="{{ $favicon['Linkedin'] }}" target="_blank"
+                                    class="text-white mb-2"><i class="fab fa-linkedin"></i></a></li>
+                            @endisset
+                        </ul>
                     </div>
                 </div>
             </div>
