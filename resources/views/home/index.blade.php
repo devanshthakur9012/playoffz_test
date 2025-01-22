@@ -1,5 +1,9 @@
 @extends('frontend.master', ['activePage' => 'home'])
-@section('title', __('Home'))
+@section('title', __('Discover Sports Tournaments in Bangalore'))
+@section('og_data')
+    <meta name="description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!" />
+    <meta name="keywords" content="@isset($catName){{$catName}}@endisset Tournaments" />
+@endsection
 @section('content')
 <style>
     .btn-white{

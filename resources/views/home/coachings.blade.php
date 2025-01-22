@@ -2,8 +2,9 @@
 @php $catName = ucwords(str_replace('-', ' ', $category)); @endphp
 @section('title', __($catName.' Tournaments'))
 @section('og_data')
-    <meta name="description" content="@isset($category_desciption){{$category_desciption}}@endisset" />
-    <meta name="keywords" content="@isset($catName){{$catName}}@endisset Tournaments" />
+    <meta name="title" content="@isset($meta_data['meta_title']){{$meta_data['meta_title']}}@endisset" />
+    <meta name="description" content="@isset($meta_data['meta_description']){{$meta_data['meta_description']}}@endisset" />
+    <meta name="keywords" content="@isset($meta_data['meta_keyword']){{$meta_data['meta_keyword']}}@endisset " />
 @endsection
 @section('content')
 <style>

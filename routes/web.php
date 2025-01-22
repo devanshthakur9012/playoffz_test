@@ -194,7 +194,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         'roles' => RoleController::class,
         'tax' => TaxController::class,
-        'faq' => FaqController::class,
+        // 'faq' => FaqController::class,
         'banner' => BannerController::class,
         'app-user' => AppUserController::class,
         'users' =>  UserController::class,
@@ -202,7 +202,7 @@ Route::group(['middleware' => ['auth']], function () {
         'feedback' =>  FeedbackController::class,
         'coupon' =>  CouponController::class,
         'category' =>  CategoryController::class,
-        'location' =>  LocationController::class,
+        // 'location' =>  LocationController::class,
         'events' =>  EventController::class,
         'events-parent' =>  EventParentController::class,
         'eventss-description' =>  EventDescriptionController::class,

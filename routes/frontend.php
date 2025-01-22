@@ -28,10 +28,9 @@ Route::post("/set-u-location",[EventController::class,'setULocation']);
 Route::get("/stancer-payment-success",[SocialLoginController::class,'paymentSuccess']);
 
 
+
 Route::group(['middleware' => ['mode', 'XSS']], function () {
 
-    // Route::get()
-    
     Route::get('/spiritual-volunteers',[BookController::class,'spritualVolunteer']);
     Route::get('/spiritual-volunteers-details/{id}',[BookController::class,'volunteersDetails']);
     Route::get('/create-spiritual-volunteers',[BookController::class,'createspritualVolunteer']);
@@ -69,7 +68,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/list-your-event',[FrontendController::class,'listYourEvent']);
 
 
-    Route::get('/FAQ', [FaqController::class, 'show']);
+   
     // Route::get('/appuser-privacy-policy', [FrontendController::class, 'appuserPrivacyPolicyShow']);
     Route::get('/show-details/{id}', [OrderController::class, 'showTicket']);
     Route::get('/events_details/{id}',[EventController::class,'show']);
@@ -176,6 +175,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('user/my-profile',[AuthController::class,'myProfile']);
     Route::post('user/update-profile',[AuthController::class,'updateProfile']);
     Route::get('help-center',[HomeController::class,'helpCenter'])->name('help-center');
+    Route::get('faq',[HomeController::class,'faqData'])->name('faq');
     Route::get('user/my-booking/{type}',[HomeController::class,'myBooking'])->name('my-booking');
 
 
@@ -208,7 +208,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
         // Route::post('/search_event',[FrontendController::class,'searchEvent']);
         // Route::get('/tag/{tagname}',[FrontendController::class,'eventsByTag']);
         // Route::get('/blog-tag/{tagname}',[FrontendController::class,'blogByTag']);
-        Route::get('/FAQs',[FrontendController::class,'Faqs']);
+        // Route::get('/FAQs',[FrontendController::class,'Faqs']);
     });
     // Route::group(['middleware' => 'checkStatus'], function () {
 

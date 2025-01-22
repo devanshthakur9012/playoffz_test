@@ -59,12 +59,43 @@ class HomeController extends Controller
     }
 
     public function helpCenter(){
-        $faq = $this->fetchHelpCenterApi();
+        $help = $this->fetchHelpCenterApi();
+        return view('frontend.help',compact('help'));
+    }
+    
+    private function fetchHelpCenterApi(){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            $data = [
+                "uid"=>0,
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/help-center.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['FaqData'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
+    public function faqData(){
+        $faq = $this->fetchFaqCenterApi();
         return view('frontend.faq',compact('faq'));
     }
 
-    
-    private function fetchHelpCenterApi(){
+    private function fetchFaqCenterApi(){
         try {
             // Instantiate the Guzzle client
             $client = new Client();
@@ -342,7 +373,14 @@ class HomeController extends Controller
         // Get category tournament data
         $data['category_tournament'] = $this->getCatgeoryData($categoryId);
         $data['category'] = $categorySlug;
-        $data['category_desciption'] = $category['description'];
+        $data['category_desciption'] = $category['description'] ?? null;
+
+        $data['meta_data'] = [
+            'meta_title' => $category['meta_title'] ?? null,
+            'meta_description' => $category['meta_description'] ?? null,
+            'meta_keyword' => $category['meta_keyword'] ?? null,
+        ];
+        
 
         return view('home.coachings', $data);
     }

@@ -1,12 +1,12 @@
 @extends('frontend.master', ['activePage' => null])
-@section('title', __('Frequently Asked Questions'))
+@section('title', __('Help Center'))
 @section('content')
     <section class="FAQ mt-5">
         <div class="container">
-            <h2 class="text-center">Frequently Asked Questions</h2>
+            <h2 class="text-center">Help Center</h2>
             <div class="row mt-3">
                 <div class="col-sm-12">
-                    @foreach ($faq as $item)
+                    @foreach ($help as $item)
                         <div class="card shadow-none">
                             <div class="card-header">
                                 <div class="row">

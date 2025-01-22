@@ -1,5 +1,9 @@
 @extends('frontend.master', ['activePage' => 'home'])
-@section('title', __('Coach Book'))
+@section('title', __('Book Tickets for Sports Tournaments'))
+@section('og_data')
+    <meta name="description" content="Secure your spot in thrilling sports tournaments. Book tickets for cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad now!" />
+    <meta name="keywords" content="Book your tournament, Secure Booking" />
+@endsection
 @push('styles')
     
 <style>
