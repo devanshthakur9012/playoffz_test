@@ -1,8 +1,9 @@
 @extends('frontend.master', ['activePage' => 'home'])
 @section('title', __('Discover Sports Tournaments in Bangalore'))
 @section('og_data')
+    <meta name="title" content="Discover Sports Tournaments in Bangalore | PlayOffz" />
     <meta name="description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!" />
-    <meta name="keywords" content="@isset($catName){{$catName}}@endisset Tournaments" />
+    <meta name="keywords" content="playoffz tournament bangalore, cricket tournament in chennai, tennis tournament chennai, tennis tournaments in bangalore, badminton court in chennai, badminton courts bangalore, badminton courts hyderabad, play tournament in bangalore, play tournament in chennai, play tennis in bangalore" />
 @endsection
 @section('content')
 <style>
