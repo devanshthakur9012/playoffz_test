@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /user/resetPassword
+Disallow:/tournament-tickets
+Sitemap: https://playoffz.in/sitemap.xml
