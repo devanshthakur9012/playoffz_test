@@ -106,10 +106,10 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
     Route::get('/product/{slug}', [ProductsController::class, 'productDetails']);
     Route::get('/buy-product/{slug}', [ProductsController::class, 'buyProduct']);
-    Route::get('/my-cart', [ProductsController::class, 'myCart']);
-    Route::get('/remove-from-cart', [ProductsController::class, 'removeFromCart']);
-    Route::post('/add-quantity-to-cart', [ProductsController::class, 'addQuantityToCart']);
-    Route::get('/cart-checkout', [ProductsController::class, 'cartCheckout']);
+    // Route::get('/my-cart', [ProductsController::class, 'myCart']);
+    // Route::get('/remove-from-cart', [ProductsController::class, 'removeFromCart']);
+    // Route::post('/add-quantity-to-cart', [ProductsController::class, 'addQuantityToCart']);
+    // Route::get('/cart-checkout', [ProductsController::class, 'cartCheckout']);
     Route::post('/get-rzr-total-product-pay', [ProductsController::class, 'getRzrTotalProductPay']);
     Route::post('/store-payment-details', [ProductsController::class, 'storePaymentDetails']);
     Route::get('/user-order-details', [ProductsController::class, 'userOrderDetails']);

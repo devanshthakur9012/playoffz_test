@@ -131,7 +131,7 @@
     @if (isset($tournament) && count($tournament['latest_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h1 class="h4 mb-0 float-left">Latest Tournament</h1>
+                <h2 class="h4 mb-0 float-left">Latest Tournament</h2>
                 <a href="{{route('tournament-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
@@ -214,7 +214,7 @@
     @if (isset($tournament) && count($tournament['nearby_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h1 class="h4 mb-0 float-left">Nearby Tournament</h1>
+                <h2 class="h4 mb-0 float-left">Nearby Tournament</h2>
                 <a href="{{route('tournament-type',['type'=>'nearby'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
@@ -283,7 +283,7 @@
     @if (isset($tournament) && count($tournament['this_month_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h1 class="h4 mb-0 float-left">Monthly Tournament</h1>
+                <h2 class="h4 mb-0 float-left">Monthly Tournament</h2>
                 <a href="{{route('tournament-type',['type'=>'monthly'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
@@ -352,7 +352,7 @@
     @if (isset($tournament) && count($tournament['upcoming_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h1 class="h4 mb-0 float-left">Upcoming Tournament</h1>
+                <h2 class="h4 mb-0 float-left">Upcoming Tournament</h2>
                 <a href="{{route('tournament-type',['type'=>'upcoming'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
