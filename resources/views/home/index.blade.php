@@ -69,6 +69,36 @@
 .modal-backdrop {
     backdrop-filter: blur(5px);
 }
+.profile-img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: none !important;
+    margin-right: 15px;
+}
+.catIcon{
+    width: 20px !important;
+    height: 20px !important;
+}
+.default2-btn{
+    background-color: #ff2f31 !important;
+    border-color: #ff2f31 !important;
+    padding: 7px 10px;
+    color:#fff !important;
+}
+.badge-default{
+    color: #fff;
+    background-color: #004aad;
+    padding: 3px 8px;
+}
+.badge-default:hover{
+    color: #fff;
+    background-color: #06408d;
+}
+.badge-success{
+    padding: 3px 8px !important;
+}
 </style>
 <div class="pt-3 pb-3 shadow-sm home-slider">
     <div class="osahan-slider">
@@ -76,7 +106,7 @@
             @foreach ($tournament['banner_img'] as $item)
                 <div class="osahan-slider-item">
                     {{-- <a @if($item->redirect_link != null) href="{{$item->redirect_link}}" @endisset > --}}
-                        <img src="{{env('BACKEND_BASE_URL')}}/{{$item}}" class="img-fluid rounded" alt="...">
+                        <img src="{{env('BACKEND_BASE_URL')}}/{{$item}}" class="img-fluid rounded" alt="">
                     {{-- </a> --}}
                 </div>
             @endforeach
@@ -84,55 +114,49 @@
     </div>
 </div>
 <div class="container mt-5">
-    {{-- @if(count($coachingsData))
-        @foreach ($coachingsData as $category)
-            <div class="hawan_section">
-                <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                    <h1 class="h4 mb-0 float-left">{{$category->name}}</h1>
-                    <a href="{{url('coachings/'.Str::slug($category->name).'/'.$category->id)}}" class="d-sm-inline-block text-xs float-right "> Explore All </a>
-                </div>
-                <div class="event-block-slider">
-                    @foreach ($category->coachings as $coaching)
-                        <div class="card m-card shadow-sm border-0 listcard">
-                            <div>
-                                <div class="m-card-cover">
-                                    <img src="{{asset('uploads/'.$coaching->poster_image)}}" class="card-img-top" alt="{{$coaching->coaching_title}}">
-                                </div>
-                                <div class="card-body">
-                                    <div class="rating-star mb-1">
-                                        {!!Common::randomRatings()!!}
+    @if (isset($tournament) && count($tournament['social_play']))
+        <div class="hawan_section">
+            <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
+                <h2 class="h4 mb-0 float-left">Social Play</h2>
+                <a href="{{route('social-play')}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+            </div>
+            <div class="event-block-slider">
+                @foreach ($tournament['social_play'] as $play)
+                    <div class="card m-card shadow-sm border-0 listcard">
+                        <div>
+                            <div class="card-body position-relative">
+                                <div class="d-flex gap-1 align-items-center mb-3">
+                                    <img src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}" class="img-thumbnail profile-img" alt="">
+                                    <div>
+                                        <h4 class="card-title mb-0 text-capitalize" title="{{$play['play_title']}}"><u>{{ Str::lower(strlen($play['play_title']) > 25 ? substr($play['play_title'], 0, 25) . '...' : $play['play_title']) }}</u></h4>
+                                        <small>{{$play['user_name']}}</small> 
                                     </div>
-                                    <h5 class="card-title mb-2"><u>{{$coaching->coaching_title}}</u></h5>
-                                    <p class="card-text mb-0">
-                                        <small class="text-dark" title="{{ $coaching->venue_name }}"><i class="fas fa-map-marker-alt pr-1"></i>
-                                        {{ strlen($coaching->venue_name) > 50 ? substr($coaching->venue_name, 0, 50) . '...' : $coaching->venue_name }}
-                                        </small>
-                                    </p>
-
-                                    @php
-                                        // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
-                                    @endphp
-                                    @if(isset($coaching->coachingPackage) && $coaching->coachingPackage!=null)
-                                        <p class="my-1 text-light"><small> 
-                                            {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}    
-                                        </small></p>
-
-                                        <div class="mt-2">
-                                        {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
-                                        
-                                            <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
-                                        </div>
+                                </div>
+                                {{-- <small>Devansh | 25 Karma</small>  --}}
+                                <div class="my-2">
+                                    @isset($play['category_name'])
+                                        <a href="{{route('tournament',['category'=>Str::slug($play['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$play['category_img']}}" class="mr-1 catIcon" alt="{{$play['category_name']}}"><small>{{$play['category_name']}}</small></a>
+                                    @endisset
+                                    @if(isset($play['pay_join']) && $play['pay_join'] == 1)
+                                        <a href="javascript:void(0)" class="d-inline-flex justify-content-center align-items-center badge badge-success fw-normal"><img src="{{asset('frontend/images/pay-join-icon.png')}}" class="mr-1 catIcon" alt="Price Tag"><small>INR {{$play['play_price']}}</small></a>
                                     @endif
-                                
+                                </div>
+                                <p class="card-text mb-0">
+                                    <small class="text-dark text-capitalize" title="{{$play['play_place_name']}}"><i class="fas fa-map-marker-alt pr-1"></i>
+                                    {{ Str::lower(strlen($play['play_place_name']) > 40 ? substr($play['play_place_name'], 0, 40) . '...' : $play['play_place_name']) }}
+                                    </small>
+                                </p>
+                                <div class="mt-2">
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1"><i class="far fa-calendar-alt pr-2"></i> <small>{{$play['play_sdate']}}</small> </button>
+                                    <a href="{{route('play', $play['play_uuid'])}}" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Book Now</a>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             </div>
-        @endforeach
-    @endif --}}
-
+        </div>
+    @endif
     @if (isset($tournament) && count($tournament['latest_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
@@ -186,20 +210,6 @@
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
                                     <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                 </div>
-                                @php
-                                    // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
-                                @endphp
-                                {{-- @if(isset($coaching->coachingPackage) && $coaching->coachingPackage!=null)
-                                    <p class="my-1 text-light"><small> 
-                                        {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}    
-                                    </small></p>
-
-                                    <div class="mt-2">
-                                    {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
-                                        <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</>
-                                    </div>
-                                @endif --}}
-                            
                             </div>
                         </div>
                     </div>
@@ -429,107 +439,18 @@
         </div>
         @endforeach
     </div>
-    
-
-    <!-- @if(count($products))
-        <div class="d-sm-flex align-items-center justify-content-between mt-4 mb-3 overflow-hidden">
-            <h1 class="h4 mb-0 float-left">Sports Products</h1>
-            <a href="{{url('all-products')}}" class="d-sm-inline-block text-xs float-right"><i class="fas fa-eye fa-sm"></i>
-                View All </a>
-        </div>
-        <div class="product-slider mb-5">
-            @foreach ($products as $item)
-                <div class="px-2">
-                    <div class="single-products-card">
-                        <div class="products-image">
-                            <a href="{{url('product/'.$item->product_slug)}}"><img
-                                    src="{{asset('images/upload/'.$item->image)}}" class="img-fluid" alt="image"></a>
-                        </div>
-                        <div class="products-content">
-                            <p>
-                                <a
-                                    href="{{url('product/'.$item->product_slug)}}">{{ucwords(strtolower($item->product_name))}}</a>
-                            </p>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>₹{{$item->product_price}}</span>
-                                <div class="rating-star">
-                                    @for($i=1;$i<=5;$i++) @if($i<=$item->rating)
-                                        <i class="fas fa-star active"></i>
-                                        @else
-                                        <i class="fas fa-star"></i>
-                                        @endif
-                                        @endfor
-                                </div>
-                            </div>
-                            <div class="add-to-cart-btn">
-                                @if($item->quantity > 0)
-                                <a href="javascript:void(0)" data-url="{{url('buy-product/'.$item->product_slug)}}"
-                                    class="btn btn-danger btn-block add_to_cart">Add To Cart</a>
-                                @else
-                                <a href="javscript:void(0)" class="btn btn-danger btn-block disabled">Out Of Stock</a>
-                                @endif
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif -->
-
-    <!-- @if(count($blog))
-        <div class="d-sm-flex align-items-center justify-content-between mt-4 mb-3 overflow-hidden">
-            <h1 class="h4 mb-0 float-left">Blogs</h1>
-            <a href="{{url('all-blogs')}}" class="d-sm-inline-block text-xs float-right">View All <i
-                    class="fas fa-eye fa-sm"></i></a>
-        </div>
-        <div class="row pb-4 mb-2">
-            @foreach ($blog as $bgl)
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="blog-card shadow-sm">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col-lg-4">
-                                <div class="blog-image">
-                                    <a href="{{ url('/blog-detail/' . $bgl->id . '/' . Str::slug($bgl->title)) }}"><img
-                                            src="{{asset('images/upload/'.$bgl->image)}}" alt="image" class="img-fluid"></a>
-                                </div>
-                            </div>
-                            <div class="col-lg-8">
-                                <div class="blog-content">
-                                    <div class="date"><span><i class="far fa-calendar-alt"></i>
-                                            {{ Carbon\Carbon::parse($bgl->created_at)->format('d M Y') }}</span>
-                                    </div>
-                                    <h3>
-                                        <a
-                                            href="{{ url('/blog-detail/' . $bgl->id . '/' . Str::slug($bgl->title)) }}">{{ $bgl->title }}</a>
-                                    </h3>
-                                    <p>{!! Str::substr(strip_tags($bgl->description), 0, 150).'...' !!}</p>
-                                    <div class="text-right">
-                                        <a href="{{ url('/blog-detail/' . $bgl->id . '/' . Str::slug($bgl->title)) }}"
-                                            class="blog-btn btn btn-sm btn-outline-danger">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif -->
 </div>
-{{-- model start --}}
-
 @if (isset($tournament['location_images']) && isset($tournament['location_images']['popup_image']))
-<div class="modal fade" id="Location" tabindex="-1" role="dialog" aria-labelledby="LocationLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered animate-zoom-in" role="document">
-        <div class="modal-content">
-            <div class="modal-body p-1" id="model_body">
-                <button type="button" class="btn-close" id="cancel_edit"><i class="fas fa-times"></i></button>
-                <img class="img-fluid" src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['popup_image']}}" alt="">
+    <div class="modal fade" id="Location" tabindex="-1" role="dialog" aria-labelledby="LocationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered animate-zoom-in" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-1" id="model_body">
+                    <button type="button" class="btn-close" id="cancel_edit"><i class="fas fa-times"></i></button>
+                    <img class="img-fluid" src="{{env('BACKEND_BASE_URL')}}/{{$tournament['location_images']['popup_image']}}" alt="">
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endif
 
 

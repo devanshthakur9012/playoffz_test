@@ -62,8 +62,8 @@
   box-sizing: border-box;
   border: none;
   font-size: 100%;
-  margin-top: 5px;
-  margin-left: 5px;
+  margin-top: 12px;
+  margin-left: 10px;
   padding: 0;
   max-width: 100%;
   resize: none;
@@ -277,6 +277,7 @@
   margin-top: 5px;
   position: absolute;
   right: 0;
+  color: #fff;
   padding: 1px
 }
 
@@ -295,7 +296,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: bottom;
-  white-space: nowrap
+  white-space: nowrap;
+  color: #000;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
@@ -516,7 +518,8 @@
   padding-right: 15px;
   font-family: Poppins;
   box-shadow: #fff;
-
+  background: transparent;
+  color: #000;
 }
 
 
@@ -529,6 +532,7 @@
   padding-right: 5px;
   user-select: none;
   -webkit-user-select: none;
+  margin: 10px 0px;
 }
 
 .select2-results__option--selectable {
@@ -672,17 +676,23 @@
 }
 
 .select2-container--default .select2-selection--multiple {
-  background-color: white;
+  /* background-color: white;
   border: 1px solid #aaa;
   border-radius: 4px;
   cursor: text;
   padding-bottom: 5px;
   padding-right: 5px;
-  position: relative
+  position: relative */
+  border-radius: .25rem;
+  font-size: 15px;
+  color: #e6e0e0;
+  height: 45px;
+  background-color: #1a1b2e;
+  border: 1px solid #616269;
 }
 
 .select2-container--default .select2-selection--multiple.select2-selection--clearable {
-  padding-right: 25px
+  padding-right: 25px;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__clear {
@@ -769,8 +779,9 @@
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-  border: solid black 1px;
-  outline: 0
+  border: solid #616269 1px;
+  outline: 0;
+  color: #000;
 }
 
 .select2-container--default.select2-container--disabled .select2-selection--multiple {
@@ -807,7 +818,7 @@
   border: none;
   outline: 0;
   box-shadow: none;
-  -webkit-appearance: textfield
+  -webkit-appearance: textfield;
 }
 
 /* .select2-container--default .select2-results>.select2-results__options {
@@ -863,7 +874,8 @@
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
   background-color: #F1EBF9;
   border-radius: 5px;
-  color: #723AC6
+  color: #723AC6;
+  margin: 10px 0px;
 }
 
 .select2-container--default .select2-results__group {

@@ -572,11 +572,11 @@ header .navbar .navbar-brand img {
 }
 
 .slick-next {
-    right: 15px
+    right: 0px;
 }
 
 .slick-prev {
-    left: 15px
+    left: -15px;
 }
 
 .slick-prev,
