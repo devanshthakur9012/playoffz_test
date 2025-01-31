@@ -308,7 +308,7 @@
             object-fit: cover;
             border: none !important;
             margin-right: 15px;
-            background-color: #e0e0e0;
+            /* background-color: #e0e0e0; */
             margin: 0px !important;
         }
         .tags{
@@ -714,16 +714,19 @@
         <div class="row my-4">
             <div class="col-lg-8 col-md-8 col-12">
                 <div class="cardBox">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h4 class="mb-1">{{$play['play_title']}}</h4>
-                            <small class="dark-gap mb-0">Hosted by {{$play['user_name']}}</small>
+                            <small class="dark-gap mb-1">Hosted by {{$play['user_name']}}</small>
                         </div>
                         <div>
                             <img class="img-thumbnail profile-img" src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}">
                         </div>
                     </div>
-                    <div class="dark-gap text-white m-0">
+                    @if(isset($play['play_upi']) && !empty($play['play_upi']))
+                        <small>UPI ID / Mobile No. : {{$play['play_upi']}}</small>
+                    @endif
+                    <div class="dark-gap text-white mt-3 m-0">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">
@@ -793,22 +796,45 @@
             </div>
             <div class="col-lg-4">
                 <div class="cardBox">
-                    <h4 class="mb-1">Players (2)</h2>
-                    <div class="playerBox d-flex align-items-center">
-                        <img class="img-thumbnail playerImg" src="https://playov2.gumlet.io/profiles/1688795028448-file_16887950254528332225390084647703.png">
-                        <div class="text_box ml-3">
-                            <h6 class="text_muted mb-0"></p>Gaurang Khetan</h6>
-                            <span class="mb-0">Host</span>
-                        </div>
-                    </div>     
-                    <div class="playerBox d-flex align-items-center">
-                        <img class="img-thumbnail playerImg" src="https://playov2.gumlet.io/profiles/1688795028448-file_16887950254528332225390084647703.png">
-                        <div class="text_box ml-3">
-                            <h6 class="text_muted"></p>H Bhattacharjee</h6>
-                        </div>
-                    </div>      
+                    <h4 class="mb-1">Players ({{ count($joinedUsers) }})</h4>
+                    
+                    @if(count($joinedUsers) > 0)
+                        @foreach($joinedUsers as $index => $user)
+                            @if($index < 2) <!-- Show first two players -->
+                                <div class="playerBox d-flex align-items-center">
+                                    <img class="img-thumbnail playerImg" 
+                                         src="{{ $user['user_img'] ? env('BACKEND_BASE_URL').'/'.$user['user_img'] : 'https://via.placeholder.com/150' }}">
+                                    <div class="text_box ml-3">
+                                        <h6 class="text_muted mb-0">{{ $user['user_name'] }}</h6>
+                                        <span class="mb-0">{{ $user['status'] }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+            
+                        <!-- Show "..." if there are more than 2 players -->
+                        @if(count($joinedUsers) > 3)
+                            <div class="playerBox d-flex align-items-center">
+                                <span class="ml-3">...</span>
+                            </div>
+                        @endif
+            
+                        <!-- Show the last player if there are more than 2 players -->
+                        @if(count($joinedUsers) > 2)
+                            <div class="playerBox d-flex align-items-center">
+                                <img class="img-thumbnail playerImg" 
+                                     src="{{ $joinedUsers[count($joinedUsers)-1]['user_img'] ? env('BACKEND_BASE_URL').'/'.$joinedUsers[count($joinedUsers)-1]['user_img'] : 'https://via.placeholder.com/150' }}">
+                                <div class="text_box ml-3">
+                                    <h6 class="text_muted mb-0">{{ $joinedUsers[count($joinedUsers)-1]['user_name'] }}</h6>
+                                    <span class="mb-0">{{ $joinedUsers[count($joinedUsers)-1]['status'] }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    @else
+                        <p>No players joined yet.</p>
+                    @endif
                 </div>
-            </div>
+            </div>            
             @if (isset($relatedPlay) && count($relatedPlay))
                 <div class="hawan_section col-12">
                     <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
@@ -823,7 +849,7 @@
                                             <img src="{{env('BACKEND_BASE_URL')."/".$plays['user_img']}}" class="img-thumbnail profile-img" alt="">
                                             <div class="ml-2">
                                                 <h4 class="card-title mb-0 text-capitalize" title="{{$plays['play_title']}}"><u>{{ Str::lower(strlen($plays['play_title']) > 25 ? substr($plays['play_title'], 0, 25) . '...' : $plays['play_title']) }}</u></h4>
-                                                <small>{{$plays['user_name']}}</small> 
+                                                <small>{{$plays['user_name']}} | {{$play['play_slots']}} slots</small> 
                                             </div>
                                         </div>
                                         {{-- <small>Devansh | 25 Karma</small>  --}}
@@ -836,8 +862,8 @@
                                             @endif
                                         </div>
                                         <p class="card-text mb-0">
-                                            <small class="text-dark text-capitalize" title="{{$plays['play_place_name']}}"><i class="fas fa-map-marker-alt pr-1"></i>
-                                            {{ Str::lower(strlen($plays['play_place_name']) > 40 ? substr($plays['play_place_name'], 0, 40) . '...' : $plays['play_place_name']) }}
+                                            <small class="text-dark text-capitalize" title="{{$plays['play_place_location']}}"><i class="fas fa-map-marker-alt pr-1"></i>
+                                            {{ Str::lower(strlen($plays['play_place_location']) > 40 ? substr($plays['play_place_location'], 0, 40) . '...' : $plays['play_place_location']) }}
                                             </small>
                                         </p>
                                         <div class="mt-2">

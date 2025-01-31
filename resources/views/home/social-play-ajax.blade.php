@@ -12,7 +12,7 @@
                                         <h4 class="card-title mb-0 text-capitalize" title="{{$play['play_title']}}">
                                             <u>{{ Str::lower(strlen($play['play_title']) > 25 ? substr($play['play_title'], 0, 25) . '...' : $play['play_title']) }}</u>
                                         </h4>
-                                        <small>{{$play['user_name']}}</small>
+                                        <small>{{$play['user_name']}} | {{$play['play_slots']}} slots</small>
                                     </div>
                                 </div>
                                 {{-- <small>Devansh | 25 Karma</small> --}}
@@ -32,9 +32,9 @@
                                     @endif
                                 </div>
                                 <p class="card-text mb-0">
-                                    <small class="text-dark text-capitalize" title="{{$play['play_place_name']}}"><i
+                                    <small class="text-dark text-capitalize" title="{{$play['play_place_location']}}"><i
                                             class="fas fa-map-marker-alt pr-1"></i>
-                                        {{ Str::lower(strlen($play['play_place_name']) > 40 ? substr($play['play_place_name'], 0, 40) . '...' : $play['play_place_name']) }}
+                                        {{ Str::lower(strlen($play['play_place_location']) > 40 ? substr($play['play_place_location'], 0, 40) . '...' : $play['play_place_location']) }}
                                     </small>
                                 </p>
                                 <div class="mt-2">

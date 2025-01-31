@@ -185,12 +185,15 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
 
     Route::post('create-play',[HomeController::class, 'createPlay'])->name('create-play');
-    Route::get('update-play/{uuid}',[HomeController::class, 'updatePlay'])->name('update-play');
+    // Route::get('update-play/{uuid}',[HomeController::class, 'updatePlay'])->name('update-play');
    
    
     Route::get('my-social-play', [HomeController::class, 'mySocialPlay'])->name('my-social-play');
     Route::get('join-users/{uuid}', [HomeController::class, 'joinUsers'])->name('join-users');
     Route::get('my-activity', [HomeController::class, 'myActivity'])->name('my-activity');
+    Route::post('update-play',[HomeController::class,'updatePlay'])->name('update-play');
+    Route::get('update-join-status', [HomeController::class, 'updateJoinStatus'])->name('update-join-status');
+
 
 
     Route::group(['middleware'=>'appuser'],function(){

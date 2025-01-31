@@ -116,6 +116,7 @@ class HomeController extends Controller
         $response = $this->fetchplayDetailByApi($uuid);
         $data['play'] = $response['PlayDetail'];
         $data['relatedPlay'] = $response['RelatedPlay'];
+        $data['joinedUsers'] = $response['JoinedUsers'];
         return view('home.play-detail',$data);
     }
 
@@ -136,6 +137,7 @@ class HomeController extends Controller
             ]);
             // Decode the JSON response
             $responseData = json_decode($response->getBody(), true);
+            // dd($responseData);
             if($responseData['Result'] == true || $responseData['Result'] == "true"){
                 // Return the HomeData from the response
                 return $responseData;
@@ -182,7 +184,7 @@ class HomeController extends Controller
         // Check if the API response indicates success or failure
         if (!empty($apiResponse)) {
             if ($apiResponse['Result'] === 'true') {
-                return redirect()->route('home')->with('success', 'You have successfully joined the play!');
+                return redirect()->route('my-activity')->with('success', 'Successfully joined the play! Please wait for host approval.');
             } else {
                 // Return the error message from the API response
                 return redirect()->back()->with('error', $apiResponse['ResponseMsg']);
@@ -319,6 +321,7 @@ class HomeController extends Controller
                 'title' => 'required|string|max:225',
                 'start_date' => 'required|date',
                 'start_time' => 'required',
+                'location' => 'required',
                 'skill_level' => 'required|array',
                 'skill_level.*' => 'string',
                 'venue' => 'required|string|max:225',
@@ -338,6 +341,7 @@ class HomeController extends Controller
                 'start_date' => $validatedData['start_date'],
                 'start_time' => $validatedData['start_time'],
                 'skill_level' => $validatedData['skill_level'], // Array of skill levels
+                'location' => $validatedData['location'],
                 'venue' => $validatedData['venue'],
                 'slots' => $validatedData['slots'],
                 'price' => isset($validatedData['pay_join']) && $validatedData['pay_join'] === 'on' ? $validatedData['price'] : 0,
@@ -370,50 +374,247 @@ class HomeController extends Controller
     }    
 
     public function mySocialPlay(){
-        $mySocialPlay = [
-            [
-                'title' => 'Comedy Night',
-                'catgeory' => 'Comedy',
-                'timing' => '7:00 PM - 9:00 PM',
-                'venue' => 'Downtown Theater',
-                'slots' => '20',
-                'price' => '$10',
-                'type' => 'Public',
-                'status' => 'Active',
-                'payjoin' => 'Yes',
-            ],
-            [
-                'title' => 'Art Workshop',
-                'catgeory' => 'Workshop',
-                'timing' => '3:00 PM - 5:00 PM',
-                'venue' => 'Community Hall',
-                'slots' => '15',
-                'price' => '$20',
-                'type' => 'Private',
-                'status' => 'Closed',
-                'payjoin' => 'No',
-            ],
-            [
-                'title' => 'Music Fest',
-                'catgeory' => 'Music',
-                'timing' => '6:00 PM - 11:00 PM',
-                'venue' => 'City Park',
-                'slots' => '50',
-                'price' => '$30',
-                'type' => 'Public',
-                'status' => 'Active',
-                'payjoin' => 'Yes',
-            ],
-        ];
+        
+        $user = Common::userId();
+        if (empty($user)) {
+            return redirect()->route('home')->with('error', 'Please login to continue!');
+        }
+
+        $mySocialPlay = $this->fetchMySocialPlay($user);
         return view('frontend.my-social-play',compact('mySocialPlay'));
     }
 
+    public function updatePlay(Request $request){
+        // Check if user is authenticated
+        $user = Common::userId();
+        if (empty($user)) {
+            return redirect()->route('home')->with('error', 'Please login to continue!');
+        }
+
+        $response = Common::decryptLink($request->eq);
+        // Check if decryption was successful and if required data is available
+        if (!$response || !isset($response['id'])) {
+            return redirect()->back()->with('error', 'Invalid or missing data.');
+        }
+    
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'cat_id' => 'required|integer',
+                'title' => 'required|string|max:225',
+                'start_date' => 'required|date',
+                'start_time' => 'required',
+                'location' => 'required',
+                'skill_level' => 'required|array',
+                'skill_level.*' => 'string',
+                'venue' => 'required|string|max:225',
+                'slots' => 'required|integer',
+                'price' => 'nullable|numeric',
+                'upi_id' => 'nullable|string|max:225',
+                'type' => 'required|string|in:public,group',
+                'pay_join' => 'nullable|string|in:on,off',
+                'note' => 'nullable|string|max:225',
+            ]);
+    
+            // Prepare the payload for the API
+            $payload = [
+                'play_id' => $response['id'],
+                'user_id' => $user,
+                'cat_id' => $validatedData['cat_id'],
+                'title' => $validatedData['title'],
+                'start_date' => $validatedData['start_date'],
+                'start_time' => $validatedData['start_time'],
+                'skill_level' => $validatedData['skill_level'], // Array of skill levels
+                'venue' => $validatedData['venue'],
+                'location' => $validatedData['location'],
+                'slots' => $validatedData['slots'],
+                'price' => isset($validatedData['pay_join']) && $validatedData['pay_join'] === 'on' ? $validatedData['price'] : 0,
+                'upi_id' => $validatedData['upi_id'] ?? null,
+                'type' => $validatedData['type'],
+                'pay_join' => isset($validatedData['pay_join']) && $validatedData['pay_join'] === 'on' ? 1 : 0,
+                'note' => $validatedData['note'] ?? null,
+            ];
+    
+            // Make an HTTP POST request to the backend API
+            $client = new Client();
+            $apiResponse = $client->post(env('BACKEND_BASE_URL') . '/web_api/update-play.php', [
+                'json' => $payload,
+            ]);
+    
+            // Decode the API response
+            $responseBody = json_decode($apiResponse->getBody(), true);
+            // Check the API response for success
+            if (isset($responseBody['Result']) && $responseBody['Result'] === 'true') {
+                return redirect()->back()->with('success', $responseBody['ResponseMsg'] ?? 'Social Play updated successfully.');
+            }
+    
+            // Handle API failure response
+            return redirect()->back()->with('error', $responseBody['ResponseMsg'] ?? 'Failed to updated social play.');
+    
+        } catch (\Exception $e) {
+            // Redirect back with error message
+            return redirect()->back()->with('error', 'An error occurred while creating the social play. Please try again.');
+        }
+    }
+
+    private function fetchMySocialPlay($user){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            
+            $data = [
+                "user_id"=>$user,
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/my-social-play.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['UserActivity'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
     public function joinUsers($uuid){
+        $userInfo = [];
+        $user = Common::userId();
+        if (empty($user)) {
+            return redirect()->route('home')->with('error', 'Please login to continue!');
+        }
+
+        $userInfo = $this->fetchJoinUsersApi($user,$uuid);
+        // dd($userInfo);
         return view('frontend.join-users',compact('userInfo'));
     }
 
+    private function fetchJoinUsersApi($user,$uuid){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            
+            $data = [
+                "user_id"=>$user,
+                "play_id"=>$uuid,
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/play-users.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['JoinDetails'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
+    public function updateJoinStatus(Request $request)
+    {
+        // Decrypt the link to get the data
+        $response = Common::decryptLink($request->eq);
+
+        // Check if decryption was successful and if required data is available
+        if (!$response || !isset($response['join_id'], $response['status'])) {
+            return redirect()->back()->with('error', 'Invalid or missing data.');
+        }
+
+        $join_id = $response['join_id'];
+        $status = $response['status'];
+
+        try {
+            // Validate status input
+            if (!in_array($status, ['accept', 'decline'])) {
+                return redirect()->back()->with('error', 'Invalid status value.');
+            }
+
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            // Prepare the data to send in the request body
+            $data = [
+                "join_id" => $join_id,
+                "status" => $status,
+            ];
+
+            // Send POST request to the PHP admin panel API
+            $baseUrl = env('BACKEND_BASE_URL');
+            $apiUrl = "{$baseUrl}/web_api/update_joinuser_status.php";
+
+            $response = $client->post($apiUrl, [
+                'json' => $data,
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
+            ]);
+
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+
+            // Check if the API response is successful
+            if (isset($responseData['Result']) && $responseData['Result'] == "true") {
+                return redirect()->back()->with('success', 'Play user status updated successfully.');
+            }
+
+            return redirect()->back()->with('error', $responseData['ResponseMsg'] ?? 'Failed to update play user status.');
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'An error occurred while updating the status.');
+        }
+    }
+   
+
     public function myActivity(){
+        $user = Common::userId();
+        if (empty($user)) {
+            return redirect()->route('home')->with('error', 'Please login to continue!');
+        }
+
+        $myActivity = $this->myActivityApi($user);
         return view('frontend.my-activity',compact('myActivity'));
+    }
+
+    private function myActivityApi($user){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            $data = [
+                "user_id"=>$user,
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/my-social-activity.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if($responseData['Result'] == true || $responseData['Result'] == "true"){
+                // Return the HomeData from the response
+                return $responseData['UserActivity'];
+            }
+            return [];
+        } catch (\Throwable $th) {
+           return [];
+        }
     }
 
     private function fetchMyBookingApi($status){

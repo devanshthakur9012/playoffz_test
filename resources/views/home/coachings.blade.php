@@ -50,9 +50,6 @@
     <div class="hawan_section">
         <div class="mt-5 mb-3">
             <h1 class="h4 mb-2">{{$catName}} Tournament</h1>
-            @isset($category_desciption)
-                <p>{{$category_desciption}}</p>
-            @endisset
         </div>
         <div class="row list-bp">
             @foreach ($category_tournament as $tour)
@@ -107,21 +104,15 @@
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
                                     <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                 </div>
-                                {{-- <p class="my-1 text-light"><small> {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }}</small></p>
-    
-                                <div class="mt-2 d-flex justify-content-between align-items-center">
-                                {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
-                                
-                                    <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
-                                </div> --}}
-                            
                             </div>
                         </div>
                     </div>
                 </div>
-                
             @endforeach
         </div>
+        @isset($category_desciption)
+            <p>{{$category_desciption}}</p>
+        @endisset
     </div>
 </div>
 @push('scripts')

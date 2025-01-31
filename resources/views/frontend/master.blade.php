@@ -5,6 +5,7 @@
     @php
         $favicon = Common::siteGeneralSettingsApi();
         $catData = Common::allEventCategoriesByApi();
+        $locationData = Common::fetchLocation();
     @endphp
     <meta charset="utf-8">
 
@@ -158,7 +159,7 @@
                                             My Social Play
                                         </a>
                                         <a class="dropdown-item" href="{{route('my-activity')}}">
-                                            <i class="fas fa-play-circle fa-sm fa-fw mr-2 text-gray-600"></i>
+                                            <i class="fas fa-at fa-sm fa-fw mr-2 text-gray-600"></i>
                                             My Activity
                                         </a>
                                         <div class="dropdown-divider"></div>
@@ -231,7 +232,7 @@
             <div>
                 <h5 class="text-white mb-2">Locations</h5>
                 <ul class="list-unstyled ">
-                    @foreach (Common::fetchLocation() as $item)
+                    @foreach ($locationData as $item)
                         <li> <a href="{{ route('location-tournament', ['location' => Str::slug($item['city'])]) }}">
                                 {{ $item['city'] }}
                             </a></li>
@@ -322,7 +323,7 @@
                     <div class="popular-location">
                         <h6 class="text-center mb-3">Popular Cites</h6>
                         <div class="d-flex flex-wrap justify-content-center" style="gap: 10px;">
-                            @foreach (Common::fetchLocation() as $item)
+                            @foreach ($locationData as $item)
                                 <div class="w-auto">
                                     <a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' . request()->fullUrl()) }}"
                                         class="btn text-center btn-outline-light btn-sm">
@@ -394,6 +395,19 @@
                                         <option value="Experienced">Experienced</option>
                                         <option value="Advanced">Advanced</option>
                                         <option value="Master">Master</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 col-lg-6">
+                                    <label for="location" class="form-label">Select Location <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-control" id="location" name="location" required>
+                                        @isset($locationData)
+                                            <option value="" selected disabled>Choose Location</option>
+                                            @foreach ($locationData as $item)
+                                                <option value="{{$item['city']}}">{{$item['city']}}</option>
+                                            @endforeach
+                                        @endisset
                                     </select>
                                 </div>
                     
@@ -472,6 +486,7 @@
                     start_time: { required: true,greaterThanNow: true },
                     "skill_level[]": { required: true },
                     venue: { required: true, maxlength: 225 },
+                    location: { required: true, maxlength: 225 },
                     slots: { required: true, number: true, min: 1 },
                     price: { required: true, number: true, min: 0 },
                     type: { required: true }
@@ -485,6 +500,7 @@
                     greaterThanNow: "Start time must be in the future." },
                     "skill_level[]": { required: "Please select at least one skill level." },
                     venue: { required: "Please enter a venue.", maxlength: "Venue cannot exceed 225 characters." },
+                    location: { required: "Please select a location.", maxlength: "Venue cannot exceed 225 characters." },
                     slots: { required: "Please enter the number of slots.", number: "Please enter a valid number.", min: "Slots must be at least 1." },
                     price: { required: "Please enter a price per slot.", number: "Please enter a valid price.", min: "Price must be at least 0." },
                     type: { required: "Please select a play type." }
