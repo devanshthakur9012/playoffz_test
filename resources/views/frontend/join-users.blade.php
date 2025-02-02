@@ -23,7 +23,7 @@
 </style>
 <section class="active-tickets mt-5">
     <div class="container mb-4">
-        <h2 class="text-center mb-4">Join Users</h2>
+        <h2 class="text-center mb-4">Joined Users</h2>
         <div class="row">
             <table class="table bg-backGround rounded-sm p-2">
                 <thead>

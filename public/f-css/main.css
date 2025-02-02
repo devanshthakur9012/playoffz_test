@@ -641,7 +641,63 @@ header .navbar .navbar-brand img {
    object-fit: cover;
 }
 
+.social-title{
+    text-wrap:inherit !important;
+}
 
+.text-default{
+    color: #004aad;
+}
+
+.socialImgBox{
+    position: relative;
+    margin-right: 18px;
+}
+
+.social-btn{
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    padding: 5px 20px !important;
+    border: 2px solid #004aad;
+    border-radius: 20px;
+    display: inline-block;
+    background-color: #004aad94;
+    position: relative;
+    overflow: hidden;
+    z-index: 9;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.social-btn:hover{
+    color: #fff;
+}
+
+.socialImgBox .smallImg {
+    position: absolute !important;
+    border: 3px solid #111635 !important;
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    top: -15px;
+    background: #fff;
+    right: -13px;
+    padding: 2px;
+}
+
+.profile-img{
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    padding: 0px !important;
+    object-fit: cover;
+    background-color: transparent !important;
+    border: 2px solid #fff !important;
+}
 
 .m-card .card-title,
 .p-card .card-title {
@@ -649,7 +705,7 @@ header .navbar .navbar-brand img {
     font-weight: 500;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden
+    overflow: hidden;
 }
 .m-card .text-dark{
     color: #e6e0e0 !important;

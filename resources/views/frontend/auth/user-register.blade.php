@@ -9,12 +9,6 @@
                 <div class="card o-hidden  shadow-sm border-0  ">
                     <div class="card-body p-0">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-                            @if(Session::has('success'))
-                                <div class="text-center mb-3">
-                                <img src="{{asset('images/checked.png')}}" alt="" class="img-fluid" style="height: 150px;">
-                                <h5 class="mt-3">Approval Pending</h5>
-                            </div>
-                            @endif
                             @include('messages')
                             @if(!Session::has('success'))
                                 <div class="p-lg-5 p-3">

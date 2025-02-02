@@ -46,7 +46,7 @@
                                             <tr>
                                                 <th scope="row">{{ $index + 1 }}</th>
                                                 <td>
-                                                    <p class="mb-0" title="{{$item['title']}}">{{ \Str::limit($item['title'], 20, '...') }}</p>
+                                                    <p class="mb-0">{{$item['title']}}</p>
                                                     <small>{{ $item['play_sdate'] }}</small>
                                                 </td>
                                                 <td>{{$item['category_name'] ?? ''}}</td>
@@ -118,9 +118,9 @@
                                 </div>
 
                                 <div class="mb-3 col-lg-6">
-                                    <label for="title" class="form-label">Title <span
+                                    <label for="title" class="form-label">Play Title <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" placeholder="Enter Title" class="form-control" id="title"
+                                    <input type="text" placeholder="Enter Play Title" class="form-control" id="title"
                                         name="title" maxlength="225" required>
                                 </div>
 
@@ -134,20 +134,6 @@
                                     <label for="start_time" class="form-label">Start Time <span
                                             class="text-danger">*</span></label>
                                     <input type="time" class="form-control" id="start_time" name="start_time" required>
-                                </div>
-
-                                <div class="mb-3 col-lg-12">
-                                    <label for="skill_level" class="form-label">Skill Level <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="skill_level" name="skill_level[]" multiple
-                                        required>
-                                        <option value="">Select Level</option>
-                                        <option value="Beginner">Beginner</option>
-                                        <option value="Intermediate">Intermediate</option>
-                                        <option value="Experienced">Experienced</option>
-                                        <option value="Advanced">Advanced</option>
-                                        <option value="Master">Master</option>
-                                    </select>
                                 </div>
                                 <div class="mb-3 col-lg-6">
                                     <label for="location" class="form-label">Select Location <span
@@ -200,6 +186,25 @@
                                 </div>
 
                                 <div class="mb-3 col-lg-12">
+                                    <label for="skill_level" class="form-label">Skill Level <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-control select2" id="skill_level" name="skill_level[]" multiple
+                                        required>
+                                        <option value="">Select Level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Experienced">Experienced</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Master">Master</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <label for="note" class="form-label">Note</label>
+                                    <textarea class="form-control" placeholder="Enter Note" id="note" name="note"
+                                        maxlength="500"></textarea>
+                                </div>
+
+                                <div class="mb-3 col-lg-12">
                                     <label for="pay_join" class="form-label">Pay Join <span
                                             class="text-danger">*</span></label>
                                     <div class="form-check form-switch">
@@ -209,11 +214,6 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3 col-lg-12">
-                                    <label for="note" class="form-label">Note</label>
-                                    <textarea class="form-control" placeholder="Enter Note" id="note" name="note"
-                                        maxlength="225"></textarea>
-                                </div>
                                 <div class="col-lg-12">
                                     <button type="submit" id="submit-btn" class="text-center btn default-btn w-100">Submit</button>
                                 </div>

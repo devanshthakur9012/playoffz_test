@@ -330,7 +330,7 @@ class HomeController extends Controller
                 'upi_id' => 'nullable|string|max:225',
                 'type' => 'required|string|in:public,group',
                 'pay_join' => 'nullable|string|in:on,off',
-                'note' => 'nullable|string|max:225',
+                'note' => 'nullable|string|max:500',
             ]);
     
             // Prepare the payload for the API
@@ -413,7 +413,7 @@ class HomeController extends Controller
                 'upi_id' => 'nullable|string|max:225',
                 'type' => 'required|string|in:public,group',
                 'pay_join' => 'nullable|string|in:on,off',
-                'note' => 'nullable|string|max:225',
+                'note' => 'nullable|string|max:500',
             ]);
     
             // Prepare the payload for the API

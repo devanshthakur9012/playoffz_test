@@ -300,17 +300,6 @@
             color: #3AB795; /* Deep green */
             border: 2px solid #3AB795;
         }
-
-        .profile-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: none !important;
-            margin-right: 15px;
-            /* background-color: #e0e0e0; */
-            margin: 0px !important;
-        }
         .tags{
             background: #004aad;
             color: #ffffff;
@@ -438,7 +427,7 @@
             color: #fff;
         }
 
-        h4 {
+        .cardBox h4 {
             font-weight: bold;
             color: #ffffff;
             font-size: 20px !important;
@@ -612,6 +601,8 @@
         border-radius: 50%;
         height: 40px;
         width: 40px;
+        background-color: transparent !important;
+        border: 2px solid #fff !important;
     }
     </style>
     <style>
@@ -677,14 +668,6 @@
     .modal-backdrop {
         backdrop-filter: blur(5px);
     }
-    .profile-img {
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 50% !important;
-        object-fit: cover;
-        border: none !important;
-        margin-right: 15px;
-    }
     .catIcon{
         width: 20px !important;
         height: 20px !important;
@@ -698,7 +681,7 @@
     .badge-default{
         color: #fff;
         background-color: #004aad;
-        padding: 3px 8px;
+        padding: 4px 8px;
     }
     .badge-default:hover{
         color: #fff;
@@ -723,9 +706,6 @@
                             <img class="img-thumbnail profile-img" src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}">
                         </div>
                     </div>
-                    @if(isset($play['play_upi']) && !empty($play['play_upi']))
-                        <small>UPI ID / Mobile No. : {{$play['play_upi']}}</small>
-                    @endif
                     <div class="dark-gap text-white mt-3 m-0">
                         <div class="row">
                             <div class="col-lg-6">
@@ -770,17 +750,24 @@
                                         <p>{{$play['play_note']}}</p>
                                     </div>
                                 @endisset
-                                @isset($play['play_skill_level'])
-                                    @if (is_array($play['play_skill_level']) && count($play['play_skill_level']))
-                                        <div class="mb-2">
-                                        <h6 class="mb-1">Skills</h6>
-                                            @foreach ($play['play_skill_level'] as $item)
-                                                <span class="badge badge-primary">{{$item}}</span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                @endisset
-                                <div class="d-flex align-items-center mt-3">
+                                <div class="d-flex justify-content-between align-items-end mb-3">
+                                    @isset($play['play_skill_level'])
+                                        @if (is_array($play['play_skill_level']) && count($play['play_skill_level']))
+                                            <div class="">
+                                                <h6 class="mb-1">Skills</h6>
+                                                @foreach ($play['play_skill_level'] as $item)
+                                                    <span class="badge badge-default">{{$item}}</span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    @endisset
+                                    @if(isset($play['play_upi']) && !empty($play['play_upi']))
+                                    <div class="">
+                                        <small>UPI ID / Mobile No. : {{$play['play_upi']}}</small>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="d-flex align-items-center mt-2">
                                     @if (Common::isUserLogin())
                                         <button class="text-center btn default-btn w-100"  data-toggle="modal"
                                         data-target="#joinModal">Join Now</button>
@@ -845,14 +832,21 @@
                             <div class="card m-card shadow-sm border-0 listcard">
                                 <div>
                                     <div class="card-body position-relative">
-                                        <div class="d-flex gap-1 align-items-center mb-3">
-                                            <img src="{{env('BACKEND_BASE_URL')."/".$plays['user_img']}}" class="img-thumbnail profile-img" alt="">
-                                            <div class="ml-2">
-                                                <h4 class="card-title mb-0 text-capitalize" title="{{$plays['play_title']}}"><u>{{ Str::lower(strlen($plays['play_title']) > 25 ? substr($plays['play_title'], 0, 25) . '...' : $plays['play_title']) }}</u></h4>
-                                                <small>{{$plays['user_name']}} | {{$play['play_slots']}} slots</small> 
+                                        <div class="d-flex gap-1 align-items-start mb-3">
+                                            <div class="socialImgBox">
+                                                <img src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}" class="profile-img" alt="{{$play['user_name']}}">
+                                                @if (isset($plays['joinedUserData']) && count($plays['joinedUserData']) > 0)
+                                                    @php
+                                                        $lastUser = $plays['joinedUserData'][count($plays['joinedUserData']) - 1];
+                                                    @endphp
+                                                    <img src="{{ env('BACKEND_BASE_URL') . '/' . $lastUser['user_img'] }}" class="smallImg" alt="{{ $lastUser['user_name'] }}">
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <h4 class="card-title mb-0 text-capitalize social-title">{{$plays['play_title']}}</h4>
+                                                <small>{{$plays['user_name']}} | @if (isset($plays['joinedUserData']) && count($plays['joinedUserData']))<span class="text-success">{{count($plays['joinedUserData'])}}</span>/@endif{{$plays['play_slots']}} slots</small>
                                             </div>
                                         </div>
-                                        {{-- <small>Devansh | 25 Karma</small>  --}}
                                         <div class="my-2">
                                             @isset($plays['category_name'])
                                                 <a href="{{route('tournament',['category'=>Str::slug($plays['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$plays['category_img']}}" class="mr-1 catIcon" alt="{{$plays['category_name']}}"><small>{{$plays['category_name']}}</small></a>
@@ -861,14 +855,21 @@
                                                 <a href="javascript:void(0)" class="d-inline-flex justify-content-center align-items-center badge badge-success fw-normal"><img src="{{asset('frontend/images/pay-join-icon.png')}}" class="mr-1 catIcon" alt="Price Tag"><small>INR {{$plays['play_price']}}</small></a>
                                             @endif
                                         </div>
-                                        <p class="card-text mb-0">
+                                        <p class="card-text mb-2">
                                             <small class="text-dark text-capitalize" title="{{$plays['play_place_location']}}"><i class="fas fa-map-marker-alt pr-1"></i>
                                             {{ Str::lower(strlen($plays['play_place_location']) > 40 ? substr($plays['play_place_location'], 0, 40) . '...' : $plays['play_place_location']) }}
                                             </small>
                                         </p>
+                                        @isset($play['play_skill_level'])
+                                            @if (is_array($play['play_skill_level']) && count($play['play_skill_level']))
+                                                @foreach ($play['play_skill_level'] as $item)
+                                                    <span class="badge badge-default">{{$item}}</span>
+                                                @endforeach
+                                            @endif
+                                        @endisset
                                         <div class="mt-2">
                                             <button class="mt-1 btn btn-outline-white btn-sm mb-1"><i class="far fa-calendar-alt pr-2"></i> <small>{{$plays['play_sdate']}}</small> </button>
-                                            <a href="{{route('play', $plays['play_uuid'])}}" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Book Now</a>
+                                            <a href="{{route('play', $plays['play_uuid'])}}" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Join Now</a>
                                         </div>
                                     </div>
                                 </div>

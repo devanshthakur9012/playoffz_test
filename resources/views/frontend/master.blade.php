@@ -116,9 +116,9 @@
                                     class="pl-2">{{Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'Popular Locations'}}</span>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <button class="mx-3 btn default-btn py-2" data-toggle="modal" data-target="#socialPlay">Play</button>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img src="{{asset('/images/org_btn.png')}}" alt="Organizer" style="height:55px"></a>
                         </li>
@@ -281,20 +281,16 @@
                             {{ $favicon['email'] }}</a>
                         <ul class="mt-2 d-flex gap-2 socialFooter">
                             @isset($favicon['Facebook'])
-                                <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank" class="text-white mb-2"><i
-                                            class="fab fa-facebook"></i></a></li>
+                                <li class=""><a href="{{ $favicon['Facebook'] }}" target="_blank" class="text-white mb-2"><i class="fab fa-facebook"></i></a></li>
                             @endisset
                             @isset($favicon['Instagram'])
-                                <li class=""><a href="{{ $favicon['Instagram'] }}" target="_blank"
-                                        class="text-white mb-2"><i class="fab fa-instagram"></i></a></li>
+                                <li class=""><a href="{{ $favicon['Instagram'] }}" target="_blank" class="text-white mb-2"><i class="fab fa-instagram"></i></a></li>
                             @endisset
                             @isset($favicon['Twitter'])
-                                <li class=""><a href="{{ $favicon['Twitter'] }}" target="_blank" class="text-white mb-2"><i
-                                            class="fab fa-twitter"></i></a></li>
+                                <li class=""><a href="{{ $favicon['Twitter'] }}" target="_blank" class="text-white mb-2"><i class="fab fa-twitter"></i></a></li>
                             @endisset
                             @isset($favicon['Linkedin'])
-                                <li class=""><a href="{{ $favicon['Linkedin'] }}" target="_blank" class="text-white mb-2"><i
-                                            class="fab fa-linkedin"></i></a></li>
+                                <li class=""><a href="{{ $favicon['Linkedin'] }}" target="_blank" class="text-white mb-2"><i class="fab fa-linkedin"></i></a></li>
                             @endisset
                         </ul>
                     </div>
@@ -328,9 +324,7 @@
                                     <a href="{{ url('event-city?city=' . $item['city'] . '&redirect=' . request()->fullUrl()) }}"
                                         class="btn text-center btn-outline-light btn-sm">
                                         @if(isset($item['image']) && $item['image'] != null)
-                                            <img class="img-fluid d-block m-auto"
-                                                style="width: 50px; height: 50px; object-fit: contain;"
-                                                src="{{ env('BACKEND_BASE_URL') }}/{{$item['image']}}" alt="{{$item['city']}}">
+                                            <img class="img-fluid d-block m-auto" style="width: 50px; height: 50px; object-fit: contain;" src="{{ env('BACKEND_BASE_URL') }}/{{$item['image']}}" alt="{{$item['city']}}">
                                         @endif
                                         {{$item['city']}}
                                     </a>
@@ -372,8 +366,8 @@
                                 </div>
                     
                                 <div class="mb-3 col-lg-6">
-                                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                                    <input type="text" placeholder="Enter Title" class="form-control" id="title" name="title" maxlength="225" required>
+                                    <label for="title" class="form-label">Play Title <span class="text-danger">*</span></label>
+                                    <input type="text" placeholder="Eg: Looking for players to join for a thrilling game of badminton!" class="form-control" id="title" name="title" maxlength="225" required>
                                 </div>
                     
                                 <div class="mb-3 col-lg-6">
@@ -386,16 +380,9 @@
                                     <input type="time" class="form-control" id="start_time" name="start_time" required>
                                 </div>
                     
-                                <div class="mb-3 col-lg-12">
-                                    <label for="skill_level" class="form-label">Skill Level <span class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="skill_level" name="skill_level[]" multiple required>
-                                        <option value="">Select Level</option>
-                                        <option value="Beginner">Beginner</option>
-                                        <option value="Intermediate">Intermediate</option>
-                                        <option value="Experienced">Experienced</option>
-                                        <option value="Advanced">Advanced</option>
-                                        <option value="Master">Master</option>
-                                    </select>
+                                <div class="mb-3 col-lg-6">
+                                    <label for="venue" class="form-label">Venue <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="venue" name="venue" placeholder="Eg: ABC Sports Venue, 1st Cross, Indira Nagar Bangalore-560038" maxlength="225" required>
                                 </div>
 
                                 <div class="mb-3 col-lg-6">
@@ -409,12 +396,7 @@
                                             @endforeach
                                         @endisset
                                     </select>
-                                </div>
-                    
-                                <div class="mb-3 col-lg-6">
-                                    <label for="venue" class="form-label">Venue <span class="text-danger">*</span></label>
-                                    <input type="text" placeholder="Enter Venue" class="form-control" id="venue" name="venue" maxlength="225" required>
-                                </div>
+                                </div>    
                     
                                 <div class="mb-3 col-lg-6">
                                     <label for="slots" class="form-label">Slots <span class="text-danger">*</span></label>
@@ -428,7 +410,7 @@
                     
                                 <div class="mb-3 col-lg-6">
                                     <label for="upi_id" class="form-label">UPI ID/ Mobile No.</label>
-                                    <input type="text" placeholder="Enter UPI ID/ Mobile No." class="form-control" id="upi_id" name="upi_id" maxlength="225">
+                                    <input type="text" placeholder="Eg: shiva@okaxis/9686889977" class="form-control" id="upi_id" name="upi_id" maxlength="225">
                                 </div>
                     
                                 <div class="mb-3 col-lg-6">
@@ -440,19 +422,33 @@
                                 </div>
                     
                                 <div class="mb-3 col-lg-12">
+                                    <label for="skill_level" class="form-label">Skill Level <span class="text-danger">*</span></label>
+                                    <select class="form-control select2" id="skill_level" name="skill_level[]" multiple required>
+                                        <option value="">Select Level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Experienced">Experienced</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Master">Master</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <label for="note" class="form-label">Note</label>
+                                    <textarea class="form-control" placeholder="Enter Note" id="note" name="note" maxlength="500" style="height: 115px;">1.Mavis 350 or RSL Supreme Shuttlecocks will be used for all matches.                                                      2.Participants are requested to adhere to the venue's rules and regulations.                                                      3.Kindly specify the game format while creating Social Play.                                                                      4.Payments can be made conveniently via UPI.</textarea>
+                                </div>
+                                <div class="mb-3 col-lg-12">
                                     <label for="pay_join" class="form-label">Pay Join <span class="text-danger">*</span></label>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" name="pay_join" role="switch" id="pay_join" checked>
                                         <label class="form-check-label" for="pay_join">Yes</label>
                                     </div>
                                 </div>
-                    
-                                <div class="mb-3 col-lg-12">
-                                    <label for="note" class="form-label">Note</label>
-                                    <textarea class="form-control" placeholder="Enter Note" id="note" name="note" maxlength="225"></textarea>
-                                </div>
                                 <div class="col-lg-12">
-                                    <button type="submit" class="text-center btn default-btn w-100">Submit</button>
+                                    @if (Common::isUserLogin())
+                                        <button type="submit" class="text-center btn default-btn w-100">Submit</button>
+                                    @else
+                                        <a href="{{route('userLogin')}}" type="button" class="text-center btn default-btn w-100">Login to continue.</a>
+                                    @endif
                                 </div>
                             </form>
                         </div>

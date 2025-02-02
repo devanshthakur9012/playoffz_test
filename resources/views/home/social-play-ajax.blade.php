@@ -5,14 +5,19 @@
                     <div class="card m-card shadow-sm border-0 listcard">
                         <div>
                             <div class="card-body position-relative">
-                                <div class="d-flex gap-1 align-items-center mb-3">
-                                    <img src="{{env('BACKEND_BASE_URL') . "/" . $play['user_img']}}"
-                                        class="img-thumbnail profile-img" alt="">
+                                <div class="d-flex gap-1 align-items-start mb-3">
+                                    <div class="socialImgBox">
+                                        <img src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}" class="profile-img" alt="{{$play['user_name']}}">
+                                        @if (isset($play['joinedUsers']) && count($play['joinedUsers']) > 0)
+                                            @php
+                                                $lastUser = $play['joinedUsers'][count($play['joinedUsers']) - 1];
+                                            @endphp
+                                            <img src="{{ env('BACKEND_BASE_URL') . '/' . $lastUser['user_img'] }}" class="smallImg" alt="{{ $lastUser['user_name'] }}">
+                                        @endif
+                                    </div>
                                     <div>
-                                        <h4 class="card-title mb-0 text-capitalize" title="{{$play['play_title']}}">
-                                            <u>{{ Str::lower(strlen($play['play_title']) > 25 ? substr($play['play_title'], 0, 25) . '...' : $play['play_title']) }}</u>
-                                        </h4>
-                                        <small>{{$play['user_name']}} | {{$play['play_slots']}} slots</small>
+                                        <h4 class="card-title mb-0 text-capitalize social-title">{{$play['play_title']}}</h4>
+                                        <small>{{$play['user_name']}} | @if (isset($play['joinedUsers']) && count($play['joinedUsers']))<span class="text-success">{{count($play['joinedUsers'])}}</span>/@endif{{$play['play_slots']}} slots</small>
                                     </div>
                                 </div>
                                 {{-- <small>Devansh | 25 Karma</small> --}}
@@ -31,18 +36,25 @@
                                                 alt="Price Tag"><small>INR {{$play['play_price']}}</small></a>
                                     @endif
                                 </div>
-                                <p class="card-text mb-0">
+                                <p class="card-text mb-2">
                                     <small class="text-dark text-capitalize" title="{{$play['play_place_location']}}"><i
                                             class="fas fa-map-marker-alt pr-1"></i>
                                         {{ Str::lower(strlen($play['play_place_location']) > 40 ? substr($play['play_place_location'], 0, 40) . '...' : $play['play_place_location']) }}
                                     </small>
                                 </p>
+                                @isset($play['play_skill_level'])
+                                    @if (is_array($play['play_skill_level']) && count($play['play_skill_level']))
+                                        @foreach ($play['play_skill_level'] as $item)
+                                            <span class="badge badge-default">{{$item}}</span>
+                                        @endforeach
+                                    @endif
+                                @endisset
                                 <div class="mt-2">
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1"><i
                                             class="far fa-calendar-alt pr-2"></i> <small>{{$play['play_sdate']}}</small>
                                     </button>
                                     <a href="{{route('play', $play['play_uuid'])}}"
-                                        class="mt-1 btn default2-btn btn-sm mb-1 w-100">Book Now</a>
+                                        class="mt-1 btn default2-btn btn-sm mb-1 w-100">Join Now</a>
                                 </div>
                             </div>
                         </div>

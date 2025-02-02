@@ -42,16 +42,6 @@
         top: 10px;
         left: 7px;
     }
-
-    .profile-img {
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 50% !important;
-        object-fit: cover;
-        border: none !important;
-        margin-right: 15px;
-    }
-
     .catIcon {
         width: 20px !important;
         height: 20px !important;
@@ -67,7 +57,7 @@
     .badge-default {
         color: #fff;
         background-color: #004aad;
-        padding: 3px 8px;
+        padding: 4px 8px;
     }
 
     .badge-default:hover {
@@ -83,7 +73,7 @@
     <div class="hawan_section">
         <div class="mt-5 mb-3">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="h4 mb-0">Social Play</h2>
+                <div class="h4 mb-0 float-left"> <img width="180px" src="{{asset('/frontend/images/SocialPlay.png')}}" alt="Social Play">  <button class="mx-3 btn social-btn py-2" data-toggle="modal" data-target="#socialPlay">Create</button></div>
                 <div class="d-flex align-items-center gap-2">
                     <!-- City Filter -->
                     <select name="city" id="cityFilter" style="min-width: 160px;" class="form-control mr-2">
@@ -130,17 +120,21 @@
                                     <div class="card m-card shadow-sm border-0 listcard">
                                         <div>
                                             <div class="card-body position-relative">
-                                                <div class="d-flex gap-1 align-items-center mb-3">
-                                                    <img src="{{env('BACKEND_BASE_URL') . "/" . $play['user_img']}}"
-                                                        class="img-thumbnail profile-img" alt="">
+                                                <div class="d-flex gap-1 align-items-start mb-3">
+                                                    <div class="socialImgBox">
+                                                        <img src="{{env('BACKEND_BASE_URL')."/".$play['user_img']}}" class="profile-img" alt="{{$play['user_name']}}">
+                                                        @if (isset($play['joinedUsers']) && count($play['joinedUsers']) > 0)
+                                                            @php
+                                                                $lastUser = $play['joinedUsers'][count($play['joinedUsers']) - 1];
+                                                            @endphp
+                                                            <img src="{{ env('BACKEND_BASE_URL') . '/' . $lastUser['user_img'] }}" class="smallImg" alt="{{ $lastUser['user_name'] }}">
+                                                        @endif
+                                                    </div>
                                                     <div>
-                                                        <h4 class="card-title mb-0 text-capitalize" title="{{$play['play_title']}}">
-                                                            <u>{{ Str::lower(strlen($play['play_title']) > 25 ? substr($play['play_title'], 0, 25) . '...' : $play['play_title']) }}</u>
-                                                        </h4>
-                                                        <small>{{$play['user_name']}} | {{$play['play_slots']}} slots</small>
+                                                        <h4 class="card-title mb-0 text-capitalize social-title">{{$play['play_title']}}</h4>
+                                                        <small>{{$play['user_name']}} | @if (isset($play['joinedUsers']) && count($play['joinedUsers']))<span class="text-success">{{count($play['joinedUsers'])}}</span>/@endif{{$play['play_slots']}} slots</small>
                                                     </div>
                                                 </div>
-                                                {{-- <small>Devansh | 25 Karma</small> --}}
                                                 <div class="my-2">
                                                     @isset($play['category_name'])
                                                         <a href="{{route('tournament', ['category' => Str::slug($play['category_name'])])}}"
@@ -156,18 +150,25 @@
                                                                 alt="Price Tag"><small>INR {{$play['play_price']}}</small></a>
                                                     @endif
                                                 </div>
-                                                <p class="card-text mb-0">
+                                                <p class="card-text mb-2">
                                                     <small class="text-dark text-capitalize" title="{{$play['play_place_location']}}"><i
                                                             class="fas fa-map-marker-alt pr-1"></i>
                                                         {{ Str::lower(strlen($play['play_place_location']) > 40 ? substr($play['play_place_location'], 0, 40) . '...' : $play['play_place_location']) }}
                                                     </small>
                                                 </p>
+                                                @isset($play['play_skill_level'])
+                                                    @if (is_array($play['play_skill_level']) && count($play['play_skill_level']))
+                                                        @foreach ($play['play_skill_level'] as $item)
+                                                            <span class="badge badge-default">{{$item}}</span>
+                                                        @endforeach
+                                                    @endif
+                                                @endisset
                                                 <div class="mt-2">
                                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1"><i
                                                             class="far fa-calendar-alt pr-2"></i> <small>{{$play['play_sdate']}}</small>
                                                     </button>
                                                     <a href="{{route('play', $play['play_uuid'])}}"
-                                                        class="mt-1 btn default2-btn btn-sm mb-1 w-100">Book Now</a>
+                                                        class="mt-1 btn default2-btn btn-sm mb-1 w-100">Join Now</a>
                                                 </div>
                                             </div>
                                         </div>

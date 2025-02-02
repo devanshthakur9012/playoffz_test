@@ -130,7 +130,7 @@ class AuthController extends Controller
 
     public function verifyMobileNumber(Request $request)
     {
-        // try {
+        try {
             $request->validate([
                 'mobile' => 'required|max:255',
                 'ccode' => 'required|max:255',
@@ -190,7 +190,7 @@ class AuthController extends Controller
                     'message' => $responseData['ResponseMsg'], // Error message from the PHP API
                 ]);
             }
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             // Log the error for debugging purposes
             Log::error('Error verifying user data: ' . $th->getMessage());
 
@@ -199,9 +199,48 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Something went wrong! Please try again later. '.$th->getMessage(),
             ]);
-        // }
+        }
     }
 
+    
+    // public function verifyMobileNumber(Request $request)
+    // {
+    //     try {
+    //         $request->validate([
+    //             'mobile' => 'required|max:255',
+    //             'ccode' => 'required|max:255',
+    //         ]);
+
+    //         $mobile = $request->mobile;
+    //         $ccode = $request->ccode;
+    //         $client = new Client();
+    //         $baseUrl = env('BACKEND_BASE_URL');
+    //         $response = $client->post("{$baseUrl}/web_api/verify-mobile.php", [
+    //             'json' => ['number' => $mobile, 'ccode' => $ccode]
+    //         ]);
+
+    //         $responseData = json_decode($response->getBody(), true);
+
+    //         if ($responseData['ResponseCode'] === '200') {
+    //             return response()->json([
+    //                 'status' => 'success',
+    //                 'message' => "OTP Sent Successfully!"
+    //             ]);
+    //         } else {
+    //             return response()->json([
+    //                 'status' => 'error',
+    //                 'message' => "Invalid Number"
+    //             ]);
+    //         }
+    //     } catch (\Throwable $th) {
+    //         Log::error('Error verifying mobile: ' . $th->getMessage());
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Something went wrong! Try again later.'
+    //         ]);
+    //     }
+    // }
+    
     public function sendOTP($mobile)
     {
         try {
