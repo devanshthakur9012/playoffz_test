@@ -4,6 +4,21 @@
     <meta name="title" content="Discover Sports Tournaments in Bangalore | PlayOffz" />
     <meta name="description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!" />
     <meta name="keywords" content="playoffz tournament bangalore, cricket tournament in chennai, tennis tournament chennai, tennis tournaments in bangalore, badminton court in chennai, badminton courts bangalore, badminton courts hyderabad, play tournament in bangalore, play tournament in chennai, play tennis in bangalore" />
+
+    <meta property="og:title" content=Discover Sports Tournaments in Bangalore | PlayOffz>
+    <meta property="og:site_name" content=Playoffz>
+    <meta property="og:url" content=https://www.playoffz.in/>
+    <meta property="og:description" content=Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!>
+    <meta property="og:type" content=business.business>
+    <meta property="og:image" content=https://app.playoffz.in/images/event/1734716694.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716783.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716795.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716807.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716818.png>
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Discover Sports Tournaments in Bangalore | PlayOffz">
+    <meta name="twitter:site" content="@playoffz">
+    <meta name="twitter:description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!">
+    <meta name="twitter:image" content="https://app.playoffz.in/images/event/1734716738.png">
+    <meta name="twitter:image:alt" content="playoffz tournaments ">
+
 @endsection
 @section('content')
 <style>
@@ -498,4 +513,264 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org/", 
+      "@type": "BreadcrumbList", 
+      "itemListElement": [{
+        "@type": "ListItem", 
+        "position": 1, 
+        "name": "Home page",
+        "item": "https://playoffz.in/"  
+      },{
+        "@type": "ListItem", 
+        "position": 2, 
+        "name": "Tournament in bangalore",
+        "item": "https://playoffz.in/tournaments-in-bengaluru"  
+      },{
+        "@type": "ListItem", 
+        "position": 3, 
+        "name": "Tournament in Ahmedabaad",
+        "item": "https://playoffz.in/tournaments-in-ahmedabad"  
+      },{
+        "@type": "ListItem", 
+        "position": 4, 
+        "name": "Tournament in bealgavi",
+        "item": "https://playoffz.in/tournaments-in-belagavi"  
+      },{
+        "@type": "ListItem", 
+        "position": 5, 
+        "name": "Tournament in chandigarh",
+        "item": "https://playoffz.in/tournaments-in-chandigarh"  
+      },{
+        "@type": "ListItem", 
+        "position": 6, 
+        "name": "tournament in chennai",
+        "item": "https://playoffz.in/tournaments-in-chennai"  
+      },{
+        "@type": "ListItem", 
+        "position": 7, 
+        "name": "Tournament in coimbatore",
+        "item": "https://playoffz.in/tournaments-in-coimbatore"  
+      },{
+        "@type": "ListItem", 
+        "position": 8, 
+        "name": "tournament in delhi",
+        "item": "https://playoffz.in/tournaments-in-delhi"  
+      },{
+        "@type": "ListItem", 
+        "position": 9, 
+        "name": "Tournament in Goa",
+        "item": "https://playoffz.in/tournaments-in-goa"  
+      },{
+        "@type": "ListItem", 
+        "position": 10, 
+        "name": "Tournament in Gurugram",
+        "item": "https://playoffz.in/tournaments-in-gurugram"  
+      },{
+        "@type": "ListItem", 
+        "position": 11, 
+        "name": "Tournament in Hyderabaad",
+        "item": "https://playoffz.in/tournaments-in-hyderabad"  
+      },{
+        "@type": "ListItem", 
+        "position": 12, 
+        "name": "Tournament in Jaipur",
+        "item": "https://playoffz.in/tournaments-in-jaipur"  
+      },{
+        "@type": "ListItem", 
+        "position": 13, 
+        "name": "Tournament in Kochi",
+        "item": "https://playoffz.in/tournaments-in-kochi"  
+      },{
+        "@type": "ListItem", 
+        "position": 14, 
+        "name": "Tournament in Kolkata",
+        "item": "https://playoffz.in/tournaments-in-kolkata"  
+      },{
+        "@type": "ListItem", 
+        "position": 15, 
+        "name": "Tournament in Lucknow",
+        "item": "https://playoffz.in/tournaments-in-lucknow"  
+      },{
+        "@type": "ListItem", 
+        "position": 16, 
+        "name": "Tournament in Madurai",
+        "item": "https://playoffz.in/tournaments-in-madurai"  
+      },{
+        "@type": "ListItem", 
+        "position": 17, 
+        "name": "Tournament in Mumbai",
+        "item": "https://playoffz.in/tournaments-in-madurai"  
+      },{
+        "@type": "ListItem", 
+        "position": 18, 
+        "name": "Tournament in Mysuru",
+        "item": "https://playoffz.in/tournaments-in-mysuru"  
+      },{
+        "@type": "ListItem", 
+        "position": 19, 
+        "name": "Tournament in Nagpur",
+        "item": "https://playoffz.in/tournaments-in-nagpur"  
+      },{
+        "@type": "ListItem", 
+        "position": 20, 
+        "name": "Tournament in Pondicherry",
+        "item": "https://playoffz.in/tournaments-in-pondicherry"  
+      },{
+        "@type": "ListItem", 
+        "position": 21, 
+        "name": "Tournament in Pune",
+        "item": "https://playoffz.in/tournaments-in-pune"  
+      },{
+        "@type": "ListItem", 
+        "position": 22, 
+        "name": "Tournament in Salem",
+        "item": "https://playoffz.in/tournaments-in-salem"  
+      },{
+        "@type": "ListItem", 
+        "position": 23, 
+        "name": "Tournament in thanjavur",
+        "item": "https://playoffz.in/tournaments-in-thanjavur"  
+      },{
+        "@type": "ListItem", 
+        "position": 24, 
+        "name": "Tournament in tiruchirappalli",
+        "item": "https://playoffz.in/tournaments-in-tiruchirappalli"  
+      },{
+        "@type": "ListItem", 
+        "position": 25, 
+        "name": "Tournament in Tiruppur",
+        "item": "https://playoffz.in/tournaments-in-tiruppur"  
+      },{
+        "@type": "ListItem", 
+        "position": 26, 
+        "name": "Tournament in vellore",
+        "item": "https://playoffz.in/tournaments-in-vellore"  
+      },{
+        "@type": "ListItem", 
+        "position": 27, 
+        "name": "Tournament in Vijayawada",
+        "item": "https://playoffz.in/tournaments-in-vijayawada"  
+      },{
+        "@type": "ListItem", 
+        "position": 28, 
+        "name": "Tournament in visakhapatnam",
+        "item": "https://playoffz.in/tournaments-in-visakhapatnam"  
+      },{
+        "@type": "ListItem", 
+        "position": 29, 
+        "name": "Badminton",
+        "item": "https://playoffz.in/badminton-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 30, 
+        "name": "cricket",
+        "item": "https://playoffz.in/cricket-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 31, 
+        "name": "Skating",
+        "item": "https://playoffz.in/skating-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 32, 
+        "name": "Chess",
+        "item": "https://playoffz.in/chess-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 33, 
+        "name": "Football",
+        "item": "https://playoffz.in/football-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 34, 
+        "name": "Swimming",
+        "item": "https://playoffz.in/swimming-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 35, 
+        "name": "Tennis",
+        "item": "https://playoffz.in/tennis-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 36, 
+        "name": "Volleyball",
+        "item": "https://playoffz.in/tennis-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 37, 
+        "name": "Running",
+        "item": "https://playoffz.in/running-tournament"  
+      },{
+        "@type": "ListItem", 
+        "position": 38, 
+        "name": "Pickleball",
+        "item": "https://playoffz.in/pickleball-tournament"  
+      }]
+    }
+    </script>
+    
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsOrganization",
+      "name": "PlayOffz",
+      "url": "https://playoffz.in/",
+      "logo": "https://app.playoffz.in/images/website/1734759709.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+919686314018",
+        "contactType": "reservations",
+        "contactOption": "HearingImpairedSupported",
+        "areaServed": "IN",
+        "availableLanguage": ["en","Hindi"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/PlayOffzOfficial",
+        "https://www.instagram.com/playoffzofficial/",
+        "https://www.linkedin.com/company/105291760/admin/dashboard/"
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Playoffz",
+      "image": "https://app.playoffz.in/images/website/1734759709.png",
+      "@id": "",
+      "url": "https://www.playoffz.in/",
+      "telephone": "+919686314018",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Geeks Life Technology Solutions PVT LTD, CV Raman Nagar",
+        "addressLocality": "Bangalore",
+        "postalCode": "560093",
+        "addressCountry": "IN"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "sameAs": [
+        "https://www.instagram.com/playoffzofficial/",
+        "https://www.facebook.com/PlayOffzOfficial",
+        "https://www.linkedin.com/company/105291760/admin/dashboard/"
+      ] 
+    }
+    </script>
+    
 @endpush
