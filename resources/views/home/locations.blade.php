@@ -4,10 +4,12 @@
 @isset($location['city'])
     @php $locationName = $location['city'] @endphp
 @endisset
+@if (isset($meta_data['meta_title']))
+    @php $locationName = $meta_data['meta_title']; @endphp
+@endif
 @section('title', __('Tournaments In ' .$locationName))
 @section('og_data')
-    <meta name="description" content="@isset($location['description']){{$location['description']}}@endisset" />
-    <meta name="keywords" content="Tournaments In @isset($location['city']){{$location['city']}}@endisset" />
+    <meta name="description" content="@isset($location['meta_description']){{$location['meta_description']}}@endisset" />
 @endsection
 @section('content')
 <style>
@@ -42,6 +44,12 @@
         position: absolute;
         top: 10px;
         left: 7px;
+    }
+    .default2-btn{
+        background-color: #ff2f31 !important;
+        border-color: #ff2f31 !important;
+        padding: 7px 10px;
+        color:#fff !important;
     }
 </style>
 {{-- <div class="pt-3 pb-3 shadow-sm home-slider">
@@ -105,7 +113,11 @@
                                 </div> --}}
                                 <div class="mt-2">
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

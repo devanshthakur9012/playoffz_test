@@ -1,10 +1,11 @@
 @extends('frontend.master', ['activePage' => 'home'])
 @php $catName = ucwords(str_replace('-', ' ', $category)); @endphp
-@section('title', __($catName.' Tournaments'))
+@if (isset($meta_data['meta_title']))
+    @php $catName = $meta_data['meta_title']; @endphp
+@endif
+@section('title', __($catName))
 @section('og_data')
-    <meta name="title" content="@isset($meta_data['meta_title']){{$meta_data['meta_title']}}@endisset" />
     <meta name="description" content="@isset($meta_data['meta_description']){{$meta_data['meta_description']}}@endisset" />
-    <meta name="keywords" content="@isset($meta_data['meta_keyword']){{$meta_data['meta_keyword']}}@endisset " />
 @endsection
 @section('content')
 <style>
@@ -40,12 +41,13 @@
         top: 10px;
         left: 7px;
     }
+    .default2-btn{
+        background-color: #ff2f31 !important;
+        border-color: #ff2f31 !important;
+        padding: 7px 10px;
+        color:#fff !important;
+    }
 </style>
-{{-- <div class="pt-3 pb-3 shadow-sm home-slider">
-    <div class="osahan-slider">
-      
-    </div>
-</div> --}}
 <div class="container my-5">
     <div class="hawan_section">
         <div class="mt-5 mb-3">
@@ -102,7 +104,11 @@
                                 </div> --}}
                                 <div class="mt-2">
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -166,7 +166,7 @@
     @if (isset($tournament) && count($tournament['latest_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h2 class="h4 mb-0 float-left">Latest Tournament</h2>
+                <h1 class="h4 mb-0 float-left">Latest Tournament</h1>
                 <a href="{{route('tournament-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
@@ -214,7 +214,11 @@
                                 @endisset
                                 <div class="mt-2">
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -283,7 +287,11 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -352,7 +360,11 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -421,7 +433,11 @@
                                 @endisset
                                 <div class="mt-2"> 
                                     <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                    <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                        <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                    @else
+                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -431,7 +447,7 @@
         </div>
     @endif
     <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-        <h1 class="h4 mb-0 float-left">Categories</h1>
+        <h2 class="h4 mb-0 float-left">Categories</h2>
     </div>
     <div class="all-category mb-5">
         @foreach (Common::allEventCategoriesByApi() as $cat)

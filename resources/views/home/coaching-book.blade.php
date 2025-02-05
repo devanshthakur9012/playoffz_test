@@ -656,6 +656,12 @@
         padding: 10px;
         border-radius: 4px;
      }
+    .default2-btn{
+        background-color: #ff2f31 !important;
+        border-color: #ff2f31 !important;
+        padding: 7px 10px;
+        color:#fff !important;
+    }
     </style>
 @endpush
 @section('content')
@@ -1074,7 +1080,11 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
                                     @endisset
                                     <div class="mt-2">
                                         <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
-                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                        @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
+                                            <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
+                                        @else
+                                            <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                        @endif
                                     </div>
                                     @php
                                         // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
