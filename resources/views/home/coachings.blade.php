@@ -51,7 +51,7 @@
 <div class="container my-5">
     <div class="hawan_section">
         <div class="mt-5 mb-3">
-            <h1 class="h4 mb-2">{{$catName}} Tournament</h1>
+            <h1 class="h4 mb-2">{{ucwords(str_replace('-', ' ', $category))}} Tournament</h1>
         </div>
         <div class="row list-bp">
             @foreach ($category_tournament as $tour)
