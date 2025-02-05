@@ -905,7 +905,7 @@ class HomeController extends Controller
 
     public function locationTournament($location)
     {
-        // try {
+        try {
             // Get category tournament data
             $fetchData = $this->getLocationTournament($location);
     
@@ -913,12 +913,11 @@ class HomeController extends Controller
             $data['category_tournament'] = $fetchData['catData'];
             $data['location'] = $fetchData['location'];
             $data['category'] = $location;
-            dd($data);
             return view('home.locations', $data);
-        // } catch (\Exception $e) {
-        //     // Catch exceptions to prevent the app from breaking
-        //     return redirect()->back()->with('error', 'An error occurred while fetching tournament data: ' . $e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            // Catch exceptions to prevent the app from breaking
+            return redirect()->back()->with('error', 'An error occurred while fetching tournament data: ' . $e->getMessage());
+        }
     }
     
     public function getLocationTournament($location)
