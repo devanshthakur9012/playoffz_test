@@ -2,12 +2,12 @@
 
 @php $locationName = ""; @endphp
 @isset($location['city'])
-    @php $locationName = $location['city'] @endphp
+    @php $locationName = 'Tournaments In '.$location['city'] @endphp
 @endisset
-@if (isset($meta_data['meta_title']))
-    @php $locationName = $meta_data['meta_title']; @endphp
+@if (isset($location['meta_title']))
+    @php $locationName = $location['meta_title']; @endphp
 @endif
-@section('title', __('Tournaments In ' .$locationName))
+@section('title', __($locationName))
 @section('og_data')
     <meta name="description" content="@isset($location['meta_description']){{$location['meta_description']}}@endisset" />
 @endsection
