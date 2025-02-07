@@ -28,7 +28,7 @@
                             @php
                                 $userData = Common::fetchUserDetails();
                             @endphp
-                           <form name="register_frm" id="register_frm" action="{{ url('user/update-profile') }}" method="POST" enctype="multipart/form-data">
+                           <form name="register_frm" id="register_frm" action="{{ url('user/update-profile') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                             <div class="row">
                                 @isset($userData['pro_pic'])
@@ -63,7 +63,7 @@
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label for="email">Email Address <span class="text-danger">*</span></label>
-                                        <input id="email" type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ $userData['email'] }}" readonly>
+                                        <input id="email" type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ $userData['email'] }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">

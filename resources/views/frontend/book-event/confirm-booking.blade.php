@@ -80,6 +80,23 @@ $paymentId = "";
                                     </div>
                                 </div>
                                 <div class="formBox mt-4">
+                                    @php  $userData = Common::fetchUserDetails(); @endphp
+                                    @if (empty($userData['name']) || empty($userData['email']))
+                                        <div class="row px-2">
+                                            <div class="mb-3 col-lg-6">
+                                                <label for="username">Username <span class="text-danger">*</span></label>
+                                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" required>
+                                            </div>
+                                            <div class="mb-3 col-lg-6">
+                                                <label for="email">Email Address <span class="text-danger">*</span></label>
+                                                <input id="email" type="email" class="form-control" placeholder="Enter Email" name="email" required>
+                                            </div>
+                                            <div class="mb-3 col-lg-6">
+                                                <label for="password">Password <span class="text-danger">*</span></label>
+                                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
+                                            </div>
+                                        </div>
+                                    @endif
                                     @php
                                         $fields = $packageDetails['fields'] ?? [];
                                         $isDouble = strpos(strtolower($packageDetails['type']), 'double') !== false || strpos(strtolower($packageDetails['type']), 'doubles') !== false;
@@ -212,15 +229,6 @@ $paymentId = "";
                                                 $paymentId = $item['id'];
                                             @endphp
                                         @endif
-                                        {{-- <div>
-                                            <input type="radio"  id="payment-{{ $item['id'] }}" 
-                                                name="payment_type" value="{{ $item['id'] }}"
-                                                @if($item['title'] === 'Razorpay') checked @endif>
-                                            <label for="payment-{{ $item['id'] }}">
-                                                <img src="{{ $item['img'] }}" alt="{{ $item['title'] }}" style="width: 50px; height: auto;">
-                                                {{ $item['title'] }} - {{ $item['subtitle'] }}
-                                            </label>
-                                        </div> --}}
                                     @endforeach
                                 {{-- </form> --}}
                             @endisset
@@ -342,91 +350,259 @@ $paymentId = "";
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
 <script>
-    function validateDynamicForm() {
-        let isValid = true;
+    // function validateDynamicForm() {
+    //     let isValid = true;
 
-        // Iterate through all required fields
-        $('input[required], select[required]').each(function () {
-            const $field = $(this);
-            if (!$field.val()) {
-                // Highlight invalid fields
-                $field.addClass('is-invalid');
-                isValid = false;
+    //     // Iterate through all required fields
+    //     $('#razorpay-form input[required], #razorpay-form select[required]').each(function () {
+    //         const $field = $(this);
+    //         if (!$field.val()) {
+    //             // Highlight invalid fields
+    //             $field.addClass('is-invalid');
+    //             isValid = false;
+    //         } else {
+    //             $field.removeClass('is-invalid');
+    //         }
+    //     });
+
+    //     let emailField = $('#email');
+    //     if (emailField.length > 0) {  // Check if the element exists
+    //         let emailExist = emailField.val().trim();
+            
+    //         if (emailExist !== '') {
+    //             $.ajax({
+    //                 url: "{{route('verifyEmail')}}",
+    //                 type: "POST",
+    //                 contentType: "application/json",
+    //                 data: JSON.stringify({ email: emailExist }),
+    //                 success: function (data) {
+    //                     if (data.Result === "false") {
+    //                         iziToast.error({
+    //                             title: 'Error',
+    //                             position: 'topRight',
+    //                             message: data.ResponseMsg || 'Email already exists. Please use another email.',
+    //                         });
+    //                         emailField.addClass('is-invalid');
+    //                         isValid = false;
+    //                     } else {
+    //                         emailField.removeClass('is-invalid');
+    //                     }
+    //                 },
+    //                 error: function () {
+    //                     iziToast.error({
+    //                         title: 'Error',
+    //                         position: 'topRight',
+    //                         message: 'Failed to verify email. Please try again later.',
+    //                     });
+    //                     isValid = false;
+    //                 }
+    //             });
+    //         }
+    //     }
+
+    //     // Display a message if the form is invalid
+    //     if (!isValid) {
+    //         iziToast.error({
+    //             title: 'Error',
+    //             position: 'topRight',
+    //             message: 'Please fill all required fields before proceeding.',
+    //         });
+    //     }
+
+    //     return isValid;
+    // }
+
+    function validateDynamicForm() {
+        return new Promise((resolve, reject) => {
+            let isValid = true;
+
+            // Iterate through all required fields
+            $('#razorpay-form input[required], #razorpay-form select[required]').each(function () {
+                const $field = $(this);
+                if (!$field.val()) {
+                    $field.addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $field.removeClass('is-invalid');
+                }
+            });
+
+            let emailField = $('#email');
+            if (emailField.length > 0) {  // Check if the element exists
+                let emailExist = emailField.val().trim();
+                
+                if (emailExist !== '') {
+                    $.ajax({
+                        url: "{{route('verifyEmail')}}",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ email: emailExist }),
+                        success: function (data) {
+                            if (data.Result === "false") {
+                                iziToast.error({
+                                    title: 'Error',
+                                    position: 'topRight',
+                                    message: data.ResponseMsg || 'Email already exists. Please use another email.',
+                                });
+                                emailField.addClass('is-invalid');
+                                resolve(false); // Resolve with false if email exists
+                            } else {
+                                emailField.removeClass('is-invalid');
+                                resolve(isValid); // Resolve with true if all fields are valid
+                            }
+                        },
+                        error: function () {
+                            iziToast.error({
+                                title: 'Error',
+                                position: 'topRight',
+                                message: 'Failed to verify email. Please try again later.',
+                            });
+                            resolve(false);
+                        }
+                    });
+                } else {
+                    resolve(isValid); // No email field, continue validation
+                }
             } else {
-                $field.removeClass('is-invalid');
+                resolve(isValid);
             }
         });
-
-        // Display a message if the form is invalid
-        if (!isValid) {
-            iziToast.error({
-                title: 'Error',
-                position: 'topRight',
-                message: 'Please fill all required fields before proceeding.',
-            });
-        }
-
-        return isValid;
     }
+
 </script>
 <script>
-    function razorpaySubmit(amount) {
-        if (!validateDynamicForm()) {
-            return; // Stop if the form is invalid
-        }
-        $.post('{{route("create-order")}}', { amount: amount }, function(response) {
-            if (response.success) {
-                let orderID = response.order_id;
-                var razorpayOptions = {
-                    key: "{{ $key_id }}", // Razorpay key from settings
-                    amount: amount * 100, // Amount in paise
-                    currency: "{{ $currency }}",
-                    name: "PlayOffz",
-                    description: "Order Payment",
-                    order_id: orderID, // Razorpay Order ID
-                    prefill: {
-                        name: $('#card_holder_name').val(),
-                        email: $('#email').val(),
-                        contact: $('#number').val()
-                    },
-                    handler: function(paymentResponse) {
-                        // Set the payment ID and submit the form
-                        $('#razorpay_payment_id').val(paymentResponse.razorpay_payment_id);
-                        $('#razorpay-form').submit();
-                    },
-                    modal: {
-                        ondismiss: function() {
-                            // alert("Payment canceled by user.");
-                            window.location.reload();
-                        }
-                    }
-                };
+    // function razorpaySubmit(amount) {
+    //     if (!validateDynamicForm()) {
+    //         return; // Stop if the form is invalid
+    //     }
+    //     $.post('{{route("create-order")}}', { amount: amount }, function(response) {
+    //         if (response.success) {
+    //             let orderID = response.order_id;
+    //             var razorpayOptions = {
+    //                 key: "{{ $key_id }}", // Razorpay key from settings
+    //                 amount: amount * 100, // Amount in paise
+    //                 currency: "{{ $currency }}",
+    //                 name: "PlayOffz",
+    //                 description: "Order Payment",
+    //                 order_id: orderID, // Razorpay Order ID
+    //                 prefill: {
+    //                     name: $('#card_holder_name').val(),
+    //                     email: $('#email').val(),
+    //                     contact: $('#number').val()
+    //                 },
+    //                 handler: function(paymentResponse) {
+    //                     // Set the payment ID and submit the form
+    //                     $('#razorpay_payment_id').val(paymentResponse.razorpay_payment_id);
+    //                     $('#razorpay-form').submit();
+    //                 },
+    //                 modal: {
+    //                     ondismiss: function() {
+    //                         // alert("Payment canceled by user.");
+    //                         window.location.reload();
+    //                     }
+    //                 }
+    //             };
 
-                var razorpayInstance = new Razorpay(razorpayOptions);
-                razorpayInstance.open();
-            } else {
-                // alert("Error creating Razorpay order: " + response.message);
+    //             var razorpayInstance = new Razorpay(razorpayOptions);
+    //             razorpayInstance.open();
+    //         } else {
+    //             // alert("Error creating Razorpay order: " + response.message);
+    //             iziToast.error({
+    //                 title: 'Error',
+    //                 position: 'topRight',
+    //                 message: "Error creating Razorpay order: " + response.message,
+    //             });
+    //         }
+    //     }).fail(function() {
+    //         // alert("Failed to create Razorpay order. Please try again.");
+    //         iziToast.error({
+    //             title: 'Error',
+    //             position: 'topRight',
+    //             message: "Failed to create Razorpay order. Please try again.",
+    //         });
+    //     });
+    // }
+
+    function razorpaySubmit(amount) {
+        validateDynamicForm().then(isValid => {
+            if (!isValid) {
+                return; // Stop if the form is invalid
+            }
+
+            $.post('{{route("create-order")}}', { amount: amount }, function(response) {
+                if (response.success) {
+                    let orderID = response.order_id;
+                    var razorpayOptions = {
+                        key: "{{ $key_id }}",
+                        amount: amount * 100,
+                        currency: "{{ $currency }}",
+                        name: "PlayOffz",
+                        description: "Order Payment",
+                        order_id: orderID,
+                        prefill: {
+                            name: $('#card_holder_name').val(),
+                            email: $('#email').val(),
+                            contact: $('#number').val()
+                        },
+                        handler: function(paymentResponse) {
+                            $('#razorpay_payment_id').val(paymentResponse.razorpay_payment_id);
+                            $('#razorpay-form').submit();
+                        },
+                        modal: {
+                            ondismiss: function() {
+                                window.location.reload();
+                            }
+                        }
+                    };
+
+                    var razorpayInstance = new Razorpay(razorpayOptions);
+                    razorpayInstance.open();
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: "Error creating Razorpay order: " + response.message,
+                    });
+                }
+            }).fail(function() {
                 iziToast.error({
                     title: 'Error',
                     position: 'topRight',
-                    message: "Error creating Razorpay order: " + response.message,
+                    message: "Failed to create Razorpay order. Please try again.",
                 });
-            }
-        }).fail(function() {
-            // alert("Failed to create Razorpay order. Please try again.");
-            iziToast.error({
-                title: 'Error',
-                position: 'topRight',
-                message: "Failed to create Razorpay order. Please try again.",
             });
         });
     }
 
     // Trigger Razorpay payment on button click
+    // $("#payBookAmount").on('click', function() {
+    //     let totalAmount = {{ round($totalAmountPayable, 2) }};
+    //     let couponAmount = $('#coupon_amt').val();
+    //     if(totalAmount > 0){
+    //         razorpaySubmit(totalAmount-couponAmount)
+    //     }
+    //     if (!validateDynamicForm()) {
+    //         return; 
+    //     }else{
+    //         $('#razorpay-form').submit();
+    //     }
+    // });
+
     $("#payBookAmount").on('click', function() {
         let totalAmount = {{ round($totalAmountPayable, 2) }};
         let couponAmount = $('#coupon_amt').val();
-        razorpaySubmit(totalAmount-couponAmount);
+
+        validateDynamicForm().then(isValid => {
+            if (!isValid) {
+                return; // Stop if form validation fails
+            }
+
+            if (totalAmount > 0) {
+                razorpaySubmit(totalAmount - couponAmount);
+            } else {
+                $('#razorpay-form').submit();
+            }
+        });
     });
 
 </script>

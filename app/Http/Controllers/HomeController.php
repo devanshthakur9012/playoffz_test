@@ -52,6 +52,172 @@ class HomeController extends Controller
         return view('home.index', $data);
     }
 
+
+    // CATEGORY WISE EVENT
+    public function coachings(Request $request, $categorySlug)
+    {
+        $selectedCity = Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'All';
+
+        // Fetch all categories and find the one that matches the slug
+        $categories = Common::allEventCategoriesByApi();
+        $category = collect($categories)->firstWhere('slug', $categorySlug);
+
+        // If the category is not found, return a 404 error
+        if (!$category) {
+            abort(404, 'Category not found.');
+        }
+
+        // Get the ID of the matched category
+        $categoryId = $category['id'];
+
+        $data['page'] = $request->get('page', 1);
+        $data['limit'] = $request->get('limit', 12);
+
+
+        // Get category tournament data
+        $category_tournament = $this->getCatgeoryData($categoryId,$data['page'], $data['limit']);
+
+        $data['category_tournament'] = $category_tournament['CatEventData'] ?? [];
+        $data['category'] = $categorySlug;
+        $data['pagination'] = $category_tournament['Pagination'] ?? [];
+        $data['category_desciption'] = $category['description'] ?? null;
+        $data['meta_data'] = [
+            'meta_title' => $category['meta_title'] ?? null,
+            'meta_description' => $category['meta_description'] ?? null,
+            'meta_keyword' => $category['meta_keyword'] ?? null,
+        ];
+        $data['catId'] = $categoryId;
+        return view('home.category-events', $data);
+    }
+
+    public function categoryTournamentAjax(Request $request)
+    {
+        $data = [
+            'catId' => $request->get('catId',1),
+            'page' => $request->get('page', 1),
+            'limit' => $request->get('limit', default: 12),
+        ];
+
+        $category_tournament = $this->getCatgeoryData($data['catId'], $data['page'], $data['limit']);
+        $data['category_tournament'] = $category_tournament['CatEventData'] ?? [];
+        $data['pagination'] = $category_tournament['Pagination'] ?? [];
+        return response()->json([
+            'html' => view('home.category-events-ajax', $data)->render(),
+        ]);
+    }    
+
+    public function getCatgeoryData($catId,$page = 1, $limit = 12){
+        try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+
+            $city = \Session::get('CURR_CITY', 'Bengaluru');
+
+            // Prepare the data to send in the request body
+            $data = [
+                'cat_id' => $catId,
+                'city'=>$city,
+                "page" => $page,
+                "limit" => $limit
+            ];
+
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/cat_event.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+
+            if ($responseData['Result'] == true) {
+                return $responseData;
+            }
+        } catch (\Throwable $th) {
+           return [];
+        }
+    }
+
+    // LOCATION WISE EVENT
+    public function locationTournament(Request $request, $location)
+    {
+        try {
+
+            $data = [
+                'page' => $request->get('page', 1),
+                'limit' => $request->get('limit', 12), // Default limit
+            ];
+
+            // Get category tournament data
+            $fetchData = $this->getLocationTournament($location,$data['page'],$data['limit']);
+    
+            // Prepare data for the view
+            $data['category_tournament'] = $fetchData['CatEventData'];
+            $data['location'] = $fetchData['Location'];
+            $data['category'] = $location;
+            $data['pagination'] = $fetchData['Pagination'] ?? [];
+            return view('home.locations', $data);
+        } catch (\Exception $e) {
+            // Catch exceptions to prevent the app from breaking
+            return redirect()->back()->with('error', 'An error occurred while fetching tournament data: ' . $e->getMessage());
+        }
+    }
+
+    public function locationTournamentAjax(Request $request)
+    {
+        $data = [
+            'location' => $request->get('location'),
+            'page' => $request->get('page', 1),
+            'limit' => $request->get('limit',  12),
+        ];
+
+        $category_tournament = $this->getLocationTournament($data['location'], $data['page'], $data['limit']);
+        $data['category_tournament'] = $category_tournament['CatEventData'] ?? [];
+        $data['pagination'] = $category_tournament['Pagination'] ?? [];
+        return response()->json([
+            'html' => view('home.location-ajax', $data)->render(),
+        ]);
+    }    
+    
+    public function getLocationTournament($location,$page = 1, $limit = 12)
+    {
+        // try {
+            // Instantiate the Guzzle client
+            $client = new Client();
+    
+            // Prepare the data to send in the request body
+            $data = [
+                'location' => $location,
+                "page" => $page,
+                "limit" => $limit
+            ];
+    
+            // Send POST request to the PHP admin panel API with the data in the body
+            $baseUrl = env('BACKEND_BASE_URL');
+            $response = $client->post("{$baseUrl}/web_api/location_event.php", [
+                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+            ]);
+    
+            // Decode the JSON response
+            $responseData = json_decode($response->getBody(), true);
+            if ($responseData['Result'] == true) {
+                return $responseData;
+            }
+            // Return the relevant data
+            return [
+                'CatEventData' => [],
+                'Location' => '',
+                "Pagination"=>[]
+            ];
+        // } catch (\Exception $e) {
+        //     // Return empty data in case of error
+        //     return [
+        //         'CatEventData' => [],
+        //         'Location' => '',
+        //         "Pagination"=>[]
+        //     ];
+        // }
+    }    
+
     // Social Play
     public function socialPlay(Request $request)
     {
@@ -230,11 +396,6 @@ class HomeController extends Controller
     }
 
 
-    public function tournamentType($type){
-        $data['category'] = $type;
-        $data['category_tournament'] = $this->getTournamentByType($type);
-        return view('home.coachings', $data);
-    }
 
     public function helpCenter(){
         $help = $this->fetchHelpCenterApi();
@@ -644,35 +805,61 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
            return [];
         }
+    }    
+
+
+    public function tournamentType(Request $request, $type) {
+        $data['page'] = $request->get('page', 1);
+        $data['limit'] = $request->get('limit', 12);
+
+        $category_tournament = $this->getTournamentByType($type, $data['page'], $data['limit']);
+        $data['category_tournament'] = $category_tournament['Events'] ?? [];
+        $data['category'] = $type;
+        $data['pagination'] = $category_tournament['Pagination'] ?? [];
+        // dd($data);
+        return view('home.coachings', $data);
     }
+    public function fetchTournaments(Request $request)
+    {
+        $data = [
+            'type' => $request->get('type', 'default'),
+            'page' => $request->get('page', 1),
+            'limit' => $request->get('limit', default: 12),
+        ];
 
-    public function getTournamentByType($type){
+        $category_tournament = $this->getTournamentByType($data['type'], $data['page'], $data['limit']);
+        $data['category_tournament'] = $category_tournament['Events'] ?? [];
+        $data['pagination'] = $category_tournament['Pagination'] ?? [];
+        return response()->json([
+            'html' => view('home.coachings-ajax', $data)->render(),
+        ]);
+    }    
+
+    public function getTournamentByType($type, $page = 1, $limit = 12) {
         try {
-            // Instantiate the Guzzle client
             $client = new Client();
-
             $city = \Session::get('CURR_CITY', 'Bengaluru');
 
-            // Prepare the data to send in the request body
             $data = [
-                "city"=>$city,
-                "type"=>$type
+                "city" => $city,
+                "type" => $type,
+                "page" => $page,
+                "limit" => $limit
             ];
 
-            // Send POST request to the PHP admin panel API with the data in the body
             $baseUrl = env('BACKEND_BASE_URL');
             $response = $client->post("{$baseUrl}/web_api/event_type_data.php", [
-                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
+                'json' => $data,
             ]);
-            // Decode the JSON response
+
             $responseData = json_decode($response->getBody(), true);
-            if($responseData['Result'] == true || $responseData['Result'] == "true"){
-                // Return the HomeData from the response
-                return $responseData['Events'];
+
+            if ($responseData['Result'] == true) {
+                return $responseData;
             }
-            return [];
+            return ['Events' => [], 'Pagination' => []];
         } catch (\Throwable $th) {
-           return [];
+            return ['Events' => [], 'Pagination' => []];
         }
     }
     
@@ -790,13 +977,6 @@ class HomeController extends Controller
 
     public function coachingPackages(){
         $coachingId = $this->memberObj['coach_id'];
-        // $data['coachData'] = HomeService::coachingBookDataById($coachingId);
-        // $data['packageData'] = HomeService::getCoachingPackagesDataByCoachId($coachingId);
-        // $availableData = HomeService::checkedIfTicketSoldOut($coachingId);
-        // if($availableData < 1){
-        //     return redirect('/');
-        // }
-        
         $data['tour_plans'] = $this->coachingPrice($coachingId);
         $data['coaching_id'] = $coachingId;
         return view('home.coaching-package', $data);
@@ -842,121 +1022,6 @@ class HomeController extends Controller
            return [];
         }
     }
-
-    public function coachings($categorySlug)
-    {
-        $selectedCity = Session::has('CURR_CITY') ? Session::get('CURR_CITY') : 'All';
-
-        // Fetch all categories and find the one that matches the slug
-        $categories = Common::allEventCategoriesByApi();
-        $category = collect($categories)->firstWhere('slug', $categorySlug);
-
-        // If the category is not found, return a 404 error
-        if (!$category) {
-            abort(404, 'Category not found.');
-        }
-
-        // Get the ID of the matched category
-        $categoryId = $category['id'];
-
-        // Get category tournament data
-        $data['category_tournament'] = $this->getCatgeoryData($categoryId);
-        $data['category'] = $categorySlug;
-        $data['category_desciption'] = $category['description'] ?? null;
-
-        $data['meta_data'] = [
-            'meta_title' => $category['meta_title'] ?? null,
-            'meta_description' => $category['meta_description'] ?? null,
-            'meta_keyword' => $category['meta_keyword'] ?? null,
-        ];
-        
-
-        return view('home.coachings', $data);
-    }
-
-
-    public function getCatgeoryData($catId){
-        try {
-            // Instantiate the Guzzle client
-            $client = new Client();
-
-            $city = \Session::get('CURR_CITY', 'Bengaluru');
-
-            // Prepare the data to send in the request body
-            $data = [
-                'cat_id' => $catId,
-                'city'=>$city
-            ];
-
-            // Send POST request to the PHP admin panel API with the data in the body
-            $baseUrl = env('BACKEND_BASE_URL');
-            $response = $client->post("{$baseUrl}/web_api/cat_event.php", [
-                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
-            ]);
-            // Decode the JSON response
-            $responseData = json_decode($response->getBody(), true);
-
-            // Return the HomeData from the response
-            return $responseData['CatEventData'];
-        } catch (\Throwable $th) {
-           return [];
-        }
-    }
-
-    public function locationTournament($location)
-    {
-        try {
-            // Get category tournament data
-            $fetchData = $this->getLocationTournament($location);
-    
-            // Prepare data for the view
-            $data['category_tournament'] = $fetchData['catData'];
-            $data['location'] = $fetchData['location'];
-            $data['category'] = $location;
-            return view('home.locations', $data);
-        } catch (\Exception $e) {
-            // Catch exceptions to prevent the app from breaking
-            return redirect()->back()->with('error', 'An error occurred while fetching tournament data: ' . $e->getMessage());
-        }
-    }
-    
-    public function getLocationTournament($location)
-    {
-        try {
-            // Instantiate the Guzzle client
-            $client = new Client();
-    
-            // Prepare the data to send in the request body
-            $data = [
-                'location' => $location,
-            ];
-    
-            // Send POST request to the PHP admin panel API with the data in the body
-            $baseUrl = env('BACKEND_BASE_URL');
-            $response = $client->post("{$baseUrl}/web_api/location_event.php", [
-                'json' => $data,  // Use the 'json' option to send data as JSON in the request body
-            ]);
-    
-            // Decode the JSON response
-            $responseData = json_decode($response->getBody(), true);
-    
-            // Return the relevant data
-            return [
-                'catData' => $responseData['CatEventData'],
-                'location' => $responseData['Location']
-            ];
-        } catch (\Exception $e) {
-            // Catch exceptions and provide a fallback
-            // Log the error for debugging
-            \Log::error('Error fetching location tournament data: ' . $e->getMessage());
-    
-            // Return empty data in case of error
-            return [
-                'catData' => [],
-                'location' => ''
-            ];
-        }
-    }    
 
     public function bookCoachingPackage()
     {

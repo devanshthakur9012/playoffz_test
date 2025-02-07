@@ -230,7 +230,7 @@ class Common
   {
       // Retrieve the session data
       $userSession = Session::get('user_login_session');
-
+  
       // Blank data structure for fallback
       $blankData = [
           'name' => "",
@@ -244,64 +244,54 @@ class Common
           'pro_pic' => "",
           'wallet' => "",
       ];
-
+  
       // Check if the session exists
       if (!$userSession) {
           Session::forget('user_login_session');
           return $blankData;
       }
-
+  
       // Use the user ID from the session
       $userId = $userSession['id'];
-
-      // Cache key for the user profile
-      $cacheKey = "user_profile_{$userId}";
-
-      // Fetch or cache the user profile data
-      $userProfile = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($userId, $blankData) {
-          try {
-              // Instantiate the Guzzle client
-              $client = new Client();
-
-              // Backend API base URL
-              $baseUrl = env('BACKEND_BASE_URL');
-
-              // Data to send in the API request
-              $data = [
-                  'uid' => $userId,
-              ];
-
-              // Send POST request to the PHP admin panel API
-              $response = $client->post("{$baseUrl}/web_api/user_profile.php", [
-                  'json' => $data, // Send data as JSON in the request body
-              ]);
-
-              // Decode the JSON response
-              $responseData = json_decode($response->getBody(), true);
-
-              // Check if the response is successful
-              if (isset($responseData['Result']) && $responseData['ResponseCode'] === "200") {
-                  return $responseData['user_info']; // Cache the user info
-              } else {
-                  // If API returns an error, clear the session
-                  Session::forget('user_login_session');
-                  return $blankData;
-              }
-          } catch (\Exception $e) {
-              // Log the exception for debugging
-              Log::error('Error fetching user profile', [
-                  'userId' => $userId,
-                  'message' => $e->getMessage(),
-              ]);
-
-              // Clear the session and return blank data
+  
+      try {
+          // Instantiate the Guzzle client
+          $client = new Client();
+  
+          // Backend API base URL
+          $baseUrl = env('BACKEND_BASE_URL');
+  
+          // Data to send in the API request
+          $data = ['uid' => $userId];
+  
+          // Send POST request to the PHP admin panel API
+          $response = $client->post("{$baseUrl}/web_api/user_profile.php", [
+              'json' => $data, // Send data as JSON in the request body
+          ]);
+  
+          // Decode the JSON response
+          $responseData = json_decode($response->getBody(), true);
+  
+          // Check if the response is successful
+          if (isset($responseData['Result']) && $responseData['ResponseCode'] === "200") {
+              return $responseData['user_info']; // Return user info
+          } else {
+              // If API returns an error, clear the session
               Session::forget('user_login_session');
               return $blankData;
           }
-      });
-
-      return $userProfile; // Return cached or fetched profile data
-  }
+      } catch (\Exception $e) {
+          // Log the exception for debugging
+          Log::error('Error fetching user profile', [
+              'userId' => $userId,
+              'message' => $e->getMessage(),
+          ]);
+  
+          // Clear the session and return blank data
+          Session::forget('user_login_session');
+          return $blankData;
+      }
+  }  
   
   public static function abhisheka(){
     $selectedCity = \Session::has('CURR_CITY') ? \Session::get('CURR_CITY') : 'All';

@@ -1,15 +1,11 @@
 @extends('frontend.master', ['activePage' => 'home'])
-
-@php $locationName = ""; @endphp
-@isset($location['city'])
-    @php $locationName = 'Tournaments In '.$location['city'] @endphp
-@endisset
-@if (isset($location['meta_title']))
-    @php $locationName = $location['meta_title']; @endphp
+@php $catName = ucwords(str_replace('-', ' ', $category)); @endphp
+@if (isset($meta_data['meta_title']))
+    @php $catName = $meta_data['meta_title']; @endphp
 @endif
-@section('title', __($locationName))
+@section('title', __($catName))
 @section('og_data')
-    <meta name="description" content="@isset($location['meta_description']){{$location['meta_description']}}@endisset" />
+    <meta name="description" content="@isset($meta_data['meta_description']){{$meta_data['meta_description']}}@endisset" />
 @endsection
 @section('content')
 <style>
@@ -52,18 +48,13 @@
         color:#fff !important;
     }
 </style>
-{{-- <div class="pt-3 pb-3 shadow-sm home-slider">
-    <div class="osahan-slider">
-      
-    </div>
-</div> --}}
 <div class="container my-5">
     <div class="hawan_section">
         <div class="mt-5 mb-3">
-            <h1 class="h4 mb-2">{{ ucwords(str_replace('-', ' ', $category)) }} Tournament</h1>
+            <h1 class="h4 mb-2">{{ucwords(str_replace('-', ' ', $category))}} Tournament</h1>
         </div>
         <div id="playData">
-           <div class="row list-bp">
+            <div class="row list-bp" >
                 @if(isset($category_tournament) && count($category_tournament))
                     @foreach ($category_tournament as $tour)
                         <div class="col-xl-4 col-md-4 col-sm-6 mb-3">
@@ -108,11 +99,6 @@
                                                 <span class="badge badge-primary m-1 type_cat" data-toggle="tooltip" data-placement="top" title="{{ $key }}">{{ $item }}</span>
                                             @endforeach
                                         @endisset
-                                        {{-- <div class="mt-2 d-flex justify-content-between align-items-center">
-                                            <a href="{{route('tournament-detail', [$tour['event_id'], Str::slug($tour['event_title'])])}}" class="mt-1 btn btn-success btn-sm mb-1">Book Now</a>
-                                            
-                                            <button class="mt-1 btn btn-white btn-sm mb-1">{{$tour['event_ticket_price']}}</button>
-                                        </div> --}}
                                         <div class="mt-2">
                                             <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
                                             @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
@@ -129,9 +115,9 @@
                 @else
                     <p class="text-center w-100">No Events found.</p>
                 @endif
-           </div>
-           
-           <div class="d-flex justify-content-end mt-2 gap-2 pagination-container" style="gap: 4px">
+            </div>
+
+            <div class="d-flex justify-content-end mt-2 gap-2 pagination-container" style="gap: 4px">
                 {{-- Previous Button --}}
                 @if ($pagination['current_page'] > 1)
                     <button class="btn btn-primary btn-sm me-2 paginate-btn" data-page="{{ $pagination['current_page'] - 1 }}"
@@ -180,8 +166,8 @@
             </div>
         </div>
         <div class="mt-4">
-            @isset($location['description'])
-                <p>{{$location['description']}}</p>
+            @isset($category_desciption)
+                <p>{{$category_desciption}}</p>
             @endisset
         </div>
     </div>
@@ -197,10 +183,10 @@
         function fetchSocialPlayData(page = 1) {
             const limit = "{{$limit}}";
             $.ajax({
-                url: '{{ route("location-tournament-ajax") }}',
+                url: '{{ route("category-tournament-ajax") }}',
                 method: 'GET',
                 data: {
-                    location:"{{$category}}",
+                    catId:"{{$catId}}",
                     page: page,
                     limit: limit,
                 },

@@ -649,7 +649,8 @@ class AuthController extends Controller
         $request->validate([
             'image' => 'nullable|mimes:jpg,jpeg,png,webp', // Make the image optional
             'username' => 'required|string|max:255',
-            'password' => 'nullable|string|min:6', // Make the password nullable
+            'password' => 'nullable|string|min:6',
+            'email' => 'nullable|email',
             'confirm_password' => 'nullable|same:password', // Confirm password only if provided
         ]);
 
@@ -659,6 +660,7 @@ class AuthController extends Controller
         $data = [
             'name' => $request->username,
             'uid' => $user,
+            'email' => $request->email,
             'img' => $request->hasFile('image') ? base64_encode(file_get_contents($request->file('image')->path())) : null,
         ];
 

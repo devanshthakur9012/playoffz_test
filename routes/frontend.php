@@ -43,6 +43,8 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('pages/{title}', [HomeController::class, 'pagesData'])->name('pagesData');
 
     Route::get('tournaments/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
+    Route::get('tournament-type-ajax', [HomeController::class, 'fetchTournaments'])->name('tournament-type-ajax');
+
     Route::get('social-play', [HomeController::class, 'socialPlay'])->name('social-play');
     Route::get('/social-play/ajax', [HomeController::class, 'socialPlayAjax'])->name('social-play.ajax');
 
@@ -51,8 +53,10 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
     Route::get('tournament-tickets', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
     Route::get('{category}-tournament', [HomeController::class, 'coachings'])->name('tournament');
+    Route::get('category-tournament-ajax', [HomeController::class, 'categoryTournamentAjax'])->name('category-tournament-ajax');
 
     Route::get('tournaments-in-{location}', [HomeController::class, 'locationTournament'])->name('location-tournament');
+    Route::get('location-tournament-ajax', [HomeController::class, 'locationTournamentAjax'])->name('location-tournament-ajax');
 
     Route::get('city-coachings/{cityName}', [HomeController::class, 'cityCoachings']);
     Route::get('book-coaching-package', [HomeController::class, 'bookCoachingPackage']);
@@ -161,6 +165,8 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/confirm-booking',[BookController::class,'confirmTicketBook'])->name('confirm-ticket-book');
     Route::post('/store-payment-detail',[BookController::class,'storePaymentDetails'])->name('store-payment-detail');
     Route::get('/ticket-information/{id}',[BookController::class,'ticketInformationData'])->name('ticket-information');
+
+    Route::post('verifyEmail',[BookController::class,'verifyEmail'])->name('verifyEmail');
 
 
     Route::get('/get-promo-discount',[BookController::class,'getPromoDiscount']);

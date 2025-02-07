@@ -396,6 +396,9 @@ class BookController extends Controller
                 'transaction_id'=>$transaction_id,
                 "sponsore_id"=>$eventDetails['sponser_id'], 
                 "user_info" => isset($userInputData) ? $userInputData : null, 
+                "email" => $request->email,
+                "username" => $request->username,
+                "password" => $request->password,
             ];
 
             $storePaymentDetails = $this->savebookingDetails($data);
@@ -411,6 +414,62 @@ class BookController extends Controller
             return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+        }
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        $email = $request->input('email');
+
+        if (empty($email)) {
+            return response()->json([
+                "ResponseCode" => "401",
+                "Result" => "false",
+                "ResponseMsg" => "Email field is required."
+            ], 401);
+        }
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $baseUrl = env('BACKEND_BASE_URL');  // Ensure this is set in .env file
+
+            $uid = Session::has('user_login_session') 
+                ? Session::get('user_login_session')['id'] 
+                : 0;
+
+            // Send a POST request to the backend API
+            $response = $client->post("{$baseUrl}/web_api/verify_email.php", [
+                'json' => [
+                    'uid' => $uid,
+                    'email' => $email,
+                ]
+            ]);
+
+            // Decode API response
+            $responseData = json_decode($response->getBody(), true);
+
+            // If email already exists, return an error response
+            if (isset($responseData['ResponseMsg']) && $responseData['ResponseMsg'] == "Email Already Exists") {
+                return response()->json([
+                    "ResponseCode" => "200",
+                    "Result" => "false",
+                    "ResponseMsg" => "Email already exists."
+                ], 200);
+            }
+
+            return response()->json([
+                "ResponseCode" => "200",
+                "Result" => "true",
+                "ResponseMsg" => "Email is available."
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "ResponseCode" => "500",
+                "Result" => "false",
+                "ResponseMsg" => "An unexpected error occurred.",
+                "Error" => $e->getMessage()
+            ], 500);
         }
     }
 
