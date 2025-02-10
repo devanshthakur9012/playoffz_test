@@ -2,6 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('f-css/iziToast.min.css')}}">
 @endpush
 @push('scripts')
+
 <script>
     $(document).on('click','.add_to_cart',function(){
         var elem = $(this);
