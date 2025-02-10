@@ -23,7 +23,7 @@
                                 {{-- <small>Devansh | 25 Karma</small> --}}
                                 <div class="my-2">
                                     @isset($play['category_name'])
-                                        <a href="{{route('tournament', ['category' => Str::slug($play['category_name'])])}}"
+                                        <a href="{{route('coaching', ['category' => Str::slug($play['category_name'])])}}"
                                             class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img
                                                 src="{{env('BACKEND_BASE_URL') . "/" . $play['category_img']}}"
                                                 class="mr-1 catIcon"

@@ -89,7 +89,7 @@
                 @can('Book_tickets')
                     <li class="{{ request()->is('book-ticket') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('book-ticket') }}">
-                            <i class="fas fa-ticket-alt"></i> <span>{{ __('Book Ticket') }}</span>
+                            <i class="fas fa-ticket-alt"></i> <span>{{ __('Book Coaching') }}</span>
                         </a>
                     </li>
                 @endcan

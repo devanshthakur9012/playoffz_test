@@ -53,7 +53,7 @@
       content: '';
       width: 12px;
       height: 12px;
-      background-color: #004aad;
+      background-color: #6e6e6e;
       border-radius: 50%;
       transform: scale(0);
       transition: transform 0.2s ease-in-out;
@@ -61,12 +61,12 @@
 
     /* When the radio input is checked, change the border of .modern-radio */
     .radio-container input[type="radio"]:checked ~ .modern-radio {
-      border-color: #004aad; /* Yellow border on checked */
+      border-color: #6e6e6e; /* Yellow border on checked */
     }
 
     /* Checked state */
     .radio-container input[type="radio"]:checked + .modern-radio .radio-circle {
-      border-color: #004aad; /* Yellow border for radio circle */
+      border-color: #6e6e6e; /* Yellow border for radio circle */
     }
 
     .radio-container input[type="radio"]:checked + .modern-radio .radio-circle::after {

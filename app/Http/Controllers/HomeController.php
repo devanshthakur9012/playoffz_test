@@ -924,7 +924,7 @@ class HomeController extends Controller
         
         // Use the title to create a more descriptive QR code file name
         $sanitizedTitle = preg_replace('/[^A-Za-z0-9\-]/', '_', $title); // Sanitize the title for use in filenames
-        $qrCodeFileName = 'tournament-' . $sanitizedTitle . '-' . $id . '.png';
+        $qrCodeFileName = 'coaching-' . $sanitizedTitle . '-' . $id . '.png';
         $qrCodePath = public_path('qrcodes/' . $qrCodeFileName);
         
         // Check if the QR code already exists
@@ -932,7 +932,7 @@ class HomeController extends Controller
             \SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')
                 ->size(150) // Set the size of the QR code
                 ->margin(0) // Minimize padding
-                ->generate(route('tournament-detail', ['title' => $title, 'id' => $id]), $qrCodePath); // Generate and store the QR code
+                ->generate(route('coaching-detail', ['title' => $title, 'id' => $id]), $qrCodePath); // Generate and store the QR code
         }
         
         // Return the public URL for the cached QR code

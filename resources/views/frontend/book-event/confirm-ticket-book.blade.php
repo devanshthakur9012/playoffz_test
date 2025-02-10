@@ -47,7 +47,7 @@ $orgComm = 0;
                                     {{ $ticketData->event->address.', '.$ticketData->event->city_name  }}</p>
                             @endif
                             <h4 class="my-3 d-inline-block"
-                                style="background:#004aad;color:#fff;padding:7px 20px 7px 10px;">Share your Contact
+                                style="background:#6e6e6e;color:#fff;padding:7px 20px 7px 10px;">Share your Contact
                                 Details</h4>
                             <p class="text-danger mb-2" id="errors"></p>
                             <div class="row">

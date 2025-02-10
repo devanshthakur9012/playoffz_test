@@ -167,7 +167,7 @@ $ticketData->quantity - $ticketData->total_orders_sum_quantity : $ticketData->qu
                 error.insertAfter(element);
             }
             $("#error_modal_body").html(`
-                    <p class="text-danger">Below fields are required to book tickets</p>
+                    <p class="text-danger">Below fields are required to book packages</p>
                     <ul style="color:red;">
                         <li>Super Show Time Slot is required</li>
                         <li>Devotee name is required</li>

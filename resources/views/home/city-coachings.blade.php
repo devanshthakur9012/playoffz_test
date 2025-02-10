@@ -38,7 +38,7 @@
                                 <div class="mt-2 d-flex justify-content-between align-items-center">
                                 {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
                                     @php
-                                        $url = route('tournament-detail',[Str::slug($coaching->coaching_title),$coaching->id]);
+                                        $url = route('coaching-detail',[Str::slug($coaching->coaching_title),$coaching->id]);
                                     @endphp
                                     <a href="{{$url}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
                                 </div>

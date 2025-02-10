@@ -50,7 +50,7 @@
         }
         .shopBar{
             background: #fff;
-            color: #004aad !important;
+            color: #6e6e6e !important;
             font-weight: 400;
             padding: 10px !important;
         }
@@ -76,10 +76,9 @@
                     <div class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 ml-3 navbar-search">
                         <div class="input-group searchinput">
                             <input type="text" class="form-control border-0 small head-search-box"
-                                placeholder="Search for tournaments..." aria-label="Search"
+                                placeholder="Search for coaching..." aria-label="Search"
                                 aria-describedby="basic-addon2">
                             <div class="list-group list-group-flush searchlist scrollbar search-result">
-
                             </div>
                             <div class="input-group-append">
                                 <button class="btn bg-light" type="submit">
@@ -210,13 +209,13 @@
                     <ul class="navbar-nav w-100 justify-content-center">
                         @foreach ($catData as $cat)
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('tournament', [Str::slug($cat['slug'])]) }}">
+                                <a class="nav-link" href="{{ route('coaching', [Str::slug($cat['slug'])]) }}">
                                     <span class="menu_item"><img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cat_img']}}"
                                             class="mr-1" width="20px" alt="{{$cat['title']}}">{{$cat['title']}}</span></a>
                             </li>
                         @endforeach
                         <li class="nav-item">
-                            <a class="nav-link shopBar" style="color:#004aad !important;padding:10px !important;" href="https://shop.playoffz.in">Shop</a>
+                            <a class="nav-link shopBar" style="color:#6e6e6e !important;padding:10px !important;" href="https://shop.playoffz.in">Shop</a>
                         </li>
                     </ul>
                 </div>
@@ -231,7 +230,7 @@
                 <ul class="list-unstyled ">
                     @foreach ($catData as $cat)
                         <li>
-                            <a href="{{ route('tournament', ['category' => $cat['slug']]) }}">
+                            <a href="{{ route('coaching', ['category' => $cat['slug']]) }}">
                                 {{ $cat['title'] }}
                             </a>
                         </li>
@@ -242,7 +241,7 @@
                 <h5 class="text-white mb-2">Locations</h5>
                 <ul class="list-unstyled ">
                     @foreach ($locationData as $item)
-                        <li> <a href="{{ route('location-tournament', ['location' => Str::slug($item['city'])]) }}">
+                        <li> <a href="{{ route('location-coaching', ['location' => Str::slug($item['city'])]) }}">
                                 {{ $item['city'] }}
                             </a></li>
                     @endforeach
@@ -257,9 +256,9 @@
                     <div class="resources">
                         <h6 class="footer-heading text-uppercase text-white fw-bold">About Us</h6>
                         <p>PlayOffz is the ultimate platform for sports enthusiasts, connecting players to exciting
-                            tournaments nearby. Easily book tickets online and stay updated with match schedules,
+                            coaching nearby. Easily book packages online and stay updated with match schedules,
                             fixtures, live scoring, and results. For organizers, PlayOffz offers seamless tools to
-                            manage and promote tournaments effortlessly. Join us to elevate your sports experience!</p>
+                            manage and promote coaching effortlessly. Join us to elevate your sports experience!</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 mt-4 col-lg-4 col-6 ">

@@ -1,15 +1,15 @@
 @extends('frontend.master', ['activePage' => 'home'])
-@section('title', __('Book Tickets for Sports Tournaments'))
+@section('title', __('Book Packages for Sports coachings'))
 @section('og_data')
-    <meta name="description" content="Secure your spot in thrilling sports tournaments. Book tickets for cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad now!" />
-    <meta name="keywords" content="Book your tournament, Secure Booking" />
+    <meta name="description" content="Secure your spot in thrilling sports coachings. Book packages for cricket, tennis, and badminton coachings in Bangalore, Chennai, and Hyderabad now!" />
+    <meta name="keywords" content="Book your coaching, Secure Booking" />
 @endsection
 @push('styles')
     
 <style>
     /* Dark Theme Styling */
     .subscription-section {
-        background: #070b28;
+        background: #0a0a0a;
         color: #ffffff;
         padding: 40px 0;
     }
@@ -81,8 +81,8 @@
     }
 
     .button-primary {
-        /* background: linear-gradient(90deg, #004aad, #e74c3c); */
-        background: #004aad;
+        /* background: linear-gradient(90deg, #6e6e6e, #e74c3c); */
+        background: #6e6e6e;
     }
 
     .bg-girl{
@@ -90,12 +90,12 @@
     }
 
     .bg-boy{
-        background: #004aad !important;
+        background: #6e6e6e !important;
     }
 
 
     /* .button-primary:hover {
-        background: linear-gradient(90deg, #e74c3c, #004aad);
+        background: linear-gradient(90deg, #e74c3c, #6e6e6e);
         transform: translateY(-2px);
         color: #fff;
     } */
@@ -255,7 +255,7 @@
                     @foreach ($tour_plans as $package)
                         <div class="col-md-3 d-flex mb-4">
                             <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
-                                <div class="subscription-card-header" style="background-color: #004aad;" data-ticket-type="{{ $package['ticket_type'] }}">
+                                <div class="subscription-card-header" style="background-color: #6e6e6e;" data-ticket-type="{{ $package['ticket_type'] }}">
                                     <h4 class="mb-0 text-center" style="font-size: 18px;"><i class="fas fa-gem" style="font-size: 18px;"></i> {{ $package['ticket_type'] }}</h4>
                                 </div>
                                 <div class="subscription-card-body">
@@ -355,7 +355,7 @@ $(document).ready(function () {
 
         // Perform AJAX request to process booking
         $.ajax({
-            url: "{{ route('purchase-tournament') }}", // Laravel route for handling the purchase
+            url: "{{ route('purchase-coaching') }}", // Laravel route for handling the purchase
             type: 'POST',
             data: {
                 tour_id: tourId,

@@ -1,5 +1,5 @@
 @extends('frontend.qr-master')
-@section('title', __('Book Tickets'))
+@section('title', __('Book Coachings'))
 @section('content')
 <section class="section-area event-details">
     <div class="container">

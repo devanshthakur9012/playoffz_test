@@ -409,7 +409,7 @@ class BookController extends Controller
                 if(session()->has('booking_data')){
                     session()->forget('booking_data');
                 }
-                return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Ticket Confirmed');
+                return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Coaching Confirmed');
             }
             return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
         } catch (\Throwable $th) {

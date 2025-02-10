@@ -22,7 +22,7 @@
     }
 
     .location {
-        background: #004aad;
+        background: #6e6e6e;
         color: #fff;
         border-radius: 20px;
         padding: 4px 10px;
@@ -56,7 +56,7 @@
 
     .badge-default {
         color: #fff;
-        background-color: #004aad;
+        background-color: #6e6e6e;
         padding: 4px 8px;
     }
 
@@ -137,7 +137,7 @@
                                                 </div>
                                                 <div class="my-2">
                                                     @isset($play['category_name'])
-                                                        <a href="{{route('tournament', ['category' => Str::slug($play['category_name'])])}}"
+                                                        <a href="{{route('coaching', ['category' => Str::slug($play['category_name'])])}}"
                                                             class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img
                                                                 src="{{env('BACKEND_BASE_URL') . "/" . $play['category_img']}}"
                                                                 class="mr-1 catIcon"

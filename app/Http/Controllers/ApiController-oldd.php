@@ -701,7 +701,7 @@ class ApiController extends Controller
         $setting = Setting::find(1);
 
         // for user notification
-        $message = NotificationTemplate::where('title', 'Book Ticket')->first()->message_content;
+        $message = NotificationTemplate::where('title', 'Book Coaching')->first()->message_content;
         $detail['user_name'] = $user->name;
         $detail['quantity'] = $request->quantity;
         $detail['event_name'] = Event::find($request->event_id)->name;
@@ -720,7 +720,7 @@ class ApiController extends Controller
             (new AppHelper)->sendOneSignal('user', $user->device_token, $message1);
         }
         // for user mail
-        $ticket_book = NotificationTemplate::where('title', 'Book Ticket')->first();
+        $ticket_book = NotificationTemplate::where('title', 'Book Coaching')->first();
         $details['user_name'] = $user->name . ' ' . $user->last_name;
         $details['quantity'] = $request->quantity;
         $details['event_name'] = Event::find($request->event_id)->name;
@@ -736,7 +736,7 @@ class ApiController extends Controller
 
         // for Organizer notification
         $org =  User::find($data->organization_id);
-        $or_message = NotificationTemplate::where('title', 'Organizer Book Ticket')->first()->message_content;
+        $or_message = NotificationTemplate::where('title', 'Organizer Book Coaching')->first()->message_content;
         $or_detail['organizer_name'] = $org->first_name . ' ' . $org->last_name;
         $or_detail['user_name'] = $user->name . ' ' . $user->last_name;
         $or_detail['quantity'] = $request->quantity;
@@ -755,7 +755,7 @@ class ApiController extends Controller
         if ($setting->push_notification == 1) {
         }
         // for Organizer mail
-        $new_ticket = NotificationTemplate::where('title', 'Organizer Book Ticket')->first();
+        $new_ticket = NotificationTemplate::where('title', 'Organizer Book Coaching')->first();
         $details1['organizer_name'] = $org->first_name . ' ' . $org->last_name;
         $details1['user_name'] = $user->name . ' ' . $user->last_name;
         $details1['quantity'] = $request->quantity;

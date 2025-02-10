@@ -1,23 +1,23 @@
 @extends('frontend.master', ['activePage' => 'home'])
-@section('title', __('Discover Sports Tournaments in Bangalore'))
+@section('title', __('Discover Sports coachings in Bangalore'))
 @section('og_data')
-    <meta name="title" content="Discover Sports Tournaments in Bangalore | PlayOffz" />
-    <meta name="description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!" />
-    <meta name="keywords" content="playoffz tournament bangalore, cricket tournament in chennai, tennis tournament chennai, tennis tournaments in bangalore, badminton court in chennai, badminton courts bangalore, badminton courts hyderabad, play tournament in bangalore, play tournament in chennai, play tennis in bangalore" />
+    <meta name="title" content="Discover Sports coachings in Bangalore | PlayOffz" />
+    <meta name="description" content="Find cricket, tennis, and badminton coachings in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!" />
+    <meta name="keywords" content="playoffz tournament bangalore, cricket tournament in chennai, tennis tournament chennai, tennis coachings in bangalore, badminton court in chennai, badminton courts bangalore, badminton courts hyderabad, play tournament in bangalore, play tournament in chennai, play tennis in bangalore" />
 
-    <meta property="og:title" content=Discover Sports Tournaments in Bangalore | PlayOffz>
+    <meta property="og:title" content=Discover Sports coachings in Bangalore | PlayOffz>
     <meta property="og:site_name" content=Playoffz>
     <meta property="og:url" content=https://www.playoffz.in/>
-    <meta property="og:description" content=Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!>
+    <meta property="og:description" content=Find cricket, tennis, and badminton coachings in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!>
     <meta property="og:type" content=business.business>
     <meta property="og:image" content=https://app.playoffz.in/images/event/1734716694.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716783.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716795.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716807.png><meta property="og:image" content=https://app.playoffz.in/images/event/1734716818.png>
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Discover Sports Tournaments in Bangalore | PlayOffz">
+    <meta name="twitter:title" content="Discover Sports coachings in Bangalore | PlayOffz">
     <meta name="twitter:site" content="@playoffz">
-    <meta name="twitter:description" content="Find cricket, tennis, and badminton tournaments in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!">
+    <meta name="twitter:description" content="Find cricket, tennis, and badminton coachings in Bangalore, Chennai, and Hyderabad. Book top courts and play sports with ease on PlayOffz!">
     <meta name="twitter:image" content="https://app.playoffz.in/images/event/1734716738.png">
-    <meta name="twitter:image:alt" content="playoffz tournaments ">
+    <meta name="twitter:image:alt" content="playoffz coachings ">
 
 @endsection
 @section('content')
@@ -35,7 +35,7 @@
     font-weight: 500;
 }
 .location{
-    background: #004aad;
+    background: #6e6e6e;
     color: #fff;
     border-radius: 20px;
     padding: 4px 10px;
@@ -96,7 +96,7 @@
 }
 .badge-default{
     color: #fff;
-    background-color: #004aad;
+    background-color: #6e6e6e;
     padding: 4px 8px;
 }
 .badge-default:hover{
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="my-2">
                                     @isset($play['category_name'])
-                                        <a href="{{route('tournament',['category'=>Str::slug($play['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$play['category_img']}}" class="mr-1 catIcon" alt="{{$play['category_name']}}"><small>{{$play['category_name']}}</small></a>
+                                        <a href="{{route('coaching',['category'=>Str::slug($play['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$play['category_img']}}" class="mr-1 catIcon" alt="{{$play['category_name']}}"><small>{{$play['category_name']}}</small></a>
                                     @endisset
                                     @if(isset($play['pay_join']) && $play['pay_join'] == 1)
                                         <a href="javascript:void(0)" class="d-inline-flex justify-content-center align-items-center badge badge-success fw-normal"><img src="{{asset('frontend/images/pay-join-icon.png')}}" class="mr-1 catIcon" alt="Price Tag"><small>INR {{$play['play_price']}}</small></a>
@@ -181,8 +181,8 @@
     @if (isset($tournament) && count($tournament['latest_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h1 class="h4 mb-0 float-left">Latest Tournament</h1>
-                <a href="{{route('tournament-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <h1 class="h4 mb-0 float-left">Latest Coaching</h1>
+                <a href="{{route('coaching-type',['type'=>'latest'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['latest_event'] as $tour)
@@ -191,7 +191,7 @@
                             <div class="m-card-cover  position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('coaching',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -228,11 +228,11 @@
                                     @endforeach
                                 @endisset
                                 <div class="mt-2">
-                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Package Price : {{$tour['event_ticket_price']}}</button>
                                     @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
                                         <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
                                     @else
-                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
+                                        <a href="{{route('coaching-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Coaching</a>
                                     @endif
                                 </div>
                             </div>
@@ -254,8 +254,8 @@
     @if (isset($tournament) && count($tournament['nearby_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h2 class="h4 mb-0 float-left">Nearby Tournament</h2>
-                <a href="{{route('tournament-type',['type'=>'nearby'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <h2 class="h4 mb-0 float-left">Nearby Coaching</h2>
+                <a href="{{route('coaching-type',['type'=>'nearby'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['nearby_event'] as $tour)
@@ -264,7 +264,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('coaching',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body  position-relative">
@@ -301,11 +301,11 @@
                                     @endforeach
                                 @endisset
                                 <div class="mt-2"> 
-                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Package Price : {{$tour['event_ticket_price']}}</button>
                                     @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
                                         <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
                                     @else
-                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                        <a href="{{route('coaching-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Coaching</a>
                                     @endif
                                 </div>
                             </div>
@@ -327,8 +327,8 @@
     @if (isset($tournament) && count($tournament['this_month_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h2 class="h4 mb-0 float-left">Monthly Tournament</h2>
-                <a href="{{route('tournament-type',['type'=>'monthly'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <h2 class="h4 mb-0 float-left">Monthly Coaching</h2>
+                <a href="{{route('coaching-type',['type'=>'monthly'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['this_month_event'] as $tour)
@@ -337,7 +337,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('coaching',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -374,11 +374,11 @@
                                     @endforeach
                                 @endisset
                                 <div class="mt-2"> 
-                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Package Price : {{$tour['event_ticket_price']}}</button>
                                     @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
                                         <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
                                     @else
-                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                        <a href="{{route('coaching-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Coaching</a>
                                     @endif
                                 </div>
                             </div>
@@ -400,8 +400,8 @@
     @if (isset($tournament) && count($tournament['upcoming_event']))
         <div class="hawan_section">
             <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                <h2 class="h4 mb-0 float-left">Upcoming Tournament</h2>
-                <a href="{{route('tournament-type',['type'=>'upcoming'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
+                <h2 class="h4 mb-0 float-left">Upcoming Coaching</h2>
+                <a href="{{route('coaching-type',['type'=>'upcoming'])}}" class="d-sm-inline-block text-xs float-right "> See All </a>
             </div>
             <div class="event-block-slider">
                 @foreach ($tournament['upcoming_event'] as $tour)
@@ -410,7 +410,7 @@
                             <div class="m-card-cover position-relative">
                                 <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                 @isset($tour['cid'])
-                                    <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                    <a href="{{route('coaching',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                 @endisset
                             </div>
                             <div class="card-body position-relative">
@@ -447,11 +447,11 @@
                                     @endforeach
                                 @endisset
                                 <div class="mt-2"> 
-                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
+                                    <button class="mt-1 btn btn-outline-white btn-sm mb-1">Package Price : {{$tour['event_ticket_price']}}</button>
                                     @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
                                         <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
                                     @else
-                                        <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Ticket</a>
+                                        <a href="{{route('coaching-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100 ">Book Coaching</a>
                                     @endif
                                 </div>
                             </div>
@@ -467,7 +467,7 @@
     <div class="all-category mb-5">
         @foreach (Common::allEventCategoriesByApi() as $cat)
         <div class="category-card">
-            <a href="{{ route('tournament', [Str::slug($tour['category'])]) }}">
+            <a href="{{ route('coaching', [Str::slug($tour['category'])]) }}">
                 <img src="{{env('BACKEND_BASE_URL')}}/{{$cat['cover_img']}}" class="category-img" alt="...">
                 <div class="cat-content">
                     <p class="cat-title text-truncate">{{$cat['title']}}</p>
@@ -525,188 +525,188 @@
       },{
         "@type": "ListItem", 
         "position": 2, 
-        "name": "Tournament in bangalore",
-        "item": "https://playoffz.in/tournaments-in-bengaluru"  
+        "name": "Coaching in bangalore",
+        "item": "https://playoffz.in/coachings-in-bengaluru"  
       },{
         "@type": "ListItem", 
         "position": 3, 
-        "name": "Tournament in Ahmedabaad",
-        "item": "https://playoffz.in/tournaments-in-ahmedabad"  
+        "name": "Coaching in Ahmedabaad",
+        "item": "https://playoffz.in/coachings-in-ahmedabad"  
       },{
         "@type": "ListItem", 
         "position": 4, 
-        "name": "Tournament in bealgavi",
-        "item": "https://playoffz.in/tournaments-in-belagavi"  
+        "name": "coaching in bealgavi",
+        "item": "https://playoffz.in/coachings-in-belagavi"  
       },{
         "@type": "ListItem", 
         "position": 5, 
-        "name": "Tournament in chandigarh",
-        "item": "https://playoffz.in/tournaments-in-chandigarh"  
+        "name": "coaching in chandigarh",
+        "item": "https://playoffz.in/coachings-in-chandigarh"  
       },{
         "@type": "ListItem", 
         "position": 6, 
-        "name": "tournament in chennai",
-        "item": "https://playoffz.in/tournaments-in-chennai"  
+        "name": "coaching in chennai",
+        "item": "https://playoffz.in/coachings-in-chennai"  
       },{
         "@type": "ListItem", 
         "position": 7, 
-        "name": "Tournament in coimbatore",
-        "item": "https://playoffz.in/tournaments-in-coimbatore"  
+        "name": "coaching in coimbatore",
+        "item": "https://playoffz.in/coachings-in-coimbatore"  
       },{
         "@type": "ListItem", 
         "position": 8, 
-        "name": "tournament in delhi",
-        "item": "https://playoffz.in/tournaments-in-delhi"  
+        "name": "coaching in delhi",
+        "item": "https://playoffz.in/coachings-in-delhi"  
       },{
         "@type": "ListItem", 
         "position": 9, 
-        "name": "Tournament in Goa",
-        "item": "https://playoffz.in/tournaments-in-goa"  
+        "name": "coaching in Goa",
+        "item": "https://playoffz.in/coachings-in-goa"  
       },{
         "@type": "ListItem", 
         "position": 10, 
-        "name": "Tournament in Gurugram",
-        "item": "https://playoffz.in/tournaments-in-gurugram"  
+        "name": "coaching in Gurugram",
+        "item": "https://playoffz.in/coachings-in-gurugram"  
       },{
         "@type": "ListItem", 
         "position": 11, 
-        "name": "Tournament in Hyderabaad",
-        "item": "https://playoffz.in/tournaments-in-hyderabad"  
+        "name": "coaching in Hyderabaad",
+        "item": "https://playoffz.in/coachings-in-hyderabad"  
       },{
         "@type": "ListItem", 
         "position": 12, 
-        "name": "Tournament in Jaipur",
-        "item": "https://playoffz.in/tournaments-in-jaipur"  
+        "name": "coaching in Jaipur",
+        "item": "https://playoffz.in/coachings-in-jaipur"  
       },{
         "@type": "ListItem", 
         "position": 13, 
-        "name": "Tournament in Kochi",
-        "item": "https://playoffz.in/tournaments-in-kochi"  
+        "name": "coaching in Kochi",
+        "item": "https://playoffz.in/coachings-in-kochi"  
       },{
         "@type": "ListItem", 
         "position": 14, 
-        "name": "Tournament in Kolkata",
-        "item": "https://playoffz.in/tournaments-in-kolkata"  
+        "name": "coaching in Kolkata",
+        "item": "https://playoffz.in/coachings-in-kolkata"  
       },{
         "@type": "ListItem", 
         "position": 15, 
-        "name": "Tournament in Lucknow",
-        "item": "https://playoffz.in/tournaments-in-lucknow"  
+        "name": "coaching in Lucknow",
+        "item": "https://playoffz.in/coachings-in-lucknow"  
       },{
         "@type": "ListItem", 
         "position": 16, 
-        "name": "Tournament in Madurai",
-        "item": "https://playoffz.in/tournaments-in-madurai"  
+        "name": "coaching in Madurai",
+        "item": "https://playoffz.in/coachings-in-madurai"  
       },{
         "@type": "ListItem", 
         "position": 17, 
-        "name": "Tournament in Mumbai",
-        "item": "https://playoffz.in/tournaments-in-madurai"  
+        "name": "coaching in Mumbai",
+        "item": "https://playoffz.in/coachings-in-madurai"  
       },{
         "@type": "ListItem", 
         "position": 18, 
-        "name": "Tournament in Mysuru",
-        "item": "https://playoffz.in/tournaments-in-mysuru"  
+        "name": "coaching in Mysuru",
+        "item": "https://playoffz.in/coachings-in-mysuru"  
       },{
         "@type": "ListItem", 
         "position": 19, 
-        "name": "Tournament in Nagpur",
-        "item": "https://playoffz.in/tournaments-in-nagpur"  
+        "name": "coaching in Nagpur",
+        "item": "https://playoffz.in/coachings-in-nagpur"  
       },{
         "@type": "ListItem", 
         "position": 20, 
-        "name": "Tournament in Pondicherry",
-        "item": "https://playoffz.in/tournaments-in-pondicherry"  
+        "name": "coaching in Pondicherry",
+        "item": "https://playoffz.in/coachings-in-pondicherry"  
       },{
         "@type": "ListItem", 
         "position": 21, 
-        "name": "Tournament in Pune",
-        "item": "https://playoffz.in/tournaments-in-pune"  
+        "name": "coaching in Pune",
+        "item": "https://playoffz.in/coachings-in-pune"  
       },{
         "@type": "ListItem", 
         "position": 22, 
-        "name": "Tournament in Salem",
-        "item": "https://playoffz.in/tournaments-in-salem"  
+        "name": "coaching in Salem",
+        "item": "https://playoffz.in/coachings-in-salem"  
       },{
         "@type": "ListItem", 
         "position": 23, 
-        "name": "Tournament in thanjavur",
-        "item": "https://playoffz.in/tournaments-in-thanjavur"  
+        "name": "coaching in thanjavur",
+        "item": "https://playoffz.in/coachings-in-thanjavur"  
       },{
         "@type": "ListItem", 
         "position": 24, 
-        "name": "Tournament in tiruchirappalli",
-        "item": "https://playoffz.in/tournaments-in-tiruchirappalli"  
+        "name": "coaching in tiruchirappalli",
+        "item": "https://playoffz.in/coachings-in-tiruchirappalli"  
       },{
         "@type": "ListItem", 
         "position": 25, 
-        "name": "Tournament in Tiruppur",
-        "item": "https://playoffz.in/tournaments-in-tiruppur"  
+        "name": "coaching in Tiruppur",
+        "item": "https://playoffz.in/coachings-in-tiruppur"  
       },{
         "@type": "ListItem", 
         "position": 26, 
-        "name": "Tournament in vellore",
-        "item": "https://playoffz.in/tournaments-in-vellore"  
+        "name": "coaching in vellore",
+        "item": "https://playoffz.in/coachings-in-vellore"  
       },{
         "@type": "ListItem", 
         "position": 27, 
-        "name": "Tournament in Vijayawada",
-        "item": "https://playoffz.in/tournaments-in-vijayawada"  
+        "name": "coaching in Vijayawada",
+        "item": "https://playoffz.in/coachings-in-vijayawada"  
       },{
         "@type": "ListItem", 
         "position": 28, 
-        "name": "Tournament in visakhapatnam",
-        "item": "https://playoffz.in/tournaments-in-visakhapatnam"  
+        "name": "coaching in visakhapatnam",
+        "item": "https://playoffz.in/coachings-in-visakhapatnam"  
       },{
         "@type": "ListItem", 
         "position": 29, 
         "name": "Badminton",
-        "item": "https://playoffz.in/badminton-tournament"  
+        "item": "https://playoffz.in/badminton-coaching"  
       },{
         "@type": "ListItem", 
         "position": 30, 
         "name": "cricket",
-        "item": "https://playoffz.in/cricket-tournament"  
+        "item": "https://playoffz.in/cricket-coaching"  
       },{
         "@type": "ListItem", 
         "position": 31, 
         "name": "Skating",
-        "item": "https://playoffz.in/skating-tournament"  
+        "item": "https://playoffz.in/skating-coaching"  
       },{
         "@type": "ListItem", 
         "position": 32, 
         "name": "Chess",
-        "item": "https://playoffz.in/chess-tournament"  
+        "item": "https://playoffz.in/chess-coaching"  
       },{
         "@type": "ListItem", 
         "position": 33, 
         "name": "Football",
-        "item": "https://playoffz.in/football-tournament"  
+        "item": "https://playoffz.in/football-coaching"  
       },{
         "@type": "ListItem", 
         "position": 34, 
         "name": "Swimming",
-        "item": "https://playoffz.in/swimming-tournament"  
+        "item": "https://playoffz.in/swimming-coaching"  
       },{
         "@type": "ListItem", 
         "position": 35, 
         "name": "Tennis",
-        "item": "https://playoffz.in/tennis-tournament"  
+        "item": "https://playoffz.in/tennis-coaching"  
       },{
         "@type": "ListItem", 
         "position": 36, 
         "name": "Volleyball",
-        "item": "https://playoffz.in/tennis-tournament"  
+        "item": "https://playoffz.in/tennis-coaching"  
       },{
         "@type": "ListItem", 
         "position": 37, 
         "name": "Running",
-        "item": "https://playoffz.in/running-tournament"  
+        "item": "https://playoffz.in/running-coaching"  
       },{
         "@type": "ListItem", 
         "position": 38, 
         "name": "Pickleball",
-        "item": "https://playoffz.in/pickleball-tournament"  
+        "item": "https://playoffz.in/pickleball-coaching"  
       }]
     }
     </script>
