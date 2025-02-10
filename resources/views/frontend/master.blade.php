@@ -48,6 +48,12 @@
         ::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
+        .shopBar{
+            background: #fff;
+            color: #004aad !important;
+            font-weight: 400;
+            padding: 10px !important;
+        }
     </style>
 </head>
 
@@ -189,7 +195,7 @@
             </div>
         </nav>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark osahan-nav-mid">
-            <div class="container position-relative">
+            <div class="container-fluid position-relative">
                 <a class="mobile-seva-ticket text-white" href="javascript:void(0);" data-toggle="modal"
                     data-target="#locationModal">
                     <i class="fas fa-map-marker-alt"></i>
@@ -209,6 +215,9 @@
                                             class="mr-1" width="20px" alt="{{$cat['title']}}">{{$cat['title']}}</span></a>
                             </li>
                         @endforeach
+                        <li class="nav-item">
+                            <a class="nav-link shopBar" style="color:#004aad !important;padding:10px !important;" href="https://shop.playoffz.in">Shop</a>
+                        </li>
                     </ul>
                 </div>
             </div>
