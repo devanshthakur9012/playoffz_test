@@ -619,6 +619,7 @@
             }, 3000)
         </script>
 
+
         <script>
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(getpos);
