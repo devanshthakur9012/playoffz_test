@@ -9,8 +9,8 @@
     @endphp
     <meta charset="utf-8">
 
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
-    <link rel="manifest" href="{{ asset('/organizer_manifest.json') }}">
+    {{-- <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    <link rel="manifest" href="{{ asset('/organizer_manifest.json') }}"> --}}
     <link
         href="{{ $favicon['favicon'] ? env('BACKEND_BASE_URL') . "/" . $favicon['favicon'] : "https://app.playoffz.in/images/favicon.png" }}"
         rel="icon" type="image/png">
@@ -583,8 +583,8 @@
         })
     </script>
 
-    <script src="{{ asset('/sw.js') }}"></script>
-    <script>
+    {{-- <script src="{{ asset('/sw.js') }}"></script> --}}
+    {{-- <script>
         if ("serviceWorker" in navigator) {
             window.addEventListener("load", function () {
                 navigator.serviceWorker
@@ -593,7 +593,7 @@
                     .catch(err => console.log("service worker not registered", err))
             })
         }
-    </script>
+    </script> --}}
     <script src="{{ asset('frontend/js/site_custom.js') }}" type="text/javascript"></script>
     <script>
         $(document).on('click', function (event) {
