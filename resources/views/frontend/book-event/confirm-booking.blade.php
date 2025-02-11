@@ -21,14 +21,14 @@ $paymentId = "";
     }
 
     .ticketHeading{
-        background: #6e6e6e;
+        background: #004aad;
         color: #ffffff;
         padding: 6px;
     }
 
     .playerHead{
         color: #fff;
-        background: #0a0a0a;
+        background: #070b28;
         display: inline-block;
         padding: 4px 10px;
         border-radius: 3px;
@@ -286,7 +286,7 @@ $paymentId = "";
                                     <strong id="total_amount">{{$settingDetails['currency']}}{{$packageDetails['ticket']*$bookingData['quantity']}}</strong>
                                 </li>
                             </ul>
-                            <p>Present the QR code on your mobile ticket at the coaching entrance for seamless entry. By proceeding, I confirm my consent to complete this transaction.</p>
+                            <p>Present the QR code on your mobile ticket at the tournament entrance for seamless entry. By proceeding, I confirm my consent to complete this transaction.</p>
                             @if (Common::isUserLogin())
                                 <button type="button" class="btn default-btn btn-block" id="payBookAmount">Continue To
                                     Checkout</button>

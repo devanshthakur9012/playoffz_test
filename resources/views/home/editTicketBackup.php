@@ -2,29 +2,29 @@
    include "filemanager/head.php"; 
    
    $sampleDesc = [
-            "Knockout Coaching",
-            "Round Robin Coaching",
-            "League Coaching",
+            "Knockout Tournament",
+            "Round Robin Tournament",
+            "League Tournament",
             "League cum Knockout",
-            "Double Elimination Coaching",
-            "Single Elimination Coaching",
-            "Mixed Format Coaching",
-            "Swiss System Coaching",
-            "Ladder Coaching",
-            "Challenge Coaching",
-            "Pool Play Coaching",
-            "Friendly Coaching",
-            "Time-Bound Coaching",
+            "Double Elimination Tournament",
+            "Single Elimination Tournament",
+            "Mixed Format Tournament",
+            "Swiss System Tournament",
+            "Ladder Tournament",
+            "Challenge Tournament",
+            "Pool Play Tournament",
+            "Friendly Tournament",
+            "Time-Bound Tournament",
             "Marathon",
             "Running",
-            "Mini Coaching",
-            "Regional Coaching",
-            "Nationwide Coaching",
-            "Open Invitational Coaching",
-            "Corporate Coaching",
-            "Amateur Coaching",
-            "Professional Coaching",
-            "Charity Coaching"
+            "Mini Tournament",
+            "Regional Tournament",
+            "Nationwide Tournament",
+            "Open Invitational Tournament",
+            "Corporate Tournament",
+            "Amateur Tournament",
+            "Professional Tournament",
+            "Charity Tournament"
     ];
 ?>
 <style>
@@ -60,7 +60,7 @@
                         Ticket Type & Price Management
                      </h3>
                      <p class="blink_me">If you want to categorize an
-                     coaching as "Free", please make sure to enter 0 as the price.</p>
+                         tournament as "Free", please make sure to enter 0 as the price.</p>
                   </div>
                   <div class="col-4">
                   </div>
@@ -93,7 +93,7 @@
                      <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
                            <div class="form-group mb-3">
-                              <label>Select Coaching (eg: Cricket Coaching)</label>
+                              <label>Select Tournament (eg: Chess Tournament)</label>
                               <select name="eid" class="form-control select2-single" required>
                                  <option value="" disabled selected>Choose Below</option>
                                  <?php
@@ -117,7 +117,7 @@
                            
                            
                            <div class="form-group mb-3">
-                                <label>Coaching Team Category (eg: Age-Based Categories)</label>
+                                <label>Tournament Team Category (eg: Age-Based Categories)</label>
                                 <select name="category" class="form-control select2-single" id="ticket_type" required>
                                     <option value="" disabled selected>Choose Below</option>
                                     <option value="Age-Based" <?php echo (isset($data["category"]) && $data["category"] == "Age-Based") ? "selected" : ""; ?>>Age-Based Categories</option>
@@ -138,7 +138,7 @@
                             </div>
                             
                            <div class="form-group mb-3" id="category_div">
-                                <label>Coaching Team Type (eg: Under 18 Boys)</label>
+                                <label>Tournament Team Type (eg: Under 18 Boys)</label>
                                 <select name="short" id="category" class="form-control select2-single" required>
                                     <?php
                                     // Query to fetch ticket types based on the given category
@@ -171,7 +171,7 @@
                                  ]; ?>" name="tlimit" placeholder="Enter Ticket Limit"  required="">
                            </div>
                            <div class="form-group mb-3">
-                              <label>Coaching (Match) Type (eg: Knockout)</label>
+                              <label>Tournament (Match) Type (eg: Knockout)</label>
                               <!--<textarea rows="6" name="description" class="form-control" placeholder="Example: Knockout, Robin Round, Double Elimination and League"><?php echo $data["description"]; ?></textarea>-->
                                <select name="description" class="form-control">
                                    <option>Select Type</option>
@@ -220,7 +220,7 @@
                      <div class="card-body">
                         <form method="post" class="row" enctype="multipart/form-data">
                             <div class="col-lg-12 form-group mb-3">
-                              <label>Select Coaching (eg: Cricket Coaching)</label>
+                              <label>Select Tournament (eg: Chess Tournament)</label>
                               <select name="eid" class="form-control select2-single" required>
                                    <option value="" disabled selected>Choose Below</option>
                                    <?php
@@ -231,7 +231,7 @@
                               </select>
                             </div>
                             <div class="col-lg-12 form-group mb-3">
-                              <label>coaching Team Category (eg: Age-Based Categories)</label>
+                              <label>Tournament Team Category (eg: Age-Based Categories)</label>
                               <select name="category" class="form-control select2-single" id="ticket_type" required>
                                 <option value="" disabled selected>Choose Below</option>
                                 <option value="Age-Based">Age-Based Categories</option>
@@ -250,7 +250,7 @@
                                <input type="hidden" id="mainCatgeory" class="form-control" name="etype">
                             </div>
                             <div class="col-lg-12 form-group mb-3" id="category_div">
-                                <label>Coaching Team Type (eg: Under 18 Boys)</label>
+                                <label>Tournament Team Type (eg: Under 18 Boys)</label>
                                 <select name="short" id="category" class="form-control select2-single" required>
                                     <option value="" disabled selected>Choose Category</option>
                                 </select>
@@ -266,7 +266,7 @@
                                 name="tlimit" placeholder="Enter Participation Limit"  required="">
                            </div>
                            <div class="col-lg-12 form-group mb-3">
-                              <label>Coaching (Match) Type (eg: Knockout)</label>
+                              <label>Tournament (Match) Type (eg: Knockout)</label>
                               <!--<textarea rows="6" name="description" class="form-control" placeholder="Example: Knockout, Robin Round, Double Elimination and League"></textarea>-->
                                <select name="description" class="form-control">
                                    <option>Select Type</option>
@@ -302,7 +302,7 @@
 </div>
 <?php include "filemanager/script.php"; ?>
 <script>
-    // Event listener for the "coaching Ticket Type" dropdown
+    // Event listener for the "Tournament Ticket Type" dropdown
     document.getElementById("ticket_type").addEventListener("change", function() {
         var selectedType = this.value;
     
@@ -313,7 +313,7 @@
         fetchCategories(selectedType);
     });
     
-    // Event listener for the "coaching Ticket Type" dropdown
+    // Event listener for the "Tournament Ticket Type" dropdown
     document.getElementById("category").addEventListener("change", function() {
         // Get the selected option's text (category name)
         var selectedText = this.options[this.selectedIndex].text;

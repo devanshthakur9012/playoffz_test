@@ -3,7 +3,7 @@
 @section('content')
 <section class="section">
     @include('admin.layout.breadcrumbs', [
-        'title' => __('Book Coaching'),
+        'title' => __('Book Ticket'),
     ])
     <div class="section-body">
 

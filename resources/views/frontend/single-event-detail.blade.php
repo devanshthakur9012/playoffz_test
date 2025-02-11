@@ -590,7 +590,7 @@
 <style>
     /* Dark Theme Styling */
     .subscription-section {
-        background: #0a0a0a;
+        background: #070b28;
         color: #ffffff;
         padding: 60px 0;
     }
@@ -650,11 +650,11 @@
     }
 
     .button-primary {
-        background: linear-gradient(90deg, #6e6e6e, #e74c3c);
+        background: linear-gradient(90deg, #004aad, #e74c3c);
     }
 
     .button-primary:hover {
-        background: linear-gradient(90deg, #e74c3c, #6e6e6e);
+        background: linear-gradient(90deg, #e74c3c, #004aad);
         transform: translateY(-2px);
         color: #fff;
     }

@@ -275,7 +275,7 @@
             justify-content: center;
             align-items: center;
             display: flex;
-            /* border: 1px solid #6e6e6e; */
+            /* border: 1px solid #004aad; */
             color: initial; /* Default styling */
             border: 1px solid transparent; /* Default border */
         }
@@ -301,7 +301,7 @@
             border: 2px solid #3AB795;
         }
         .tags{
-            background: #6e6e6e;
+            background: #004aad;
             color: #ffffff;
             border-radius: 20px;
             padding: 3px 10px;
@@ -341,7 +341,7 @@
         }
 
         .alert_info{
-            background: #0a0a0a !important;
+            background: #070b28 !important;
             padding: 20px;
             text-align: left;
             color: #ffffff;
@@ -352,7 +352,7 @@
         }
 
         .alert_info span{
-            color:#6e6e6e;
+            color:#004aad;
             cursor: pointer;
         }
 
@@ -447,7 +447,7 @@
 
         .type_cat{
             padding: 4px 8px !important;
-            background: #6e6e6e;
+            background: #004aad;
             color: #ffffff;
             font-size: 12px !important;
             font-weight: 400;
@@ -481,7 +481,7 @@
     font-weight: 500;
 }
 .location{
-    background: #6e6e6e;
+    background: #004aad;
     color: #fff;
     border-radius: 20px;
     padding: 4px 10px;
@@ -526,13 +526,13 @@
         display: inline-block;
         padding: 9px 20px;
         font-weight: 400 !important;
-        background: #0a0a0a;
+        background: #070b28;
         margin-bottom: 14px !important;
         font-size: 18px !important;
         color: #ffffff !important;
         border-radius: 2px;
         border-radius: 20px;
-        box-shadow: 0px 0px 6px #6e6e6e;
+        box-shadow: 0px 0px 6px #004aad;
     }
 
     .bgFilter2{
@@ -542,7 +542,7 @@
     .bgFilter2 .highlighter{
         color: #ffffff !important;
         border-radius: 20px;
-        box-shadow: 0px 0px 6px #6e6e6e;
+        box-shadow: 0px 0px 6px #004aad;
     }
 
     /* .highlighter:before {
@@ -580,7 +580,7 @@
         align-items: center;
         text-align: center;
         text-transform: capitalize;
-        background: #6e6e6e;
+        background: #004aad;
         padding: 10px;
         border-radius: 4px;
      }
@@ -619,7 +619,7 @@
         font-weight: 500;
     }
     .location{
-        background: #6e6e6e;
+        background: #004aad;
         color: #fff;
         border-radius: 20px;
         padding: 4px 10px;
@@ -680,7 +680,7 @@
     }
     .badge-default{
         color: #fff;
-        background-color: #6e6e6e;
+        background-color: #004aad;
         padding: 4px 8px;
     }
     .badge-default:hover{
@@ -848,7 +848,7 @@
                                         </div>
                                         <div class="my-2">
                                             @isset($plays['category_name'])
-                                                <a href="{{route('coaching',['category'=>Str::slug($plays['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$plays['category_img']}}" class="mr-1 catIcon" alt="{{$plays['category_name']}}"><small>{{$plays['category_name']}}</small></a>
+                                                <a href="{{route('tournament',['category'=>Str::slug($plays['category_name'])])}}" class="d-inline-flex justify-content-center align-items-center badge badge-default fw-normal"><img src="{{env('BACKEND_BASE_URL')."/".$plays['category_img']}}" class="mr-1 catIcon" alt="{{$plays['category_name']}}"><small>{{$plays['category_name']}}</small></a>
                                             @endisset
                                             @if(isset($plays['pay_join']) && $plays['pay_join'] == 1)
                                                 <a href="javascript:void(0)" class="d-inline-flex justify-content-center align-items-center badge badge-success fw-normal"><img src="{{asset('frontend/images/pay-join-icon.png')}}" class="mr-1 catIcon" alt="Price Tag"><small>INR {{$plays['play_price']}}</small></a>

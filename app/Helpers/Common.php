@@ -187,6 +187,26 @@ class Common
     return $payData;
   }
 
+  // public static function allEventCategoriesByApi(){
+    
+  //   $catData = \Cache::remember('tournament-categories', 10, function(){
+     
+  //      // Instantiate the Guzzle client
+  //     $client = new Client();
+
+  //     // Send GET request to the PHP admin panel API
+  //     $baseUrl = env('BACKEND_BASE_URL');
+  //     $response = $client->get("{$baseUrl}/web_api/cat_data.php");
+
+  //     // Decode the JSON response
+  //     $data = json_decode($response->getBody(), true);
+
+  //     return $catData = $data['HomeData'];
+
+  //   });
+  //   return $catData;
+  // }
+
   public static function allEventCategoriesByApi()
   {
       $catData = \Cache::remember('tournament-categories', 10, function () {

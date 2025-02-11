@@ -22,7 +22,7 @@
         font-weight: 500;
     }
     .location{
-        background: #6e6e6e;
+        background: #004aad;
         color: #fff;
         border-radius: 20px;
         padding: 4px 10px;
@@ -51,7 +51,7 @@
 <div class="container my-5">
     <div class="hawan_section">
         <div class="mt-5 mb-3">
-            <h1 class="h4 mb-2">{{ucwords(str_replace('-', ' ', $category))}} Coaching</h1>
+            <h1 class="h4 mb-2">{{ucwords(str_replace('-', ' ', $category))}} Tournament</h1>
         </div>
         <div id="playData">
             <div class="row list-bp" >
@@ -63,7 +63,7 @@
                                     <div class="m-card-cover  position-relative">
                                         <img src="{{env('BACKEND_BASE_URL')}}/{{$tour['event_img']}}" class="card-img-top" alt="{{$tour['event_title']}}">
                                         @isset($tour['cid'])
-                                            <a href="{{route('coaching',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
+                                            <a href="{{route('tournament',['category'=>Str::slug($tour['category'])])}}" class="my-2"><small class="category">{{$tour['category']}}</small></a>
                                         @endisset
                                     </div>
                                     <div class="card-body position-relative">
@@ -100,11 +100,11 @@
                                             @endforeach
                                         @endisset
                                         <div class="mt-2">
-                                            <button class="mt-1 btn btn-outline-white btn-sm mb-1">Package Price : {{$tour['event_ticket_price']}}</button>
+                                            <button class="mt-1 btn btn-outline-white btn-sm mb-1">Ticket Price : {{$tour['event_ticket_price']}}</button>
                                             @if(strtotime($tour['event_sdate']) < strtotime(date('Y-m-d')))
                                                 <a href="javascript:void(0);" class="mt-1 btn default2-btn btn-sm mb-1 w-100">Completed</a>
                                             @else
-                                                <a href="{{route('coaching-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Coaching</a>
+                                                <a href="{{route('tournament-detail', [Str::slug($tour['event_title']),$tour['event_id']])}}" class="mt-1 btn btn-success btn-sm mb-1 w-100">Book Ticket</a>
                                             @endif
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@
         function fetchSocialPlayData(page = 1) {
             const limit = "{{$limit}}";
             $.ajax({
-                url: '{{ route("coaching-type-ajax") }}',
+                url: '{{ route("tournament-type-ajax") }}',
                 method: 'GET',
                 data: {
                     type:"{{$category}}",

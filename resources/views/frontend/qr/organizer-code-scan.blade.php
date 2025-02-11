@@ -1,5 +1,5 @@
 @extends('frontend.qr-master')
-@section('title', __('Book Packages'))
+@section('title', __('Book Tickets'))
 @section('content')
 <div class="text-center">
     <h1 class="h4 mb-1">{{ucWords(strtolower($userData->name.' '.$userData->first_name.' '.$userData->last_name))}}</h1>

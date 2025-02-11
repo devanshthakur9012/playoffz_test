@@ -407,7 +407,7 @@
                     error.insertAfter(element);
                 }
                 $("#error_modal_body").html(`
-                    <p class="text-danger">Below fields are required to book packages</p>
+                    <p class="text-danger">Below fields are required to book tickets</p>
                     <ul style="color:red;">
                         <li>Event Time Slot is required</li>
                         <li>Customer name is required</li>

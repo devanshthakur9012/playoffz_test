@@ -42,8 +42,8 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('pages/{title}', [HomeController::class, 'pagesData'])->name('pagesData');
 
-    Route::get('coachings/{type}', [HomeController::class, 'tournamentType'])->name('coaching-type');
-    Route::get('coaching-type-ajax', [HomeController::class, 'fetchTournaments'])->name('coaching-type-ajax');
+    Route::get('tournaments/{type}', [HomeController::class, 'tournamentType'])->name('tournament-type');
+    Route::get('tournament-type-ajax', [HomeController::class, 'fetchTournaments'])->name('tournament-type-ajax');
 
     Route::get('social-play', [HomeController::class, 'socialPlay'])->name('social-play');
     Route::get('/social-play/ajax', [HomeController::class, 'socialPlayAjax'])->name('social-play.ajax');
@@ -51,12 +51,12 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::get('play/{uuid}', [HomeController::class, 'play'])->name('play');
     Route::post('join-play', [HomeController::class, 'joinPlay'])->name('joinPlay');
 
-    Route::get('coaching-tickets', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
-    Route::get('{category}-coaching', [HomeController::class, 'coachings'])->name('coaching');
-    Route::get('category-coaching-ajax', [HomeController::class, 'categoryTournamentAjax'])->name('category-coaching-ajax');
+    Route::get('tournament-tickets', [HomeController::class, 'coachingPackages'])->name('coaching-packages');
+    Route::get('{category}-tournament', [HomeController::class, 'coachings'])->name('tournament');
+    Route::get('category-tournament-ajax', [HomeController::class, 'categoryTournamentAjax'])->name('category-tournament-ajax');
 
-    Route::get('coachings-in-{location}', [HomeController::class, 'locationTournament'])->name('location-coaching');
-    Route::get('location-coaching-ajax', [HomeController::class, 'locationTournamentAjax'])->name('location-coaching-ajax');
+    Route::get('tournaments-in-{location}', [HomeController::class, 'locationTournament'])->name('location-tournament');
+    Route::get('location-tournament-ajax', [HomeController::class, 'locationTournamentAjax'])->name('location-tournament-ajax');
 
     Route::get('city-coachings/{cityName}', [HomeController::class, 'cityCoachings']);
     Route::get('book-coaching-package', [HomeController::class, 'bookCoachingPackage']);
@@ -64,7 +64,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
     Route::get('/booked-coaching-package-details',[HomeController::class,'bookedCoachingPackageDetails']);
     
-    Route::get('/coaching/{title}/{id}', [HomeController::class, 'coachingBook'])->name('coaching-detail');
+    Route::get('/tournament/{title}/{id}', [HomeController::class, 'coachingBook'])->name('tournament-detail');
     Route::post('/send-to-admin', [FrontendController::class, 'sentMessageToAdmin']);
     Route::post('/create-order', [UserController::class, 'createOrder'])->name('create-order');
     // Route::get('/privacy_policy', [FrontendController::class, 'privacypolicy']);
@@ -161,7 +161,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
     Route::post('/save-ticket-bookings',[BookController::class,'saveTicketBookings']);
     
     // TICKET BOOKING
-    Route::post('/purchase-coaching',[BookController::class,'purchaseTournament'])->name('purchase-coaching');
+    Route::post('/purchase-tournament',[BookController::class,'purchaseTournament'])->name('purchase-tournament');
     Route::get('/confirm-booking',[BookController::class,'confirmTicketBook'])->name('confirm-ticket-book');
     Route::post('/store-payment-detail',[BookController::class,'storePaymentDetails'])->name('store-payment-detail');
     Route::get('/ticket-information/{id}',[BookController::class,'ticketInformationData'])->name('ticket-information');
