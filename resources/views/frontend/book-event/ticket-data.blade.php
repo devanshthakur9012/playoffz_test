@@ -266,6 +266,32 @@
                             </table>    
                         </div>                    
                     </div>
+                    @isset($ticketData['user_info'])
+                        <div class="table-responsive">
+                            @foreach($ticketData['user_info'] as $group)
+                                <h5 class="mt-3 text-dark"><strong>Group {{ $group['group'] }}</strong></h5>
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            @foreach(array_keys($group['players'][0]) as $label)
+                                                <th>{{ strtoupper(str_replace('_', ' ', $label)) }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($group['players'] as $player)
+                                            <tr>
+                                                @foreach($player as $value)
+                                                    <td>{{ $value ?? 'Not provided' }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endforeach
+                        </div>
+                    @endisset
+
                     <hr>
                     <div class="text-center mt-3 mb-3 print_box">
                         <button id="print_ticket" class="btn btn-primary">

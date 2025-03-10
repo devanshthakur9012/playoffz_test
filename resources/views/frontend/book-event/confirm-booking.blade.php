@@ -156,6 +156,13 @@ $paymentId = "";
                                                                     <input type="text" class="form-control" placeholder="Enter Academy Name" name="player_academy_name_{{ $group }}_{{ $player }}" id="academy_name_{{ $group }}_{{ $player }}">
                                                                 </div>
                                                                 @break
+
+                                                            @case('organisation')
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="organisation_name_{{ $group }}_{{ $player }}" class="form-label">Organisation Name</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Organisation Name" name="player_organisation_name_{{ $group }}_{{ $player }}" id="organisation_name_{{ $group }}_{{ $player }}">
+                                                                </div>
+                                                                @break
                         
                                                             @case('age')
                                                                 <div class="mb-3 col-lg-6">
@@ -169,10 +176,12 @@ $paymentId = "";
                                                                     <label for="shirt_size_{{ $group }}_{{ $player }}" class="form-label">T-Shirt Size</label>
                                                                     <select class="form-select form-control" name="player_shirt_size_{{ $group }}_{{ $player }}" id="shirt_size_{{ $group }}_{{ $player }}">
                                                                         <option value="">Choose Anyone</option>
+                                                                        <option value="XS">Extra Small</option>
                                                                         <option value="S">Small</option>
                                                                         <option value="M">Medium</option>
                                                                         <option value="L">Large</option>
                                                                         <option value="XL">Extra Large</option>
+                                                                        <option value="XXL">Extra Extra Large</option>
                                                                     </select>
                                                                 </div>
                                                                 @break
