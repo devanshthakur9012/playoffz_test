@@ -367,7 +367,7 @@ class BookController extends Controller
                     $age = $request->input("player_age_{$group}_{$player}");
                     if ($age) $playerData['age'] = $age;
 
-                    $tshirt = $request->input("shirt_size_{$group}_{$player}");
+                    $tshirt = $request->input("player_shirt_size_{$group}_{$player}");
                     if ($tshirt) $playerData['tshirt'] = $tshirt;
 
                     $clubName = $request->input("player_club_name_{$group}_{$player}");
