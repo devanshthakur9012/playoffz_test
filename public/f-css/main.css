@@ -1169,8 +1169,9 @@ header .navbar .navbar-brand img {
 }
 
 .topbar .nav-item .nav-link .img-profile {
-    height: 2rem;
-    width: 2rem
+    height: 2.2rem;
+    width: 2.2rem;
+    border: 2px solid #ad853e;
 }
 
 .topbar {
@@ -3673,3 +3674,16 @@ margin-bottom: 0px;
     transform: scale(1.5);
   }
   
+    /* Change autofill background color */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px #171f39  inset !important;
+        background-color: white !important;
+        -webkit-text-fill-color: #fff !important;
+    }
+
+    /* Change text color in autofilled fields */
+    input:-webkit-autofill {
+        -webkit-text-fill-color: #fff !important;
+    }

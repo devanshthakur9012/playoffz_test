@@ -19,6 +19,8 @@ use App\Models\SpiritualVolunteers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -297,7 +299,11 @@ class BookController extends Controller
         // dd($packageDetails);
 
         // Pass booking data to the view
-        return view('frontend.book-event.confirm-booking', compact('packageDetails','settingDetails','bookingData','payData','couponList'));
+        return view('frontend.book-event.book-ticket', compact('packageDetails','settingDetails','bookingData','payData','couponList'));
+    }
+    
+    public function termsConditions(){
+        return view('frontend.book-event.term-conditons');
     }
 
     private function getCopunByApi($sponserId){
@@ -334,10 +340,21 @@ class BookController extends Controller
             $bookingData = session('booking_data');
             $settingDetails = \Common::siteGeneralSettingsApi();
 
+            // Validate required fields
+            $validator = Validator::make($request->all(), [
+                'transaction_id' => 'required|string|min:4'
+            ]);
+    
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
             $totalAmount =  $request->total_amount_pay;
             $couponAmount = $request->coupon_amt  ?? 0;
             $paymentId = $request->payment_id;
             $transaction_id = $request->merchant_trans_id;
+
+            // Clear user cache if exists
             $cacheKey = "user_profile_{$uid}";
             if (Cache::has($cacheKey)) {
                 Cache::forget($cacheKey);
@@ -345,15 +362,11 @@ class BookController extends Controller
 
             $userDetails = Common::fetchUserDetails();
 
+            // Prepare user input data
             $userInputData = [];
-            
-            // Loop through the quantity to gather all the player details
             for ($group = 1; $group <= $bookingData['quantity']; $group++) {
                 $playersData = [];
-
-                // Loop through each player in the group (in case of doubles, there are two players)
-                for ($player = 1; $player <= 2; $player++) { // Assuming 2 players for each group
-                    // Check and add only non-empty fields
+                for ($player = 1; $player <= 2; $player++) { 
                     $playerData = [];
                     $name = $request->input("player_name_{$group}_{$player}");
                     if ($name) $playerData['name'] = $name;
@@ -375,8 +388,7 @@ class BookController extends Controller
 
                     $organisation = $request->input("organisation_name_{$group}_{$player}");
                     if ($organisation) $playerData['organisation'] = $organisation;
-
-                    // Add this player data to the group data
+                    
                     if (!empty($playerData)) {
                         $playersData[] = $playerData;
                     }
@@ -399,29 +411,30 @@ class BookController extends Controller
                 "tax"=>$settingDetails['tax'],
                 "cou_amt"=>$couponAmount,
                 "total_amt"=>$totalAmount - $couponAmount,
-                "wall_amt"=>$userDetails['wallet'], 
-                "p_method_id"=>$paymentId ?? 1, 
+                "wall_amt"=>$userDetails['wallet'] ?? 0, 
+                "p_method_id"=> 0, 
                 "plimit"=>$eventDetails['tlimit'],
-                'transaction_id'=>$transaction_id,
+                'transaction_id'=> $request->transaction_id,
                 "sponsore_id"=>$eventDetails['sponser_id'], 
                 "user_info" => isset($userInputData) ? $userInputData : null, 
-                "email" => $request->email,
-                "username" => $request->username,
-                "password" => $request->password,
             ];
+
+              // Add registration data for new users
+            $userData = Common::fetchUserDetails();
+            if (empty($userData['name']) || empty($userData['email'])) {
+                $data['email'] = $request->email;
+                $data['username'] = $request->username;
+                $data['password'] = $request->password;
+            }
 
             $storePaymentDetails = $this->savebookingDetails($data);
             if($storePaymentDetails['status']){
-                if (session()->has('book_event_data')) {
-                    session()->forget('book_event_data');
-                }
-                if(session()->has('booking_data')){
-                    session()->forget('booking_data');
-                }
+                session()->forget(['book_event_data', 'booking_data']);
                 return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Ticket Confirmed');
             }
             return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
         } catch (\Throwable $th) {
+            \Log::error('Booking Error: ' . $th->getMessage());
             return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
         }
     }

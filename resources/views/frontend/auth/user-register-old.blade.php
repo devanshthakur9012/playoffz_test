@@ -334,9 +334,9 @@
                                         </button>
                                     </div>
                                     <hr>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <a href="{{url('user-login')}}">Already have an account, <b>Login</b> here</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             @endif
                         </div>
@@ -599,7 +599,7 @@
                         });
                         // Redirect to the login page after 1 second
                         setTimeout(function() {
-                            window.location.href = "{{ route('userLogin') }}";
+                            window.location.href = "{{ url('/') }}";
                         }, 1000);
                     }
                 },

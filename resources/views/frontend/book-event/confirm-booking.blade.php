@@ -303,7 +303,7 @@ $paymentId = "";
                                 @php
                                     session(['redirect_url' => url()->current()]);
                                 @endphp
-                                <a href="{{ route('userLogin') }}" class="btn default-btn btn-block">Login To Continue</a>
+                                <button data-toggle="modal" data-target="#loginOtpModal" type="button" class="btn default-btn btn-block">Login To Continue</button>
                             @endif
                         </div>
                     </div>
@@ -679,7 +679,7 @@ $paymentId = "";
                                 isAlertShown = false; // Reset flag only if no redirection happens
                                 if (result.isConfirmed && !isRedirecting) {
                                     isRedirecting = true; // Prevent multiple redirects
-                                    window.location.href = "{{ route('userLogin') }}"; // Redirect to login page
+                                    window.location.href = "{{ url('/') }}"; // Redirect to login page
                                 }
                             });
                         }

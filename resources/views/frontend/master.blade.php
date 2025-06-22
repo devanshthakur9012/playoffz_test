@@ -55,6 +55,67 @@
             padding: 10px !important;
         }
     </style>
+    
+    <!-- LOGIN MODAL -->
+    <style>
+        .login-modal-content {
+            background-color:#070B28;
+            box-shadow: #070B28 0px 13px 24px 0px;
+            border-radius: 10px;
+            animation: animation-ngigez 0.3s ease 0s 1 normal none;
+            width: 80%;
+            border: 1px solid rgb(0 74 173);
+            padding:25px;
+        }
+
+        .login-modal-content .input-group-text{
+            background-color:#070B28 !important;
+            color:#fff !important;
+        }
+
+        .login-modal-content .form-control{
+            border-radius: .25rem;
+            font-size: 15px;
+            color: #ffffff;
+            height: 45px;
+            background-color: #070B28;
+            border: 1px solid #ffffff;
+        }
+        .login-modal-content .btn-primary:hover{
+            color: rgb(255, 255, 255) !important;
+            background-color:rgb(2, 64, 146) !important;
+            border-color: rgb(2, 64, 146) !important;
+        }
+
+        @keyframes animation-ngigez {
+            0% {
+                opacity: 0;
+                transform: translate3d(0px, -10%, 0px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0px, 0px, 0px);
+            }
+        }
+        .close:focus{
+            border:none;
+            outline:none;
+            box-shadow:none;
+        }
+        .border-remove{
+            border: none !important;
+            border-bottom: 1px solid #fff !important;
+            border-radius: 0px !important;
+        }
+        .loginOption{
+            background: transparent;
+            color: #fff;
+            border: none;
+        }
+        .loginOption:focus{
+            outline:none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -177,7 +238,7 @@
                                 @endif
                             </li>
                         @else
-                            <li class="nav-item no-arrow align-self-center mx-2 position-relative">
+                            <!-- <li class="nav-item no-arrow align-self-center mx-2 position-relative">
                                 <a class="position-relative dropdown-toggle text-light" href="#" role="button"
                                     data-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user-circle fa-lg"></i>
@@ -188,7 +249,10 @@
                                     <a class="dropdown-item" href="{{ url('user-register') }}"><i
                                             class="fas fa-user-plus"></i> Register</a>
                                 </div>
-                            </li>
+                            </li> -->
+                            <button data-toggle="modal" data-target="#loginOtpModal" type="button" style="background: transparent;color: #fff;border: none;">
+                                <i class="fas fa-user-circle fa-lg"></i>
+                            </button>
                         @endif
                     </ul>
                 </div>
@@ -456,7 +520,7 @@
                                     @if (Common::isUserLogin())
                                         <button type="submit" class="text-center btn default-btn w-100">Submit</button>
                                     @else
-                                        <a href="{{route('userLogin')}}" type="button" class="text-center btn default-btn w-100">Login to continue.</a>
+                                        <button data-toggle="modal" data-target="#loginOtpModal" class="text-center btn default-btn w-100" type="button" type="button">Login to continue.</button>
                                     @endif
                                 </div>
                             </form>
@@ -466,11 +530,281 @@
             </div>
         </div>
     </div>
+
+    
+    <!-- LOGIN MODAL -->
+    <div class="modal fade" id="loginOtpModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+            <div class="modal-content login-modal-content shadow">
+            <div class="modal-header border-0 p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <form id="loginOtpForm">
+                        @csrf
+                       <div class="text-center my-3">
+                           <a href="/"><img src="{{asset('images/playoffz-login.png')}}"
+                                   class="img-fluid" style="width:200px;" alt="PLAYOFFZ"></a>
+                       </div>
+                        
+                        <div id="mobileInputSection">
+                            <div class="form-group">
+                                <!-- <label class="mb-1">Mobile Number</label> -->
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-remove">+91</span>
+                                    </div>
+                                    <input type="tel" maxlength="10" class="form-control border-remove" id="loginMobileInput" name="number" placeholder="Enter your mobile number" required>
+                                </div>
+                                <small class="form-text text-muted mt-2" style="font-size:12px !important;">An OTP will be sent to your mobile number for verification.</small>
+                            </div>
+                            
+                            <button type="button" id="sendOtpBtn" class="btn btn-primary btn-block my-4">
+                                CONTINUE
+                            </button>
+
+                            <p style="
+                                margin-top: 10px;
+                                font-size: 11px;
+                                text-align: center;
+                            ">"BY CONTINUE YOU AGREE TO THE <span style="color:#004aad;">TERMS OF SERVICES</span> AND <span style="color:#ff0000;">PRIVACY POLICY OF PLAYOFFZ"</span></p>
+                        </div>
+                        
+                        <div id="otpInputSection" class="d-none">
+                            <div class="text-center mb-3">
+                                <p>Enter the 4-digit OTP sent to <span id="displayMobileNumber" class="font-weight-bold">+91 XXXXXXXXXX</span></p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between otp-input-group" style="gap:15px;">
+                                    <input type="text" class="form-control otp-box text-center" maxlength="1" pattern="\d*" inputmode="numeric" />
+                                    <input type="text" class="form-control otp-box text-center" maxlength="1" pattern="\d*" inputmode="numeric" />
+                                    <input type="text" class="form-control otp-box text-center" maxlength="1" pattern="\d*" inputmode="numeric" />
+                                    <input type="text" class="form-control otp-box text-center" maxlength="1" pattern="\d*" inputmode="numeric" />
+                                </div>
+                                <input type="hidden" id="combinedOtp" name="otp">
+                            </div>
+                            
+                            <button type="button" id="verifyOtpBtn" class="btn btn-primary btn-block mt-2">
+                                Verify OTP
+                            </button>
+                            
+                            <div class="resend-otp mt-3">
+                                Didn't receive OTP? <a id="resendOtpBtn">Resend OTP</a>
+                            </div>
+                        </div>
+                        
+                        <div class="footer-links text-right mt-2 text-muted">
+                            <a href="{{url('user-register')}}" class="text-muted">Create Account</a> | 
+                            <a href="{{url('user/resetPassword')}}" class="text-muted">Forgot Password?</a>
+                        </div>
+                    </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    @php 
+        $redirectUrl = session('redirect_url', '/'); 
+    @endphp
     <script src="{{ asset('f-vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('f-vendor/bootstrap/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript" src="{{ asset('f-vendor/slick/slick.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>    
+
+    <!-- LOGIN SCRIPT START -->
+    <script>
+        $(document).ready(function () {
+            
+            // Handle OTP input boxes
+            $('.otp-box').on('input', function() {
+                $(this).next('.otp-box').focus();
+                updateCombinedOtp();
+            });
+            
+            // Handle backspace in OTP boxes
+            $('.otp-box').on('keydown', function(e) {
+                if(e.key === "Backspace" && $(this).val() === '') {
+                    $(this).prev('.otp-box').focus();
+                }
+                updateCombinedOtp();
+            });
+            
+            function updateCombinedOtp() {
+                let otp = '';
+                $('.otp-box').each(function() {
+                    otp += $(this).val();
+                });
+                $('#combinedOtp').val(otp);
+            }
+            
+            // Send OTP
+            $('#sendOtpBtn').on('click', function() {
+                const mobile = $('#loginMobileInput').val();
+                const ccode = "+91";
+                
+                if (!mobile || mobile.length !== 10 || isNaN(mobile)) {
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: 'Please enter a valid 10-digit mobile number.'
+                    });
+                    return;
+                }
+                
+                // Show loading state
+                $(this).addClass('btn-loading').prop('disabled', true).html('Sending OTP...');
+                
+                $.ajax({
+                    url: "{{ route('verify-mobile-number') }}",
+                    type: 'POST',
+                    data: {
+                        mobile: mobile,
+                        ccode: ccode,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#sendOtpBtn').removeClass('btn-loading').prop('disabled', false).html('Continue');
+                        
+                        if (response.status === 'success') {
+                            // Show OTP section
+                            $('#mobileInputSection').addClass('d-none');
+                            $('#otpInputSection').removeClass('d-none').addClass('otp-section-animate');
+                            $('#displayMobileNumber').text('+91 ' + mobile);
+                            
+                            // Focus first OTP box
+                            $('.otp-box').first().focus();
+                            
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'OTP sent successfully!'
+                            });
+                        } else {
+                            iziToast.error({
+                                title: 'Error',
+                                position: 'topRight',
+                                message: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#sendOtpBtn').removeClass('btn-loading').prop('disabled', false).html('Continue');
+                        iziToast.error({
+                            title: 'Error',
+                            position: 'topRight',
+                            message: 'Failed to send OTP. Please try again.'
+                        });
+                    }
+                });
+            });
+            
+            // Verify OTP
+            $('#verifyOtpBtn').on('click', function() {
+                const otp = $('#combinedOtp').val();
+                
+                if (!otp || otp.length !== 4 || isNaN(otp)) {
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: 'Please enter a valid 4-digit OTP.'
+                    });
+                    return;
+                }
+                
+                // Show loading state
+                $(this).addClass('btn-loading').prop('disabled', true).html('Verifying...');
+                
+                $.ajax({
+                    url: "{{ route('verify-login-otp') }}",
+                    type: 'POST',
+                    data: {
+                        otp: otp,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        
+                        if (response.status === 'success') {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: response.message
+                            });
+                            
+                            setTimeout(() => {
+                                window.location.href = "{{$redirectUrl}}";
+                            }, 1000);
+                        } else {
+                            $('#verifyOtpBtn').removeClass('btn-loading').prop('disabled', false).html('Verify OTP');
+
+                            iziToast.error({
+                                title: 'Error',
+                                position: 'topRight',
+                                message: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#verifyOtpBtn').removeClass('btn-loading').prop('disabled', false).html('Verify OTP');
+                        iziToast.error({
+                            title: 'Error',
+                            position: 'topRight',
+                            message: 'Failed to verify OTP. Please try again.'
+                        });
+                    }
+                });
+            });
+            
+            // Resend OTP
+            $('#resendOtpBtn').on('click', function() {
+                const mobile = $('#loginMobileInput').val();
+                const ccode = "+91";
+                
+                // Show loading state
+                $(this).html('Sending...');
+                
+                $.ajax({
+                    url: "{{ route('verify-mobile-number') }}",
+                    type: 'POST',
+                    data: {
+                        mobile: mobile,
+                        ccode: ccode,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#resendOtpBtn').html('Resend OTP');
+                        
+                        if (response.status === 'success') {
+                            iziToast.success({
+                                title: 'Success',
+                                position: 'topRight',
+                                message: 'New OTP sent successfully!'
+                            });
+                        } else {
+                            iziToast.error({
+                                title: 'Error',
+                                position: 'topRight',
+                                message: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#resendOtpBtn').html('Resend OTP');
+                        iziToast.error({
+                            title: 'Error',
+                            position: 'topRight',
+                            message: 'Failed to resend OTP. Please try again.'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- LOGIN SCRIPT END -->
+
     <script>
         $(document).ready(function () {
             $('#skill_level').select2({

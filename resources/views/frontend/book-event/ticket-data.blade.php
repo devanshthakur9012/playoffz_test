@@ -313,4 +313,12 @@
         window.print();
     });
 </script>
+
+<!-- <script>
+    $("#print_ticket").click(function () {
+        $(this).prop('disabled', true);
+        $(this).html('<i class="fas fa-spinner fa-spin"></i> Downloading...');
+        return false;
+    });
+</script> -->
 @endpush
