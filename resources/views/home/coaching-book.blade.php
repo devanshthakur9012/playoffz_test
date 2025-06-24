@@ -914,7 +914,7 @@
                 </div>
                 <div class="text-white"> 
                     <h4 class="highlighter">Catgeory</h4>
-                    @if(isset($tournament_detail['EventTypePrice']))
+                    @if(isset($tournament_detail['EventTypePrice']) && count($tournament_detail['EventTypePrice']) > 0)
                         <div class="row mt-3">
                             @foreach ($tournament_detail['EventTypePrice'] as $package)
                                 <div class="col-md-4 d-flex mb-4">
