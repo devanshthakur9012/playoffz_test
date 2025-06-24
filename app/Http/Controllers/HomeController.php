@@ -938,6 +938,7 @@ class HomeController extends Controller
         // Return the public URL for the cached QR code
         $data['qrCodePath'] = asset('qrcodes/' . $qrCodeFileName);
         // Generate share message
+        // dd($data);
         return view('home.coaching-book', $data);
     }
 

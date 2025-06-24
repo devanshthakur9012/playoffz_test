@@ -206,51 +206,7 @@
                 {{-- <h2>{{$coachData->coaching_title.' ('. $coachData->category->category_name .')'}} Packages</h2> --}}
                 {{-- <h5 class="mt-0 mb-3 text-center">WHAT TICKETS WOULD YOU LIKE??</h5> --}}
                 <div class="row mt-4">
-                    {{-- @foreach ($packageData as $package)
-                        @php
-                            $realPrice = $package->package_price;
-                            $afterDiscountPrice = 0;
-                            $showDiscount = 0;
-                            if($package->discount_percent > 0 && $package->discount_percent <= 100){
-                                $perc = ($realPrice * $package->discount_percent) / 100;
-                                $afterDiscountPrice = round($realPrice - $perc, 2);
-                                $showDiscount = 1;
-                            }
-                            $type = explode(" ",$package->package_duration);
-                            $type = $type[0].' '.trim($type[1],'s');
-                        @endphp
-                        <div class="col-md-4 d-flex mb-4">
-                            <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
-                                <div class="subscription-card-header" style="background-color: #007bff;">
-                                    <h4><i class="fas fa-gem" style="font-size: 1rem;"></i> {{ $package->package_name }}</h4>
-                                    @if($showDiscount)
-                                        <span class="discount-badge">{{ $package->discount_percent }}% Off</span>
-                                    @endif
-                                </div>
-                                <div class="subscription-card-body">
-                                    @if($showDiscount)
-                                        <h3 class="subscription-card-title">₹{{ $afterDiscountPrice }} <small class="price-text-muted">/ {{$type}}</small></h3>
-                                        <p><small class="price-text-muted">Normally ₹{{ $realPrice + 0 }} / {{$type}}</small></p>
-                                    @else
-                                        <h3 class="subscription-card-title">₹{{$realPrice + 0}} <small class="price-text-muted">/ {{$type}}</small></h3>
-                                    @endif
-                                    
 
-                                    <ul class="price-list">
-                                        <li><i class="fas fa-check"></i> Batch Size -  {{ $package->batch_size }}</li>
-                                        <li><i class="fas fa-check"></i> <div>{!! $package->description !!}</div></li>
-                                    </ul>
-                                    @php
-                                           $inputObj = new stdClass();
-                                           $inputObj->params = 'id='.$package->id;
-                                           $inputObj->url = url('book-coaching-package');
-                                           $encLink = Common::encryptLink($inputObj);
-                                    @endphp
-                                    <a href="{{$encLink}}" class="button-primary">Book Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach --}}
 
                     @foreach ($tour_plans as $package)
                         <div class="col-md-3 d-flex mb-4">

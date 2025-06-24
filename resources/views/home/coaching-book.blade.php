@@ -362,12 +362,13 @@
         }
 
         .profile-img {
-            width: 40px;       /* Set the width of the image (adjust as necessary) */
-            height: 40px;      /* Set the height of the image (adjust as necessary) */
+            width: 50px !important;       /* Set the width of the image (adjust as necessary) */
+            height: 50px !important;      /* Set the height of the image (adjust as necessary) */
             border-radius: 50%; /* Makes the image circular */
             object-fit: cover;  /* Ensures the image fills the circle without distorting */
-            border:none !important; /* Optional: adds a border around the image */
+            border:2px solid #004aad !important;
             margin-right: 15px;
+            padding:3px !important;
         }
         .tags{
             background: #004aad;
@@ -614,23 +615,8 @@
         box-shadow: 0px 0px 6px #004aad;
     }
 
-    /* .highlighter:before {
-        content: " ";
-        display: block;
-        height: 90%;
-        width: 100%;
-        margin-left: -3px;
-        margin-right: -3px;
-        position: absolute;
-        background: #0cc2e6;
-        transform: rotate(2deg);
-        top: -1px;
-        left: -1px;
-        border-radius: 20% 25% 20% 24%;
-        padding: 10px 3px 3px 10px;
-    } */
-     .img-thumbnail{
-        background-color: #a7a7a7 !important;
+    .img-thumbnail{
+        background-color: #070b28 !important
      }
 
      .modalClose span{
@@ -663,80 +649,254 @@
         color:#fff !important;
     }
     </style>
+<style>
+    /* Dark Theme Styling */
+    .subscription-section {
+        background: #070b28;
+        color: #ffffff;
+        padding: 40px 0;
+    }
+
+    
+    .subscription-section h1{
+        font-size: 30px;
+    }
+
+    .subscription-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #1a1b2e;
+        color: #ffffff;
+        border-radius: 10px;
+        /* padding: 25px; */
+        transition: transform 0.2s, background 0.3s;
+        /* box-shadow: 0 4px 10px rgb(255 255 255 / 20%); */
+        /* margin-bottom: 20px; */
+        overflow: hidden;
+    }
+
+    .subscription-card:hover {
+        transform: translateY(-4px);
+        background: #1b1b37;
+    }
+
+    .subscription-card-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+        text-align: left;
+    }
+
+    .subscription-card-body {
+        padding: 25px 20px 20px;
+        background: #2e335a45 !important;
+        position: relative;
+    }
+
+    .subscription-card-title {
+        font-size: 2rem;
+        margin: 10px 0;
+        text-align: left;
+        margin-top:0px;
+        margin-bottom:0px;
+    }
+
+    .price-text-muted {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+    }
+
+    .button-primary, .button-success, .button-premium {
+        display: inline-block;
+        padding: 10px 25px;
+        width: 100%;  /* Full width button */
+        color: #ffffff;
+        font-size: 1rem;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        border-radius: 0px;
+        transition: background 0.3s, transform 0.2s;
+        /* margin-top: 20px; */
+        border: none !important;
+    }
+
+    .button-primary {
+        /* background: linear-gradient(90deg, #004aad, #e74c3c); */
+        background: #004aad;
+    }
+
+    .bg-girl{
+        background: #e74c3c !important;
+    }
+
+    .bg-boy{
+        background: #004aad !important;
+    }
+
+
+    /* .button-primary:hover {
+        background: linear-gradient(90deg, #e74c3c, #004aad);
+        transform: translateY(-2px);
+        color: #fff;
+    } */
+
+    .button-success {
+        background: linear-gradient(90deg, #28a745, #34d058);
+    }
+
+    .button-success:hover {
+        background: linear-gradient(90deg, #34d058, #28a745);
+        transform: translateY(-2px);
+        color: #fff;
+
+    }
+
+    .button-premium {
+        background: linear-gradient(90deg, #f39c12, #e67e22);
+    }
+
+    .button-premium:hover {
+        background: linear-gradient(90deg, #e67e22, #f39c12);
+        transform: translateY(-2px);
+        color: #fff;
+
+    }
+
+    .discount-badge {
+        background-color: #ff9800;
+        color: #121212;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .price-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 0;
+    }
+
+    .price-list li {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    .price-list li i {
+        color: #28a745;
+        margin-right: 8px;
+    }
+
+
+
+    @media (min-width: 768px) {
+        .subscription-card {
+            height: 100%;
+        }
+    }
+
+    .shop_single_page_sidebar{
+        background: #414362;
+        color: #fff;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 10px;
+    }
+
+    .shop_single_page_sidebar2{
+        border: 1px solid #414362 !important;
+        color: #fff;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 10px;
+        width: 50%;
+        text-align: center;
+        background: #1a1b2e;
+    }
+
+    .slotBadge{
+        position: absolute;
+        top: -10px;
+        right: 7px;
+        background: #ffe14f !important;
+        color: #000000 !important;
+        font-size: 11px;
+        padding: 6px !important;
+        font-weight: 500;
+    }
+    .col-md-3{
+        padding: 5px !important;
+    }
+    .quantity-block{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+</style>
 @endpush
 @section('content')
 <section class="section-area single-detail-area py-3">
     <div class="container">
-        @if (isset($tournament_detail) && count($tournament_detail['event_cover_img']))
-            @if (count($tournament_detail['event_cover_img']) > 1)
-                <div class="pt-3 pb-3 shadow-sm home-slider">
-                    <div class="osahan-slider">
-                        @foreach ($tournament_detail['event_cover_img'] as $item)
-                            <div class="osahan-slider-item">
-                                {{-- <a @if($item->redirect_link != null) href="{{$item->redirect_link}}" @endisset > --}}
-                                    <img src="{{env('BACKEND_BASE_URL')}}/{{$item}}" class="img-fluid rounded" alt="...">
-                                {{-- </a> --}}
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @else
-                <div class="pt-3 pb-3 shadow-sm home-slider" id="blurImg">
-                    @foreach ($tournament_detail['event_cover_img'] as $item)
-                        <img src="{{ env('BACKEND_BASE_URL') }}/{{$item}}" class="img-fluid rounded" alt="...">
-                    @endforeach
-                </div>
-            @endif
-        @endif
+        @php
+            $banners = [
+                asset('frontend/images/banner-1.png'),
+                asset('frontend/images/banner-2.png'),
+                asset('frontend/images/banner-3.png'),
+            ];
+            $randomBanner = $banners[array_rand($banners)];
+        @endphp
+
+        <div class="p-0 mt-3 shadow-sm home-slider">
+            <img src="{{ $randomBanner }}" class="img-fluid rounded" alt="Banner">
+        </div>
 
         <div class="row mt-5">
             <div class="col-lg-8 col-md-8 col-12">
-                <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-2"><span class="badge badge-success h2">{{$tournament_detail['category']}} Tournament</span></h4>
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <h4>{{ $tournament_detail['event_title'] }}</h4>
                 </div>
                 <div class="dark-gap text-white" style="margin-bottom: 0;">
-                    <p class="dark-gap">Sport Catgeory : {{$tournament_detail['category']}}</p>
                     <div class="row">
-                        <div class="col-lg-6 mbsm">
-                            {{-- Timing --}}
+                        <div class="col-lg-6 mb-3">
                             <div class="d-flex align-items-center">
                                 <div class="icon_box calendar_icon">
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
                                 <div class="text_box">
-                                    <p class="mb-0">{{ $tournament_detail['event_sdate'] }}</p>
-                                    <small class="text_muted">{{ $tournament_detail['event_time_day'] }}</small>
+                                    <p class="mb-0">Start Date</p>
+                                    <small class="text_muted">{{ $tournament_detail['event_start'] }}</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            {{-- Tickets --}}
-                            <div class="d-flex align-items-center ">
-                                <div class="icon_box ticket_icon">
-                                    <i class="fas fa-ticket-alt"></i>
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="icon_box calendar_icon">
+                                    <i class="far fa-calendar-alt"></i>
                                 </div>
                                 <div class="text_box">
-                                    <p class="mb-0">Ticket Price : {{ $tournament_detail['ticket_price'] }}</p>
-                                    <small class="text_muted">{{ $tournament_detail['total_ticket'] }} Spots Left</small>
+                                    <p class="mb-0">End Date</p>
+                                    <small class="text_muted">{{ $tournament_detail['event_end'] }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="icon_box location_icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="text_box">
+                                    <p class="text_muted"></p>{{ $tournament_detail['event_address'] }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- Address --}}
-                    <div class="d-flex align-items-center mb-3 mt-2">
-                        <div class="icon_box location_icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="text_box">
-                            <!-- Using the provided latitude and longitude to open Google Maps -->
-                            <p class="text_muted"></p><a class="text-white" href="{{ $tournament_detail['map_url'] }}" target="_blank">
-                                {{ $tournament_detail['event_address'] }}
-                            </a></p>
-                        </div>
-                    </div>
-                    {{-- <p class="mr-3">👨‍👩‍👧‍👦 Age group: {{ $coachData->age_group }}</p>
-                    <p class="mr-3">🏸 BYOE: {{ $coachData->bring_own_equipment }}</p>
-                    <p>🎟️ Free Demo session: {{ $coachData->free_demo_session }}</p> --}}
                 </div>
                 <div class="row align-items-center mb-4">
                     <div class="col-lg-6 mbsm">
@@ -744,118 +904,62 @@
                             <h4 class="mb-3">Organized By</h4>
                             <div class="d-flex align-items-center">
                                 <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
-                                <p class="mb-0 fs-2">{{$tournament_detail['sponsore_name']}}</p>
+                                <div>
+                                    <p class="mb-0 fs-2">{{$tournament_detail['sponsore_name']}}</p>
+                                    <p class="mb-0 fs-2">{{$tournament_detail['sponsore_mobile']}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <h4 class="mb-3">Share : </h4>
-                        <div class="social-share-buttons">
-                            @php
-                                $url = env('BACKEND_BASE_URL').'/'.urlencode($tournament_detail['event_cover_img'][0]);
-                            @endphp
-                            <!-- Facebook Share Button -->
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}&picture={{ $url }}" target="_blank" class="social-button facebook">
-                                <i class="fab fa-facebook-f text-white"></i>
-                            </a>
-                            <!-- Instagram Share Button (Manual Image Upload Required) -->
-                            <a href="https://www.instagram.com/" target="_blank" class="social-button instagram" title="Share on Instagram">
-                                <i class="fab fa-instagram text-white"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(url()->current()) }}&title={{ urlencode($tournament_detail['event_title']) }}&summary={{ urlencode($tournament_detail['event_address']) }}" target="_blank" class="social-button linkedin">
-                                <i class="fab fa-linkedin-in text-white"></i>
-                            </a>
-                            <!-- WhatsApp Share Button -->
-                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A{!! stripslashes($tournament_detail['event_about']) !!}%0A%0A📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A🔗 Register here: {{ url()->current() }}%0A%0AJoin WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
-                                target="_blank" class="d-none social-button whatsapp">
-                                <i class="fab fa-whatsapp text-white"></i>
-                            </a> --}}
-
-                            {{-- WORKING FINE WITH GROUP LOGIC --}}
-                            {{-- <a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A
-{{ strip_tags(stripslashes($tournament_detail['event_about'])) }}%0A%0A
-📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A
-📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A
-🔗 Register here: {{ url()->current() }}%0A%0A
-Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
-   target="_blank" class="social-button whatsapp">
-   <i class="fab fa-whatsapp text-white"></i>
-</a> --}}
-
-<a href="https://api.whatsapp.com/send?text={{ urlencode($tournament_detail['event_title']) }}%0A%0A
-{{ strip_tags(stripslashes($tournament_detail['event_about'])) }}%0A%0A
-📅 Date: {{ $tournament_detail['event_sdate'] }}%0A🕒 Time: {{ $tournament_detail['event_time_day'] }}%0A%0A
-📍 Location: {{ $tournament_detail['event_address'] }}%0A%0A
-🔗 Register here: {{ url()->current() }}"
-   target="_blank" class="social-button whatsapp">
-   <i class="fab fa-whatsapp text-white"></i>
-</a>
-
-                             {{-- <button id="shareBtn" 
-                                data-title="{{ $tournament_detail['event_title'] }}" 
-                                data-sdate="{{ $tournament_detail['event_sdate'] }}" 
-                                data-time="{{ $tournament_detail['event_time_day'] }}" 
-                                data-ticket="{{ $tournament_detail['ticket_price'] }}" 
-                                data-total="{{ $tournament_detail['total_ticket'] }}" 
-                                data-link="{{url()->current()}}" 
-                                class="social-button whatsapp">
-                                <i class="fab fa-whatsapp text-white"></i>
-                            </button> --}}
-                        </div>
-                    </div>
                 </div>
-                <div class="text-white bgFilter"> 
-                    <h4 class="mb-1 highlighter">About Tournament</h4>
-                    <div class="fs-3 grayText">{!! stripslashes($tournament_detail['event_about']) !!}</div>
-                </div>
-                <div class="bgFilter text-white"> 
-                    <h4 class="mb-1 highlighter">Rules & Regulations</h4>
-                    <div class="fs-3 grayText">{!! stripslashes($tournament_detail['event_disclaimer']) !!}</div>
-                </div>
-                @if(!empty($tournament_detail['prize_reward']))
-                    @php 
-                        $collection = json_decode($tournament_detail['prize_reward'], true) ?? []; 
-                    @endphp
-                    @if(is_array($collection) && count($collection) > 0 && !empty($collection[0]))
-                        <div class="bgFilter text-white">
-                            <h4 class="highlighter mb-1">Prizes & Rewards</h4>
-                            @foreach ($collection as $item)
-                                <div class="fs-3 grayText">🏆 {!! mb_convert_encoding($item, 'UTF-8', 'auto') !!}</div>
+                <div class="text-white"> 
+                    <h4 class="highlighter">Catgeory</h4>
+                    @if(isset($tournament_detail['EventTypePrice']))
+                        <div class="row mt-3">
+                            @foreach ($tournament_detail['EventTypePrice'] as $package)
+                                <div class="col-md-4 d-flex mb-4">
+                                    <div class="subscription-card flex-grow-1 d-flex flex-column position-relative">
+                                        <div class="subscription-card-header" style="background-color: #004aad;" data-ticket-type="{{ $package['ticket_type'] }}">
+                                            <h4 class="mb-0 text-center" style="font-size: 18px;"><i class="fas fa-gem" style="font-size: 18px;"></i> {{ $package['ticket_type'] }}</h4>
+                                        </div>
+                                        <div class="subscription-card-body">
+                                            <h3 class="subscription-card-title text-center">₹{{$package['ticket_price']}}<small class="price-text-muted">/ Slot</small></h3>
+                                            <div class="price-list">
+                                                <p><span class="badge badge-danger p-2 mb-0 slotBadge">{{$package['TotalTicket']}} Slot Left</span></p>
+                                                <p class="text-center mb-0"><i class="fas fa-trophy mr-2"></i>{{$package['description']}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="subscription-card-footer">
+                                            <button type="button" data-tour="{{$tournament_detail['event_id']}}" data-ticket="{{$package['typeid']}}" class="button-primary btn-buy">Book Now</button>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     @endif
-                @endif
-            
-
-                @if(count($tournament_Artist))
-                <div class="text-white bgFilter2"> 
-                    <h4 class="highlighter">Tournament Organizing Team & Referee</h4>
-                    <div class="row">
-                        @foreach ($tournament_Artist as $sport)
-                            <div class="col-md-3 col-sm-6 mb-3">
-                                <div class="mt-2 text-center refree">
-                                    <div class="">
-                                        <!-- Artist Image -->
-                                        <img class="rounded-circle p-1 border" 
-                                            src="{{ env('BACKEND_BASE_URL').'/'.$sport['artist_img'] }}" 
-                                            alt="{{ $sport['artist_title'] }}" 
-                                            width="90px" height="90px">
-                                        <!-- Artist Title -->
-                                        <p class="mt-2 mb-0">{{ $sport['artist_title'] }}</p>
-                                        <!-- Artist Role -->
-                                        <span class="badge badge-primary m-1 type_cat">{{ $sport['artist_role'] }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
                 </div>
-                @endif
+                <div class="text-white"> 
+                    <h4 class="mb-1 highlighter">About Tournament</h4>
+                    <div class="fs-3 px-2">{!! stripslashes($tournament_detail['event_about']) !!}</div>
+                </div>
             </div>
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="countdown text-left event-ticket card shadow-sm mb-3">
                     <div class="card-body" id="countdown">
                         <p class="mb-0">Loading countdown...</p>
+                    </div>
+                </div>
+                <div class="event-ticket card shadow-sm mb-3">
+                    <div class="card-body">
+                        <div class="alert_info mb-0" style="background: #FFF3D2" role="alert">
+                            <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
+                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default" data-toggle="modal" data-target="#exampleModal">Learn How ></span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-ticket card shadow-sm mb-3">
+                    <div class="card-body">
+                        <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament_detail['event_img']}}" class="img-fluid" alt="">
                     </div>
                 </div>
                 <div class="text-left event-ticket card shadow-sm mb-3">
@@ -875,71 +979,19 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
                         </div>
                     </div>
                 </div>
-                <div class="event-ticket card shadow-sm mb-3">
-                    <div class="card-body">
-                        <div class="alert_info" style="background: #FFF3D2" role="alert">
-                            <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
-                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default" data-toggle="modal" data-target="#exampleModal">Learn How ></span></div>
-                        </div>
-                        <div class="single-ticket">
-                            @if($tournament_detail['total_ticket'] <= 0)
-                                <a href="javascript:void(0)" class="btn default-btn w-100">Sold Out</a>
-                            @else
-                                <a href="{{ $packageLink }}" class="btn default-btn w-100">Continue To Book {{ $tournament_detail['category'] }}</a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="text-left event-ticket card shadow-sm mb-3">
-                    <div class="card-body">
-                        <div class="products-reviews">
-                            <h4>{{$tournament_detail['event_address_title']}}</h4>
-                            <span class="d-block" style="font-size: 12px;">{{ $tournament_detail['event_address'] }}</span>
-                            @isset($tournament_detail['map_url'])
-                                <div class="progress-section mb-0 mt-3" style="position: relative;">
-                                    <!-- Embed Google Map -->
-                                    <iframe 
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30766738.48171446!2d60.96917638629971!3d19.72516357822192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sus!4v1734715250824!5m2!1sen!2sus" 
-                                        width="100%" 
-                                        height="100%" 
-                                        style="border:0;" 
-                                        allowfullscreen="" 
-                                        loading="lazy" 
-                                        referrerpolicy="no-referrer-when-downgrade">
-                                    </iframe>
-                                
-                                    <!-- Overlay that redirects on click -->
-                                    <a href="{{ $tournament_detail['map_url'] }}" target="_blank" 
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index: 10;">
-                                    </a>
-                                </div>    
-                            @endisset      
-                            @isset($qrCode)
-                            {!! $qrCode !!}
-                            @endisset                 
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         
-        <!-- Modal -->
+        <!-- CTA Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                {{-- <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                </div> --}}
                 <div class="modal-body position-relative">
                     <button type="button" class="close modalClose" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <img src="{{asset('/images/contactlessm Ticket.png')}}" width="100%" alt="">
                 </div>
-                {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div> --}}
             </div>
             </div>
         </div>
@@ -982,52 +1034,6 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
                 </div>
             </div>
         @endif
-    
-        
-        @if(count($tournament_detail['event_tags']))
-            <div class="text-white bgFilter2"> 
-                <h4 class="highlighter ">Tags</h4>
-                <div class="available-sports mb-4 gap-2">
-                    @foreach ($tournament_detail['event_tags'] as $tags)
-                        <span class="tags text-capitalize">{{ $tags }}</span>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-        <!-- Progress Section -->
-        {{-- <div class="progress-section mb-4 mt-4">
-            <h4>Overview {{ $coachData->category->category_name }} Session</h4>
-            <div class="dark-progress-container mb-3">
-                <div class="progress-label">Begin</div>
-                <div class="dark-progress-bar-wrapper">
-                    <div class="dark-progress">
-                        @php
-                            $activityDurationD = $sessionDurationData['activities'];
-                            $lastKey = array_key_last($activityDurationD);
-                        @endphp
-                        @foreach ($activityDurationD as $key => $activity)
-                            @php
-                                $perc = ceil(($activity['activity_duration'] / $sessionDurationData['session_duration']) * 100)
-                            @endphp
-                            <div class="dark-progress-bar {{ $key==0 ? 'rounded-left' : ($key == $lastKey ? 'rounded-right' : '')}}" style="background:{!! Common::sessionColors($key) !!};width:{{ $perc }}%;"></div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="progress-label">{{ $sessionDurationData['session_duration'] }} Min</div>
-            </div>
-
-            <div class=" p-3 bg-dark-theme mb-3">
-                @foreach ($activityDurationD as $k => $act)
-                <div class="dark-session-item mb-3">
-                    <div class="dark-icon-box" style="background: {!! Common::sessionColors($k) !!};"></div>
-                    <div class="ml-3 d-flex flex-grow-1 justify-content-start">
-                        <span style="width:50px;">{{ $act['activity_duration'] }} Mins</span>
-                        <span class="text-muted ml-5">{{ $act['activity'] }}</span>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div> --}}
 
         @if (isset($related_tournament) && count($related_tournament))
             <div class="hawan_section">
@@ -1289,6 +1295,81 @@ Join WhatsApp Group: https://chat.whatsapp.com/FhUev6nHYzC5NfkBUKzhv9"
         // Open WhatsApp with the pre-filled message (image preview will automatically be handled by WhatsApp)
         var whatsappURL = `https://wa.me/?text=${encodedMessage}`;
         window.open(whatsappURL, '_blank');
+    });
+</script>
+<script>
+    
+    // Add click event listener for "Book Now" button
+    $('.btn-buy').click(function (e) {
+        e.preventDefault();
+
+        var button = $(this);
+
+        // Extract tour_id and ticket_id from button's data attributes
+        var tourId = button.data('tour');
+        var ticketId = button.data('ticket');
+
+        // Perform AJAX request to process booking
+        $.ajax({
+            url: "{{ route('purchase-tournament') }}", // Laravel route for handling the purchase
+            type: 'POST',
+            data: {
+                tour_id: tourId,
+                ticket_id: ticketId,
+                quantity: 1,
+                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for security
+            },
+            success: function (response) {
+                if (response.status === 'success') {
+                    iziToast.success({
+                        title: 'Success',
+                        position: 'topRight',
+                        message: response.message,
+                    });
+                    // Redirect to the returned URL
+                    window.location.href = response.redirect_url;
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        position: 'topRight',
+                        message: response.message,
+                    });
+                }
+            },
+            error: function () {
+                iziToast.error({
+                    title: 'Error',
+                    position: 'topRight',
+                    message: 'An error occurred. Please try again later.',
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all the headers and buttons
+        const ticketHeaders = document.querySelectorAll('.subscription-card-header');
+        
+        // Loop through each header
+        ticketHeaders.forEach(function (ticketHeader) {
+            const textContent = ticketHeader.textContent.toLowerCase();
+            
+            // Check if it contains "girl" or "women"
+            if (textContent.includes("girl") || textContent.includes("women")) {
+                ticketHeader.style.backgroundColor = "#db207b"; // Change header background color
+                
+                // Find the associated buy button and change its background color
+                const btnBuy = ticketHeader
+                    .closest('.subscription-card') // Find the parent card
+                    .querySelector('.btn-buy'); // Find the buy button inside the card
+                
+                if (btnBuy) {
+                    btnBuy.style.backgroundColor = "#db207b";
+                }
+            }
+        });
     });
 </script>
 
