@@ -912,9 +912,9 @@
                         </div>
                     </div>
                 </div>
+                @if(isset($tournament_detail['EventTypePrice']) && count($tournament_detail['EventTypePrice']) > 0)
                 <div class="text-white"> 
                     <h4 class="highlighter">Catgeory</h4>
-                    @if(isset($tournament_detail['EventTypePrice']) && count($tournament_detail['EventTypePrice']) > 0)
                         <div class="row mt-3">
                             @foreach ($tournament_detail['EventTypePrice'] as $package)
                                 <div class="col-md-4 d-flex mb-4">
@@ -936,8 +936,8 @@
                                 </div>
                             @endforeach
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @endif
                 <div class="text-white"> 
                     <h4 class="mb-1 highlighter">About Tournament</h4>
                     <div class="fs-3 px-2">{!! stripslashes($tournament_detail['event_about']) !!}</div>
