@@ -11,138 +11,6 @@ $orgComm = 0;
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
-    /* Ticket Form Styles */
-    .add-ticket-btn {
-        margin-top: 15px;
-        margin-bottom: 20px;
-    }
-    .remove-ticket-btn {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        color: rgb(255, 255, 255);
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        outline: none !important;
-    }
-    .playerGroup {
-        position: relative;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        /* background: #f9f9f9; */
-    }
-    .ticketHeading {
-        background: #004aad;
-        color: #ffffff;
-        padding: 6px;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 576px) {
-        .mbsm {
-            margin-top: 15px;
-        }
-        .mbsm h4 {
-            font-size: 18px !important;
-        }
-    }
-
-    /* Blurred image effect */
-    #blurImg {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        overflow: hidden;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-    #blurImg::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("{{ env('BACKEND_BASE_URL') }}/{{ $packageDetails['event_img'] }}");
-        background-size: cover;
-        background-position: center;
-        filter: blur(10px);
-        z-index: 1;
-        opacity: 0.8;
-    }
-    #blurImg img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 90%;
-        max-height: 90%;
-        z-index: 2;
-        border-radius: 4px;
-    }
-    @media (max-width: 768px) {
-        #blurImg {
-            height: 250px;
-        }
-    }
-    @media (max-width: 576px) {
-        #blurImg {
-            height: 200px;
-        }
-        #blurImg img {
-            max-width: 95%;
-            max-height: 95%;
-        }
-    }
-
-    /* Modal styles */
-    .modal-cstm {
-        max-width: 1000px !important;
-    }
-    .payment_details_div {
-        background-color: #070b28;
-    }
-    .qr_container_div {
-        background-image: url(images/2.png);
-        background-position: bottom right;
-        background-repeat: no-repeat;
-    }
-    .trans_box {
-        background: #070b28;
-        padding: 9px;
-        border-radius: 10px;
-    }
-    .trans_input {
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        font-size: 18px;
-        background-color: #070b28;
-        border: 1px solid #093a81;
-        margin: 0 5px;
-    }
-    .modal-footer-btn {
-        font-weight: 700;
-        font-size: 20px;
-        font-family: sans-serif;
-        border-radius: 0;
-    }
-    .textBox-postion small {
-        background: #004aad;
-        padding: 6px 15px;
-        font-weight: 900;
-        color: #fff;
-        border-radius: 10px;
-        font-size: 15px !important;
-    }
-    .qr_container_div .main_qr {
-        border: 3px solid #004aad;
-    }
-    
     /* General Styles */
     @media (max-width: 576px) {
         .mbsm {
@@ -154,7 +22,7 @@ $orgComm = 0;
     }
 
     .ticketHeading {
-        background: #004aad;
+        background: #6e6e6e;
         color: #ffffff;
         padding: 6px;
     }
@@ -503,8 +371,9 @@ $orgComm = 0;
     .modal-footer {
         border-top: none;
     }
-</style>
 
+    
+</style>
 <section class="section-area checkout-event-area">
     <div class="container">
         <form action="{{route('store-payment-detail')}}" id="payment-form" method="post">
@@ -547,18 +416,48 @@ $orgComm = 0;
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
-                                                <!-- Player Information Container -->
-                                                <div id="playerInformationContainer">
-                                                    <!-- Initial tickets will be loaded here -->
-                                                </div>
-                                                
-                                                <!-- Add More Tickets Button -->
-                                                <div class="text-center">
-                                                    <button type="button" id="addTicketBtn" class="btn btn-primary add-ticket-btn">
-                                                        <i class="fas fa-plus-circle"></i> Add Another Ticket
-                                                    </button>
-                                                </div>
+                                                <!-- Player Information Fields -->
+                                                @for($i = 1; $i <= $bookingData['quantity']; $i++)
+                                                    <div class="playerGroup">
+                                                        @if ($bookingData['quantity'] > 1)
+                                                            <h4 class="mb-3 text-center ticketHeading">Ticket {{ $i }}</h4>
+                                                        @endif
+                                                        
+                                                        <div class="playerForm">
+                                                            <div class="row">
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="player_name_{{ $i }}" class="form-label">Name <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="player_name_{{ $i }}" id="player_name_{{ $i }}" placeholder="Student Name" required>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="player_contact_{{ $i }}" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" name="player_contact_{{ $i }}" id="player_contact_{{ $i }}" placeholder="Student Contact Number" required maxlength="10" minlength="10">
+                                                                </div>
+                                                                
+                                                                @if(in_array('age', $packageDetails['fields']))
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="age_{{ $i }}" class="form-label">Age <span class="text-danger">*</span></label>
+                                                                    <input type="number" placeholder="Enter Age" class="form-control" name="player_age_{{ $i }}" id="age_{{ $i }}" required min="1" max="100">
+                                                                </div>
+                                                                @endif
+                                                                
+                                                                @if(in_array('shirt_size', $packageDetails['fields']))
+                                                                <div class="mb-3 col-lg-6">
+                                                                    <label for="shirt_size_{{ $i }}" class="form-label">T-Shirt Size <span class="text-danger">*</span></label>
+                                                                    <select class="form-select form-control" name="player_shirt_size_{{ $i }}" id="shirt_size_{{ $i }}" required>
+                                                                        <option value="">Choose Size</option>
+                                                                        <option value="S">Small</option>
+                                                                        <option value="M">Medium</option>
+                                                                        <option value="L">Large</option>
+                                                                        <option value="XL">Extra Large</option>
+                                                                    </select>
+                                                                </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endfor
                                             </div>  
                                         </div>
                                     </div>
@@ -591,9 +490,8 @@ $orgComm = 0;
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <p class="my-0">Total Quantity</p>
-                                        <small class="text-muted" id="quantityText">{{$bookingData['quantity']}} ticket(s)</small>
                                     </div>
-                                    <span class="text-white" id="quantityDisplay">{{$bookingData['quantity']}}</span>
+                                    <span class="text-white">{{$bookingData['quantity']}}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
@@ -637,6 +535,10 @@ $orgComm = 0;
                                 @endphp
                                 <button data-toggle="modal" data-target="#loginOtpModal" type="button" class="btn default-btn btn-block">Login To Continue</button>
                             @endif
+
+                            <!-- <button type="button" class="btn btn-outline-primary btn-sm mt-2" data-toggle="modal" data-target="#qrPaymentModal">
+                                <i class="fas fa-qrcode mr-2"></i>View Payment Options
+                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -660,7 +562,7 @@ $orgComm = 0;
             
             <input type="hidden" name="merchant_order_id" value="{{ $feeToken }}" />
             <input type="hidden" name="merchant_trans_id" value="{{ $txnid }}" />
-            <input type="hidden" name="total_amount_pay" id="total_amount_pay" value="{{ round($totalAmountPayable, 2) }}" />
+            <input type="hidden" name="total_amount_pay" value="{{ round($totalAmountPayable, 2) }}" />
             <input type="hidden" name="sponser_id" value="{{$sponser_id}}" />
             <input type="hidden" name="limit_user" value="{{$user_limit}}" />
             <input type="hidden" name="coupon_amt" id="coupon_amt" value="0" />
@@ -669,11 +571,11 @@ $orgComm = 0;
             <input type="hidden" name="ticket_id" value="{{ $ticket_id }}" />
             <input type="hidden" name="event_id" value="{{ $EventId }}" />
             <input type="hidden" name="ticket_price" value="{{ $ticket_price }}" />
-            <input type="hidden" name="total_ticket" id="total_ticket" value="{{ $total_ticket }}" />
+            <input type="hidden" name="total_ticket" value="{{ $total_ticket }}" />
         </form>
     </div>
 
-    <!-- Payment Modal -->
+    <!-- MODAL START -->
     <div class="modal fade" id="qrPaymentModal" tabindex="-1" role="dialog" aria-labelledby="qrPaymentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-cstm" role="document">
             <div class="modal-content">
@@ -741,6 +643,7 @@ $orgComm = 0;
             </div>
         </div>
     </div>
+    <!-- MODAL END -->
 </section>
 @endsection
 
@@ -748,160 +651,63 @@ $orgComm = 0;
 <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // Function to move to next input field
+    function moveToNext(current, nextFieldId) {
+        if (current.value.length === current.maxLength) {
+            document.getElementById(nextFieldId).focus();
+        }
+    }
+
+    // Function to handle backspace
+    function handleBackspace(current, prevFieldId) {
+        if (event.key === 'Backspace' && current.value.length === 0 && prevFieldId) {
+            document.getElementById(prevFieldId).focus();
+        }
+    }
+
+    // Check if user is logged in and handle form interactions
+    @if (!Common::isUserLogin())
+    document.addEventListener('DOMContentLoaded', () => {
+        let alertShown = false;
+        document.querySelectorAll('#payment-form input, #payment-form select, #payment-form textarea').forEach(el => {
+            el.addEventListener('focus', e => {
+                if (!alertShown) {
+                    alertShown = true;
+                    
+                    // Show your custom modal
+                    $('#loginOtpModal').modal({
+                        backdrop: 'static', // Prevent closing by clicking outside
+                        keyboard: false   // Prevent closing with ESC key
+                    });
+                    
+                    // Store the current focused element
+                    const focusedElement = e.target;
+                    
+                    // When modal is hidden, reset the alertShown flag
+                    $('#loginOtpModal').on('hidden.bs.modal', function () {
+                        alertShown = false;
+                    });
+                    
+                    // Optional: Redirect after successful login
+                    // This would be handled by your existing OTP verification success callback
+                }
+                
+                // Prevent default and blur the element
+                e.preventDefault();
+                e.target.blur();
+            });
+        });
+        
+        // Handle successful login (this should match your existing OTP success handler)
+        $(document).on('loginSuccess', function() {
+            $('#loginOtpModal').modal('hide');
+            alertShown = false; // Reset flag to allow future interactions
+        });
+    });
+    @endif
+
     $(document).ready(function() {
-        
-        // Initialize with the quantity from previous screen
-        let currentTicketCount = parseInt("{{ $bookingData['quantity'] }}");
-        const ticketPrice = parseFloat("{{ $packageDetails['ticket'] }}");
-        const taxAmount = parseFloat("{{ $settingDetails['tax'] }}");
-        
-        // Function to render a ticket form
-        function renderTicketForm(ticketNumber) {
-            const fields = @json($packageDetails['fields']);
-            const hasAge = fields.includes('age');
-            const hasShirtSize = fields.includes('shirt_size');
-            
-            return `
-                <div class="playerGroup" id="ticketGroup_${ticketNumber}">
-                    <button type="button" class="remove-ticket-btn" onclick="removeTicket(${ticketNumber})" ${ticketNumber <= {{ $bookingData['quantity'] }} ? 'disabled style="display:none;"' : ''}>
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                    
-                    <h4 class="mb-3 text-center ticketHeading">Ticket ${ticketNumber}</h4>
-                    
-                    <div class="playerForm">
-                        <div class="row">
-                            <div class="mb-3 col-lg-4">
-                                <label for="player_name_${ticketNumber}" class="form-label">Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="player_name_${ticketNumber}" id="player_name_${ticketNumber}" placeholder="Student Name" required>
-                            </div>
-                            
-                            <div class="mb-3 col-lg-4">
-                                <label for="player_contact_${ticketNumber}" class="form-label">Contact Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="player_contact_${ticketNumber}" id="player_contact_${ticketNumber}" placeholder="Student Contact Number" required maxlength="10" minlength="10">
-                            </div>
-                            
-                            ${hasAge ? `
-                            <div class="mb-3 col-lg-4">
-                                <label for="age_${ticketNumber}" class="form-label">Age <span class="text-danger">*</span></label>
-                                <input type="number" placeholder="Enter Age" class="form-control" name="player_age_${ticketNumber}" id="age_${ticketNumber}" required min="1" max="100">
-                            </div>
-                            ` : ''}
-                            
-                            ${hasShirtSize ? `
-                            <div class="mb-3 col-lg-4">
-                                <label for="shirt_size_${ticketNumber}" class="form-label">T-Shirt Size <span class="text-danger">*</span></label>
-                                <select class="form-select form-control" name="player_shirt_size_${ticketNumber}" id="shirt_size_${ticketNumber}" required>
-                                    <option value="">Choose Size</option>
-                                    <option value="S">Small</option>
-                                    <option value="M">Medium</option>
-                                    <option value="L">Large</option>
-                                    <option value="XL">Extra Large</option>
-                                </select>
-                            </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Load initial tickets
-        function loadInitialTickets() {
-            const container = $('#playerInformationContainer');
-            container.empty();
-            
-            for (let i = 1; i <= currentTicketCount; i++) {
-                container.append(renderTicketForm(i));
-            }
-        }
-        
-        // Add new ticket
-        $('#addTicketBtn').click(function() {
-
-            
-            @if(!Common::isUserLogin())
-                $('#loginOtpModal').modal('show');
-                return false;
-            @endif
-            
-
-            currentTicketCount++;
-            $('#playerInformationContainer').append(renderTicketForm(currentTicketCount));
-            updateQuantityAndPrice();
-        });
-        
-        // Remove ticket (only for added tickets, not initial ones)
-        window.removeTicket = function(ticketNumber) {
-            if (ticketNumber > parseInt("{{ $bookingData['quantity'] }}")) {
-                $(`#ticketGroup_${ticketNumber}`).remove();
-                currentTicketCount--;
-                updateQuantityAndPrice();
-            }
-        };
-        
-        // Update quantity and price display
-        function updateQuantityAndPrice() {
-            // Update display
-            $('#quantityDisplay').text(currentTicketCount);
-            $('#quantityText').text(currentTicketCount + ' ticket(s)');
-            $('#total_ticket').val(currentTicketCount);
-            
-            // Calculate new total
-            const totalBeforeCoupon = (ticketPrice * currentTicketCount) + taxAmount;
-            const couponAmount = parseFloat($('#coupon_amt').val()) || 0;
-            const newTotal = totalBeforeCoupon - couponAmount;
-            
-            // Update total display
-            $('#total_amount').text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
-            $('#total_amount_pay').val(newTotal.toFixed(2));
-            $('#modalTotalAmount').text(newTotal.toFixed(2));
-        }
-        
-        // Initialize the form
-        loadInitialTickets();
-        
-        // Coupon code application
-        $("#apply_btn").on('click', function() {
-            var txt = $("#promo_text").val();
-            if (txt != '') {
-                $("#apply_btn").text('Processing...').attr('disabled', 'disabled');
-                
-                const amountBeforeCoupon = (ticketPrice * currentTicketCount) + taxAmount;
-                
-                $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount=' + amountBeforeCoupon + '&sid={{$packageDetails["sponser_id"]}}', function(data) {
-                    if (data.s == 1) {
-                        iziToast.success({
-                            title: 'Success',
-                            position: 'topRight',
-                            message: 'Coupon applied successfully!',
-                        });
-                        
-                        $("#coupon_err").text("");
-                        $('#couponBox').removeClass('d-none').addClass('d-flex');
-                        $('#coupon_amt').val(data.coupon);
-                        $("#coupon_disc").text('-{{$settingDetails["currency"]}}' + data.coupon);
-                        
-                        // Update total amount
-                        let newTotal = amountBeforeCoupon - parseFloat(data.coupon);
-                        $("#total_amount").text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
-                        $("#total_amount_pay").val(newTotal.toFixed(2));
-                        $('#modalTotalAmount').text(newTotal.toFixed(2));
-                    } else {
-                        iziToast.error({
-                            title: 'Error',
-                            position: 'topRight',
-                            message: data.message || 'Invalid coupon code or coupon is expired',
-                        });
-                        $("#coupon_err").text(data.message || 'Invalid coupon code or coupon is expired');
-                    }
-                    
-                    $("#apply_btn").text('Apply').removeAttr('disabled');
-                });
-            }
-        });
-        
-        // Form validation
+        // Form validation function with specific error messages
         function validateForm() {
             let isValid = true;
             let errorMessages = [];
@@ -916,50 +722,95 @@ $orgComm = 0;
                 isValid = false;
             }
             
-            // Validate player information for all tickets
-            for (let i = 1; i <= currentTicketCount; i++) {
+            // Validate player information
+            // @for($i = 1; $i <= $bookingData['quantity']; $i++)
+            //     // Player name validation
+            //     if (!$('#player_name_{{ $i }}').val().trim()) {
+            //         errorMessages.push('Please enter name');
+            //         $('#player_name_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     }
+                
+            //     // Player contact validation (10 digits)
+            //     var playerContact  = $('#player_contact_{{ $i }}').val().trim();
+            //     if (!playerContact ) {
+            //         errorMessages.push('Please enter contact number');
+            //         $('#player_contact_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     } else if (!/^\d{10}$/.test(playerContact )) {
+            //         errorMessages.push('Please enter a valid 10-digit contact number');
+            //         $('#player_contact_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     }
+                
+            //     @if(in_array('age', $packageDetails['fields']))
+            //     // Age validation
+            //     let playerAge = $('#age_{{ $i }}').val().trim();
+            //     if (!playerAge) {
+            //         errorMessages.push('Please enter age');
+            //         $('#age_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     } else if (playerAge < 1 || playerAge > 100) {
+            //         errorMessages.push('Please enter a valid age (1-100)');
+            //         $('#age_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     }
+            //     @endif
+                
+            //     @if(in_array('shirt_size', $packageDetails['fields']))
+            //     // Shirt size validation
+            //     if (!$('#shirt_size_{{ $i }}').val()) {
+            //         errorMessages.push('Please select t-shirt size');
+            //         $('#shirt_size_{{ $i }}').addClass('is-invalid');
+            //         isValid = false;
+            //     }
+            //     @endif
+            // @endfor
+
+            // Validate player information
+            @for($i = 1; $i <= $bookingData['quantity']; $i++)
                 // Player name validation
-                if (!$('#player_name_' + i).val().trim()) {
-                    errorMessages.push('Please enter name for ticket ' + i);
-                    $('#player_name_' + i).addClass('is-invalid');
+                if (!$('#player_name_{{ $i }}').val().trim()) {
+                    errorMessages.push('Please enter name for ticket {{ $i }}');
+                    $('#player_name_{{ $i }}').addClass('is-invalid');
                     isValid = false;
                 }
                 
-                // Player contact validation
-                const playerContact = $('#player_contact_' + i).val().trim();
-                if (!playerContact) {
-                    errorMessages.push('Please enter contact number for ticket ' + i);
-                    $('#player_contact_' + i).addClass('is-invalid');
+                // Player contact validation (10 digits)
+                const playerContact{{ $i }} = $('#player_contact_{{ $i }}').val().trim();
+                if (!playerContact{{ $i }}) {
+                    errorMessages.push('Please enter contact number for ticket {{ $i }}');
+                    $('#player_contact_{{ $i }}').addClass('is-invalid');
                     isValid = false;
-                } else if (!/^\d{10}$/.test(playerContact)) {
-                    errorMessages.push('Please enter a valid 10-digit contact number for ticket ' + i);
-                    $('#player_contact_' + i).addClass('is-invalid');
+                } else if (!/^\d{10}$/.test(playerContact{{ $i }})) {
+                    errorMessages.push('Please enter a valid 10-digit contact number for ticket {{ $i }}');
+                    $('#player_contact_{{ $i }}').addClass('is-invalid');
                     isValid = false;
                 }
                 
                 @if(in_array('age', $packageDetails['fields']))
-                // Age validation
-                const playerAge = $('#age_' + i).val().trim();
-                if (!playerAge) {
-                    errorMessages.push('Please enter age for ticket ' + i);
-                    $('#age_' + i).addClass('is-invalid');
+                // Age validation - using let for block scope
+                let playerAge{{ $i }} = $('#age_{{ $i }}').val().trim();
+                if (!playerAge{{ $i }}) {
+                    errorMessages.push('Please enter age for ticket {{ $i }}');
+                    $('#age_{{ $i }}').addClass('is-invalid');
                     isValid = false;
-                } else if (playerAge < 1 || playerAge > 100) {
-                    errorMessages.push('Please enter a valid age (1-100) for ticket ' + i);
-                    $('#age_' + i).addClass('is-invalid');
+                } else if (playerAge{{ $i }} < 1 || playerAge{{ $i }} > 100) {
+                    errorMessages.push('Please enter a valid age (1-100) for ticket {{ $i }}');
+                    $('#age_{{ $i }}').addClass('is-invalid');
                     isValid = false;
                 }
                 @endif
                 
                 @if(in_array('shirt_size', $packageDetails['fields']))
                 // Shirt size validation
-                if (!$('#shirt_size_' + i).val()) {
-                    errorMessages.push('Please select t-shirt size for ticket ' + i);
-                    $('#shirt_size_' + i).addClass('is-invalid');
+                if (!$('#shirt_size_{{ $i }}').val()) {
+                    errorMessages.push('Please select t-shirt size for ticket {{ $i }}');
+                    $('#shirt_size_{{ $i }}').addClass('is-invalid');
                     isValid = false;
                 }
                 @endif
-            }
+            @endfor
             
             // For new users, validate registration fields
             @if (!Common::isUserLogin())
@@ -994,20 +845,22 @@ $orgComm = 0;
             
             // Show all error messages if validation fails
             if (!isValid) {
+                // Create a formatted error message with bullet points
                 let formattedMessage = '<div><ul>';
                 errorMessages.forEach(msg => {
                     formattedMessage += `<li>${msg}</li>`;
                 });
                 formattedMessage += '</ul></div>';
                 
+                // Remove any existing error toasts
                 iziToast.destroy();
                 
                 iziToast.error({
                     title: 'Validation Error',
                     position: 'topRight',
                     message: formattedMessage,
-                    timeout: 10000,
-                    displayMode: 2,
+                    timeout: 10000, // Show for 10 seconds
+                    displayMode: 2, // Persistent until dismissed
                     close: false,
                     buttons: [
                         ['<button>OK</button>', function (instance, toast) {
@@ -1016,6 +869,7 @@ $orgComm = 0;
                     ]
                 });
                 
+                // Scroll to the first error field
                 $('html, body').animate({
                     scrollTop: $('.is-invalid').first().offset().top - 100
                 }, 500);
@@ -1027,12 +881,6 @@ $orgComm = 0;
         // Handle Continue to Checkout button click
         $('#submitPayment').on('click', function(e) {
             e.preventDefault();
-            
-            @if(!Common::isUserLogin())
-                $('#loginOtpModal').modal('show');
-                return false;
-            @endif
-            
             if (!validateForm()) {
                 return false;
             }
@@ -1089,44 +937,60 @@ $orgComm = 0;
             // Submit the form
             $('#payment-form').submit();
         });
-    });
-
-    // Helper functions for UPI ID input
-    function moveToNext(current, nextFieldId) {
-        if (current.value.length === current.maxLength) {
-            document.getElementById(nextFieldId).focus();
-        }
-    }
-
-    function handleBackspace(current, prevFieldId) {
-        if (event.key === 'Backspace' && current.value.length === 0 && prevFieldId) {
-            document.getElementById(prevFieldId).focus();
-        }
-    }
-
-    // Prevent form interaction for non-logged in users
-    @if(!Common::isUserLogin())
-    $(document).ready(function() {
-        let alertShown = false;
         
-        // Intercept all form field interactions
-        $('#payment-form input, #payment-form select, #payment-form textarea').on('focus click', function(e) {
-            if (!alertShown) {
-                alertShown = true;
-                $('#loginOtpModal').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+        // Coupon code application
+        $("#apply_btn").on('click', function() {
+            var txt = $("#promo_text").val();
+            if (txt != '') {
+                $("#apply_btn").text('Processing...').attr('disabled', 'disabled');
                 
-                // Reset flag when modal is closed
-                $('#loginOtpModal').on('hidden.bs.modal', function() {
-                    alertShown = false;
+                $.get('{{url("get-promo-discount")}}?code=' + txt + '&amount={{$ticketAmount+$settingDetails["tax"]}}' + '&sid={{$packageDetails["sponser_id"]}}', function(data) {
+                    if (data.s == 1) {
+                        iziToast.success({
+                            title: 'Success',
+                            position: 'topRight',
+                            message: 'Coupon applied successfully!',
+                        });
+                        
+                        $("#coupon_err").text("");
+                        $('#couponBox').removeClass('d-none').addClass('d-flex');
+                        $('#coupon_amt').val(data.coupon);
+                        $("#coupon_disc").text('-{{$settingDetails["currency"]}}' + data.coupon);
+                        
+                        // Update total amount
+                        let newTotal = parseFloat({{$ticketAmount + $settingDetails['tax']}}) - parseFloat(data.coupon);
+                        $("#total_amount").text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
+                        $("input[name='total_amount_pay']").val(newTotal.toFixed(2));
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            position: 'topRight',
+                            message: data.message || 'Invalid coupon code or coupon is expired',
+                        });
+                        $("#coupon_err").text(data.message || 'Invalid coupon code or coupon is expired');
+                    }
+                    
+                    $("#apply_btn").text('Apply').removeAttr('disabled');
                 });
             }
-            e.preventDefault();
-            $(this).blur();
         });
     });
-    @endif
+</script>
+
+<script>
+    // Dynamically set the background image (optional - can be done with inline CSS as shown above)
+    document.addEventListener('DOMContentLoaded', function() {
+        const blurContainer = document.getElementById('blurImg');
+        if (blurContainer) {
+            const imgUrl = "{{ env('BACKEND_BASE_URL') }}/{{ $packageDetails['event_img'] }}";
+            const style = document.createElement('style');
+            style.innerHTML = `
+                #blurImg::before {
+                    background-image: url('${imgUrl}');
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    });
 </script>
 @endpush

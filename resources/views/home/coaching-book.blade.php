@@ -838,11 +838,36 @@
         justify-content: space-evenly;
         align-items: center;
     }
+
+    @media (min-width: 992px) { /* lg breakpoint */
+        .col-lg-8.custom-width {
+            flex: 0 0 62%;
+            max-width: 62%;
+        }
+        
+        .col-lg-4.custom-width {
+            flex: 0 0 38%;
+            max-width: 38%;
+        }
+    }
+
+    .verified-badge {
+        font-size: 16px;
+        padding: 3px 6px;
+        border-radius: 10px;
+        vertical-align: middle;
+    }
+    
+    /* Optional: Adjust spacing if needed */
+    .custom-width {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
 </style>
 @endpush
 @section('content')
-<section class="section-area single-detail-area py-3">
-    <div class="container">
+<section class="section-area single-detail-area p-0">
+    <div class="container-fluid p-0">
         @php
             $banners = [
                 asset('frontend/images/banner-1.png'),
@@ -852,68 +877,22 @@
             $randomBanner = $banners[array_rand($banners)];
         @endphp
 
-        <div class="p-0 mt-3 shadow-sm home-slider">
+        <div class="p-0 mt-0 shadow-sm home-slider">
             <img src="{{ $randomBanner }}" class="img-fluid rounded" alt="Banner">
         </div>
+    </div>
+
+    <div class="container">
 
         <div class="row mt-5">
-            <div class="col-lg-8 col-md-8 col-12">
+            <div class="col-lg-8 col-md-8 col-12 custom-width">
                 <h4 class="mb-2"><span class="badge badge-success h2">{{$tournament_detail['category']}} Tournament</span></h4>
-                <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="mb-2">
                     <h4>{{ $tournament_detail['event_title'] }}</h4>
-                </div>
-                <div class="dark-gap text-white" style="margin-bottom: 0;">
-                    <div class="row">
-                        <div class="col-lg-6 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="icon_box calendar_icon">
-                                    <i class="far fa-calendar-alt"></i>
-                                </div>
-                                <div class="text_box">
-                                    <p class="mb-0">Start Date</p>
-                                    <small class="text_muted">{{ $tournament_detail['event_start'] }}</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="icon_box calendar_icon">
-                                    <i class="far fa-calendar-alt"></i>
-                                </div>
-                                <div class="text_box">
-                                    <p class="mb-0">End Date</p>
-                                    <small class="text_muted">{{ $tournament_detail['event_end'] }}</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="icon_box location_icon">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <div class="text_box">
-                                    <p class="text_muted"></p>{{ $tournament_detail['event_address'] }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-4">
-                    <div class="col-lg-6 mbsm">
-                        <div class="text-white">
-                            <h4 class="mb-3">Organized By</h4>
-                            <div class="d-flex align-items-center">
-                                <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
-                                <div>
-                                    <p class="mb-0 fs-2">{{$tournament_detail['sponsore_name']}}</p>
-                                    <p class="mb-0 fs-2">{{$tournament_detail['sponsore_mobile']}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <small class="text_muted"><i class="far fa-calendar-alt"></i> {{ $tournament_detail['event_start'] }} - {{ $tournament_detail['event_end'] }}</small>
                 </div>
                 @if(isset($tournament_detail['EventTypePrice']) && count($tournament_detail['EventTypePrice']) > 0)
-                <div class="text-white"> 
+                <div class="text-white mt-4 mb-3"> 
                     <h4 class="highlighter">Catgeory</h4>
                         <div class="row mt-3">
                             @foreach ($tournament_detail['EventTypePrice'] as $package)
@@ -938,12 +917,41 @@
                         </div>
                     </div>
                 @endif
-                <div class="text-white"> 
+
+                <div class="text-white mb-4"> 
                     <h4 class="mb-1 highlighter">About Tournament</h4>
                     <div class="fs-3 px-2">{!! stripslashes($tournament_detail['event_about']) !!}</div>
+                </div>                
+                
+                <div class="row align-items-center mb-4 mt-2">
+                    <div class="col-lg-12 mbsm">
+                        <div class="text-white">
+                            <h4 class="mb-1 highlighter">Organized By</h4>
+                            <div class="d-flex align-items-center">
+                                <img class="img-thumbnail profile-img" src="{{ env('BACKEND_BASE_URL').'/'.$tournament_detail['sponsore_img'] }}" alt="{{$tournament_detail['sponsore_name']}}">
+                                <div>
+                                    <p class="mb-0 fs-2 d-flex align-items-center">
+                                        {{$tournament_detail['sponsore_name']}}
+                                        <span class="verified-badge ml-1" data-toggle="tooltip" title="Verified Organizer">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </span>
+                                    </p>
+                                    <p class="mb-0 fs-2">{{$tournament_detail['sponsore_mobile']}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="row text-white mb-4">
+                    <div class="col-lg-12">   
+                        <h4 class="mb-1 highlighter">Venue</h4>
+                        <p class="mb-0 mt-2"><i class="fas fa-map-marker-alt ml-2 mr-1"></i> {{ $tournament_detail['event_address'] }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-12">
+            <div class="col-lg-4 col-md-4 col-12 custom-width">
                 <div class="countdown text-left event-ticket card shadow-sm mb-3">
                     <div class="card-body" id="countdown">
                         <p class="mb-0">Loading countdown...</p>
@@ -951,15 +959,15 @@
                 </div>
                 <div class="event-ticket card shadow-sm mb-3">
                     <div class="card-body">
-                        <div class="alert_info mb-0" style="background: #FFF3D2" role="alert">
-                            <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
-                            <div>Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default" data-toggle="modal" data-target="#exampleModal">Learn How ></span></div>
-                        </div>
+                        <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament_detail['event_img']}}" class="img-fluid" alt="">
                     </div>
                 </div>
                 <div class="event-ticket card shadow-sm mb-3">
                     <div class="card-body">
-                        <img src="{{env('BACKEND_BASE_URL')}}/{{$tournament_detail['event_img']}}" class="img-fluid" alt="">
+                        <div class="alert_info mb-0 align-items-center" style="background: #FFF3D2" role="alert">
+                            <div class="iconBox"><i class="fas fa-ticket-alt"></i></div>
+                            <p class="mb-0">Contactless Ticketing & Fast-track Entry with M-ticket. <span class="text-default" data-toggle="modal" data-target="#exampleModal">Learn How ></span></a>
+                        </div>
                     </div>
                 </div>
                 <div class="text-left event-ticket card shadow-sm mb-3">
@@ -1113,47 +1121,6 @@
                 </div>
             </div>
         @endif
-        {{-- @if(count($relatedCoaching))
-            <div class="hawan_section">
-                <div class="d-sm-flex align-items-center justify-content-between mt-5 mb-3 overflow-hidden">
-                    <h1 class="h4 mb-0 float-left">Related Coaching</h1>
-                </div>
-                <div class="event-block-slider">
-                    @foreach ($relatedCoaching as $coaching)
-                        <div class="card m-card shadow-sm border-0 listcard">
-                            <div>
-                                <div class="m-card-cover">
-                                    <img src="{{asset('uploads/'.$coaching->poster_image)}}" class="card-img-top" alt="{{$coaching->coaching_title}}">
-                                </div>
-                                <div class="card-body">
-                                    <div class="rating-star mb-1">
-                                        {!!Common::randomRatings()!!}
-                                    </div>
-                                    <h5 class="card-title mb-2"><u>{{$coaching->coaching_title}}</u></h5>
-                                    <p class="card-text mb-0">
-                                        <small class="text-dark" title="{{ $coaching->venue_name }}"><i class="fas fa-map-marker-alt pr-2"></i>
-                                        {{ strlen($coaching->venue_name) > 50 ? substr($coaching->venue_name, 0, 50) . '...' : $coaching->venue_name }}
-                                        </small>
-                                    </p>
-
-                                    @php
-                                        // $sessionDays = isset($coaching->coachingPackage->session_days) ? json_decode($coaching->coachingPackage->session_days, true) : [];
-                                    @endphp
-                                <p class="my-1 text-light"><small>  {{ $coaching->venue_area.', '.$coaching->venue_address.', '.$coaching->venue_city }} </small></p>
-
-                                    <div class="mt-2 d-flex justify-content-between align-items-center">
-                                    {!!Common::showDiscountLabel($coaching->coachingPackage->package_price, $coaching->coachingPackage->discount_percent )!!}  
-                                    
-                                        <a href="{{url('coaching-book/'.$coaching->id.'/'.Str::slug($coaching->coaching_title))}}" class="mt-1 btn btn-success btn-sm mb-1 ">Book Now</a>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif --}}
         <br>
     </div>
 </section>
@@ -1370,6 +1337,11 @@
                 }
             }
         });
+    });
+</script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 
