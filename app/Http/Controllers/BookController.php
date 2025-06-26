@@ -296,7 +296,9 @@ class BookController extends Controller
             $couponList = $this->getCopunByApi($sponserId);
         }
 
-        // dd($packageDetails);
+        $initialTicketCount = ($bookingData['category'] === 'Doubles') ? 2 : 1;
+        $totalPlayerForms = $initialTicketCount * $bookingData['quantity'];
+        $bookingData['total_player_forms'] = $totalPlayerForms;
 
         // Pass booking data to the view
         return view('frontend.book-event.book-ticket', compact('packageDetails','settingDetails','bookingData','payData','couponList'));
@@ -560,10 +562,11 @@ class BookController extends Controller
     {
         $tourId = $request->input('tour_id');
         $ticketId = $request->input('ticket_id');
+        $category = $request->input('category');
         $quantity = $request->input('quantity');
     
         // Validate request data
-        if (!$tourId || !$ticketId || $quantity < 1) {
+        if (!$tourId || !$ticketId || !$category || $quantity < 1) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid request data.',
@@ -576,6 +579,7 @@ class BookController extends Controller
                 'tour_id' => $tourId,
                 'ticket_id' => $ticketId,
                 'quantity' => $quantity,
+                'category' => $category
             ],
         ]);
     

@@ -909,7 +909,7 @@
                                             </div>
                                         </div>
                                         <div class="subscription-card-footer">
-                                            <button type="button" data-tour="{{$tournament_detail['event_id']}}" data-ticket="{{$package['typeid']}}" class="button-primary btn-buy">Book Now</button>
+                                            <button type="button" data-category="{{$package['category']}}" data-tour="{{$tournament_detail['event_id']}}" data-ticket="{{$package['typeid']}}" class="button-primary btn-buy">Book Now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1275,6 +1275,7 @@
         // Extract tour_id and ticket_id from button's data attributes
         var tourId = button.data('tour');
         var ticketId = button.data('ticket');
+        var category = button.data('category');
 
         // Perform AJAX request to process booking
         $.ajax({
@@ -1283,6 +1284,7 @@
             data: {
                 tour_id: tourId,
                 ticket_id: ticketId,
+                category: category,
                 quantity: 1,
                 _token: $('meta[name="csrf-token"]').attr('content') // CSRF token for security
             },
