@@ -125,7 +125,7 @@
         @else
             @php $url = asset('images/FitSportsy_logo_No_BG.png');  @endphp
         @endif
-        <img src="{{$url}}" alt="preloader">
+        <img src="{{$url}}" width="200px" alt="preloader">
     </div>
     <header class="site-header sticky-top">
         <nav class="navbar navbar-expand navbar-dark topbar static-top shadow-sm bg-dark osahan-nav-top">
