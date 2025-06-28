@@ -335,26 +335,136 @@ class BookController extends Controller
         }
     }
 
-    public function storePaymentDetails(Request $request){
+    // public function storePaymentDetails(Request $request){
+    //     try {
+    //         $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
+    //         $eventDetails = session('book_event_data');
+    //         $bookingData = session('booking_data');
+    //         $settingDetails = \Common::siteGeneralSettingsApi();
+
+    //         // Ensure bookingData is an array before proceeding
+    //         if (is_array($bookingData)) {
+    //             if (isset($bookingData['quantity'])) {
+    //                 $bookingData['quantity'] = $request->input('total_ticket', $bookingData['quantity']);
+    //             }
+    //             // session(['booking_data' => $bookingData]);
+    //         }
+
+    //         // Validate required fields
+    //         $validator = Validator::make($request->all(), [
+    //             'transaction_id' => 'required|string|min:4'
+    //         ]);
+    
+    //         if ($validator->fails()) {
+    //             return redirect()->back()->withErrors($validator)->withInput();
+    //         }
+
+    //         $totalAmount =  $request->total_amount_pay;
+    //         $couponAmount = $request->coupon_amt  ?? 0;
+    //         $paymentId = $request->payment_id;
+    //         $transaction_id = $request->merchant_trans_id;
+
+    //         // Clear user cache if exists
+    //         $cacheKey = "user_profile_{$uid}";
+    //         if (Cache::has($cacheKey)) {
+    //             Cache::forget($cacheKey);
+    //         }
+
+    //         $userDetails = Common::fetchUserDetails();
+
+    //         // Prepare user input data
+    //         $playerDetails = [];
+    //         $playersPerTicket = 1; // Default to singles
+    //         if (isset($bookingData['category'])) {
+    //             $playersPerTicket = ($bookingData['category'] === 'Doubles') ? 2 : 1;
+    //         }
+    //         // Loop through all the player fields in the request
+    //         foreach ($request->all() as $key => $value) {
+    //             if (strpos($key, 'player_') === 0) {
+    //                 // Extract the field name and player number
+    //                 $parts = explode('_', $key);
+    //                 $fieldType = $parts[1]; // name, contact, age, etc.
+    //                 $playerNumber = $parts[2];
+                    
+    //                 // Initialize the player array if not exists
+    //                 if (!isset($playerDetails[$playerNumber])) {
+    //                     $playerDetails[$playerNumber] = [
+    //                         'ticket_number' => ceil($playerNumber / max(1, $playersPerTicket)), // Ensure never division by zero
+    //                         'player_position' => ($playersPerTicket === 2 && $playerNumber % 2 === 0) ? 2 : 1
+    //                     ];
+    //                 }
+                    
+    //                 // Add the field to the player
+    //                 $playerDetails[$playerNumber][$fieldType] = $value;
+    //             }
+    //         }
+
+    //         dd($playerDetails,$bookingData,$request->all());
+
+    //         $data = [
+    //             "uid"=>$uid,
+    //             "eid"=>$eventDetails['event_id'], 
+    //             "typeid"=>$eventDetails['ticket_id'], 
+    //             "type"=>$eventDetails['type'], 
+    //             "price"=>$eventDetails['ticket'], 
+    //             "total_ticket"=>$bookingData['quantity'],
+    //             "subtotal"=>$bookingData['quantity']*$eventDetails['ticket'],
+    //             "tax"=>$settingDetails['tax'],
+    //             "cou_amt"=>$couponAmount,
+    //             "total_amt"=>$totalAmount - $couponAmount,
+    //             "wall_amt"=>$userDetails['wallet'] ?? 0, 
+    //             "p_method_id"=> 0, 
+    //             "plimit"=>$eventDetails['tlimit'],
+    //             'transaction_id'=> $request->transaction_id,
+    //             "sponsore_id"=>$eventDetails['sponser_id'], 
+    //             "user_info" => isset($userInputData) ? $userInputData : null, 
+    //         ];
+
+    //           // Add registration data for new users
+    //         $userData = Common::fetchUserDetails();
+    //         if (empty($userData['name']) || empty($userData['email'])) {
+    //             $data['email'] = $request->email;
+    //             $data['username'] = $request->username;
+    //             $data['password'] = $request->password;
+    //         }
+
+    //         $storePaymentDetails = $this->savebookingDetails($data);
+    //         if($storePaymentDetails['status']){
+    //             session()->forget(['book_event_data', 'booking_data']);
+    //             return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Ticket Confirmed');
+    //         }
+    //         return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+    //     } catch (\Throwable $th) {
+    //         \Log::error('Booking Error: ' . $th->getMessage());
+    //         return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+    //     }
+    // }
+
+    public function storePaymentDetails(Request $request)
+    {        
         try {
             $uid = Common::isUserLogin() ? \Session::get('user_login_session')['id'] : 0;
             $eventDetails = session('book_event_data');
             $bookingData = session('booking_data');
             $settingDetails = \Common::siteGeneralSettingsApi();
 
+            // Ensure bookingData is an array before proceeding
+            if (is_array($bookingData)) {
+                if (isset($bookingData['quantity'])) {
+                    $bookingData['quantity'] = $request->input('total_ticket', $bookingData['quantity']);
+                }
+            }
+
+
             // Validate required fields
             $validator = Validator::make($request->all(), [
-                'transaction_id' => 'required|string|min:4'
+                'transaction_id' => 'required|string|min:4',
+                'accept_term' => 'required|accepted'
             ]);
-    
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-
-            $totalAmount =  $request->total_amount_pay;
-            $couponAmount = $request->coupon_amt  ?? 0;
-            $paymentId = $request->payment_id;
-            $transaction_id = $request->merchant_trans_id;
 
             // Clear user cache if exists
             $cacheKey = "user_profile_{$uid}";
@@ -364,64 +474,30 @@ class BookController extends Controller
 
             $userDetails = Common::fetchUserDetails();
 
-            // Prepare user input data
-            $userInputData = [];
-            for ($group = 1; $group <= $bookingData['quantity']; $group++) {
-                $playersData = [];
-                for ($player = 1; $player <= 2; $player++) { 
-                    $playerData = [];
-                    $name = $request->input("player_name_{$group}_{$player}");
-                    if ($name) $playerData['name'] = $name;
+            // Process player details
+            $playerDetails = $this->processPlayerDetails($request, $bookingData);
 
-                    $contact = $request->input("player_contact_{$group}_{$player}");
-                    if ($contact) $playerData['contact'] = $contact;
-
-                    $gender = $request->input("player_gender_{$group}_{$player}");
-                    if ($gender) $playerData['gender'] = $gender;
-
-                    $age = $request->input("player_age_{$group}_{$player}");
-                    if ($age) $playerData['age'] = $age;
-
-                    $tshirt = $request->input("player_shirt_size_{$group}_{$player}");
-                    if ($tshirt) $playerData['tshirt'] = $tshirt;
-
-                    $clubName = $request->input("player_club_name_{$group}_{$player}");
-                    if ($clubName) $playerData['club_name'] = $clubName;
-
-                    $organisation = $request->input("organisation_name_{$group}_{$player}");
-                    if ($organisation) $playerData['organisation'] = $organisation;
-                    
-                    if (!empty($playerData)) {
-                        $playersData[] = $playerData;
-                    }
-                }
-
-                // Store group data with players' data
-                if (!empty($playersData)) {
-                    $userInputData[] = ['group' => $group, 'players' => $playersData];
-                }
-            }
-
+            // Prepare main booking data
             $data = [
-                "uid"=>$uid,
-                "eid"=>$eventDetails['event_id'], 
-                "typeid"=>$eventDetails['ticket_id'], 
-                "type"=>$eventDetails['type'], 
-                "price"=>$eventDetails['ticket'], 
-                "total_ticket"=>$bookingData['quantity'],
-                "subtotal"=>$bookingData['quantity']*$eventDetails['ticket'],
-                "tax"=>$settingDetails['tax'],
-                "cou_amt"=>$couponAmount,
-                "total_amt"=>$totalAmount - $couponAmount,
-                "wall_amt"=>$userDetails['wallet'] ?? 0, 
-                "p_method_id"=> 0, 
-                "plimit"=>$eventDetails['tlimit'],
-                'transaction_id'=> $request->transaction_id,
-                "sponsore_id"=>$eventDetails['sponser_id'], 
-                "user_info" => isset($userInputData) ? $userInputData : null, 
+                "uid" => $uid,
+                "eid" => $eventDetails['event_id'],
+                "typeid" => $eventDetails['ticket_id'],
+                "type" => $eventDetails['type'],
+                "price" => $eventDetails['ticket'],
+                "total_ticket" => $bookingData['quantity'],
+                "subtotal" => $bookingData['quantity'] * $eventDetails['ticket'],
+                "tax" => $settingDetails['tax'],
+                "cou_amt" => $request->coupon_amt ?? 0,
+                "total_amt" => $request->total_amount_pay,
+                "wall_amt" => $userDetails['wallet'] ?? 0,
+                "p_method_id" => 0,
+                "plimit" => $eventDetails['tlimit'],
+                'transaction_id' => $request->transaction_id,
+                "sponsore_id" => $eventDetails['sponser_id'],
+                "player_details" => $playerDetails
             ];
 
-              // Add registration data for new users
+            // Handle new user registration if needed
             $userData = Common::fetchUserDetails();
             if (empty($userData['name']) || empty($userData['email'])) {
                 $data['email'] = $request->email;
@@ -429,16 +505,48 @@ class BookController extends Controller
                 $data['password'] = $request->password;
             }
 
+            // dd($data);
+
             $storePaymentDetails = $this->savebookingDetails($data);
-            if($storePaymentDetails['status']){
+            
+            if ($storePaymentDetails['status']) {
                 session()->forget(['book_event_data', 'booking_data']);
-                return redirect()->route('ticket-information',['id'=>$storePaymentDetails['ticket_id']])->with('success','Book Ticket Confirmed');
+                return redirect()->route('ticket-information', ['id' => $storePaymentDetails['ticket_id']])
+                    ->with('success', 'Booking confirmed successfully!');
             }
-            return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+            return redirect()->back()->with('error', 'Failed to process booking. Please try again.');
+
         } catch (\Throwable $th) {
             \Log::error('Booking Error: ' . $th->getMessage());
-            return redirect()->back()->with('error','Something Went Wrong! Please Contact Site Admin');
+            return redirect()->back()->with('error', 'An error occurred. Please contact support.');
         }
+    }
+
+    protected function processPlayerDetails($request, $bookingData)
+    {
+        $playerDetails = [];
+        $playersPerTicket = ($bookingData['category'] === 'Doubles') ? 2 : 1;
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'player_') === 0) {
+                $parts = explode('_', $key);
+                if (count($parts) >= 3) {
+                    $fieldType = $parts[1];
+                    $playerNumber = $parts[2];
+                    
+                    if (!isset($playerDetails[$playerNumber])) {
+                        $playerDetails[$playerNumber] = [
+                            'ticket_number' => ceil($playerNumber / $playersPerTicket),
+                            'player_position' => ($playersPerTicket === 2 && $playerNumber % 2 === 0) ? 2 : 1
+                        ];
+                    }
+                    
+                    $playerDetails[$playerNumber][$fieldType] = $value;
+                }
+            }
+        }
+
+        return array_values($playerDetails);
     }
 
     public function verifyEmail(Request $request)
@@ -526,7 +634,6 @@ class BookController extends Controller
         }
     }
 
-
     private function savebookingDetails($data){
         try {
             // Instantiate the Guzzle client
@@ -539,7 +646,6 @@ class BookController extends Controller
             ]);
 
             $responseData = json_decode($response->getBody(), true);
-            // dd($responseData);
             if ($responseData['Result'] === true || $responseData['Result'] === "true"){
                 return [
                     'status'=>true,

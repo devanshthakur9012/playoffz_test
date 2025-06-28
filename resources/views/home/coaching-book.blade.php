@@ -918,8 +918,8 @@
                     </div>
                 @endif
 
-                <div class="text-white mb-4"> 
-                    <h4 class="mb-1 highlighter">About Tournament</h4>
+                <div class="text-white mb-4 mt-3"> 
+                    <h4 class="mb-2 highlighter">About Tournament</h4>
                     <div class="fs-3 px-2">{!! stripslashes($tournament_detail['event_about']) !!}</div>
                 </div>                
                 
@@ -942,7 +942,6 @@
                         </div>
                     </div>
                 </div>
-
                 
                 <div class="row text-white mb-4">
                     <div class="col-lg-12">   
@@ -950,6 +949,45 @@
                         <p class="mb-0 mt-2"><i class="fas fa-map-marker-alt ml-2 mr-1"></i> {{ $tournament_detail['event_address'] }}</p>
                     </div>
                 </div>
+                    
+                @if(count($tournament_Facility))
+                <div class="text-white bgFilter2 mb-4"> 
+                    <h4 class="highlighter">Tournament Facility</h4>
+                    <div class="available-sports">
+                        @foreach ($tournament_Facility as $sport)
+                            <div class="available-sport-card">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" >
+                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+                @if(count($tournament_Restriction))
+                <div class="text-white bgFilter2 mb-4"> 
+                    <h4 class="highlighter">Tournament Prohibited</h4>
+                    <div class="available-sports">
+                        @foreach ($tournament_Restriction as $sport)
+                            <div class="available-sport-card">
+                                <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" >
+                                <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif  
+                @if(count($tournament_gallery))
+                    <h4 class="highlighter bgFilter2 mb-4">Tournament Gallery</h4>
+                    <div class="tournament-gallery">
+                        <div class="row gap-3">
+                            @foreach ($tournament_gallery as $sport)
+                                <div class="gallery-item col-lg-3">
+                                    <img class="gallery-image p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport }}" alt="Tournament Gallery Image" width="100%">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
             <div class="col-lg-4 col-md-4 col-12 custom-width">
                 <div class="countdown text-left event-ticket card shadow-sm mb-3">
@@ -1003,45 +1041,6 @@
             </div>
             </div>
         </div>
-              
-        @if(count($tournament_Facility))
-        <div class="text-white bgFilter2"> 
-            <h4 class="highlighter">Tournament Facility</h4>
-            <div class="available-sports">
-                @foreach ($tournament_Facility as $sport)
-                    <div class="available-sport-card">
-                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['facility_img'] }}" alt="$sport['facility_title']" >
-                        <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['facility_title'] }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        @endif
-        @if(count($tournament_Restriction))
-        <div class="text-white bgFilter2"> 
-            <h4 class="highlighter">Tournament Prohibited</h4>
-            <div class="available-sports">
-                @foreach ($tournament_Restriction as $sport)
-                    <div class="available-sport-card">
-                        <img class="rounded-circle p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport['restriction_img'] }}" alt="$sport['restriction_title']" >
-                        <p class="mb-0 mt-1" style="font-size:12px; ">{{ $sport['restriction_title'] }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        @endif  
-        @if(count($tournament_gallery))
-            <h4 class="highlighter bgFilter2">Tournament Gallery</h4>
-            <div class="tournament-gallery">
-                <div class="row gap-3">
-                    @foreach ($tournament_gallery as $sport)
-                        <div class="gallery-item col-lg-3">
-                            <img class="gallery-image p-1" src="{{ env('BACKEND_BASE_URL').'/'.$sport }}" alt="Tournament Gallery Image" width="100%">
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
 
         @if (isset($related_tournament) && count($related_tournament))
             <div class="hawan_section">
@@ -1189,6 +1188,52 @@
     })
 </script>
 <script>
+    // Get the event start time from the format "Tue, 1st Jul 09:00 am"
+    const eventTimeString = "{{ $tournament_detail['event_start_counter'] }}";     
+    const eventDate = new Date(eventTimeString).getTime();
+    
+    // Update the countdown every second
+    const countdownInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = eventDate - now;
+
+        if (timeLeft >= 0) {
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `
+                <h5 class="mb-3">⏳ Starts In</h5>
+                <div class="timeCounter">
+                    <div class="days">
+                        <span>${days < 10 ? "0" + days : days}</span>
+                        <div>days</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${hours < 10 ? "0" + hours : hours}</span>
+                        <div>hours</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${minutes < 10 ? "0" + minutes : minutes}</span>
+                        <div>minutes</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="days">
+                        <span>${seconds < 10 ? "0" + seconds : seconds}</span>
+                        <div>seconds</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown").innerHTML = "<p class='mb-0 text-center'>Event has started!</p>";
+        }
+    }, 1000);
+</script>
+<!-- <script>
     // Get the event date and time from PHP
     const eventDateTime = "{{ $event_datetime }}"; // Example: "26 January, 2025 9:00 AM"
 
@@ -1235,8 +1280,8 @@
             document.getElementById("countdown").innerHTML = "<p class='mb-0'>Event has started!</p>";
         }
     // }, 1000);
-</script>
-<script>
+</script> -->
+<!-- <script>
     document.getElementById('shareBtn').addEventListener('click', function() {
         // Get data attributes from the button
         var title = this.getAttribute('data-title');
@@ -1263,7 +1308,7 @@
         var whatsappURL = `https://wa.me/?text=${encodedMessage}`;
         window.open(whatsappURL, '_blank');
     });
-</script>
+</script> -->
 <script>
     
     // Add click event listener for "Book Now" button

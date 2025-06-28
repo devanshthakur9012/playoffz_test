@@ -371,8 +371,6 @@ $orgComm = 0;
     .modal-footer {
         border-top: none;
     }
-
-    
 </style>
 <section class="section-area checkout-event-area">
     <div class="container">

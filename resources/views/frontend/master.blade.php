@@ -187,7 +187,7 @@
                             <button class="mx-3 btn default-btn py-2" data-toggle="modal" data-target="#socialPlay">Play</button>
                         </li> --}}
                         <li>
-                            <a href="{{env('BACKEND_BASE_URL')}}/add_event.php" class="mx-3 loginbtn "><img src="{{asset('/images/org_btn.png')}}" alt="Organizer" style="height:55px"></a>
+                            <a href="{{env('BACKEND_BASE_URL')}}/add_tournament.php" class="mx-3 loginbtn "><img src="{{asset('/images/org_btn.png')}}" alt="Organizer" style="height:55px"></a>
                         </li>
                         @isset($favicon['appUrl'])
                             <li>

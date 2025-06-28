@@ -695,7 +695,7 @@ $orgComm = 0;
                                 </div>
                                 <div class="small_card mb-3">
                                     <small class="mb-3">Total Payable Amount</small>
-                                    <h5 class="text-warning mt-1 mb-0">Rs. {{ $packageDetails['ticket'] * $bookingData['quantity'] + $settingDetails['tax'] }}</h5>
+                                    <h5 class="text-warning mt-1 mb-0" id="total_pay_amount">{{$settingDetails['currency']}}{{$packageDetails['ticket']*$bookingData['quantity'] + $settingDetails['tax']}}</h5>
                                 </div>
                                 <div class="small_card mb-3">
                                     <small class="mb-3">Using as:</small>
@@ -873,6 +873,7 @@ $orgComm = 0;
             
             // Update total display
             $('#total_amount').text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
+            $('#total_pay_amount').text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
             $('#total_amount_pay').val(newTotal.toFixed(2));
             $('#modalTotalAmount').text(newTotal.toFixed(2));
         }
@@ -904,6 +905,7 @@ $orgComm = 0;
                         // Update total amount
                         let newTotal = amountBeforeCoupon - parseFloat(data.coupon);
                         $("#total_amount").text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
+                        $('#total_pay_amount').text('{{$settingDetails["currency"]}}' + newTotal.toFixed(2));
                         $("#total_amount_pay").val(newTotal.toFixed(2));
                         $('#modalTotalAmount').text(newTotal.toFixed(2));
                     } else {
